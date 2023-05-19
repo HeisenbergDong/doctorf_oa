@@ -266,7 +266,7 @@
         <el-card class="update-log" shadow="never">
           <template v-slot:header>
             <div class="clearfix">
-              <span class="font14">{{ "基本信息" }}</span>
+              <span class="font14">{{ "电脑验光" }}</span>
             </div>
           </template>
           <div class="body">
@@ -276,30 +276,38 @@
               label-width="80px"
               :model="patientInfo"
             >
-              <el-form-item label="姓名" class="font14">
-                <el-input
-                  v-model="patientInfo.name"
-                  placeholder="请输入"
-                ></el-input>
+              <el-form-item label="上传附件" class="font14" style="margin-bottom: 0px;">
+                <UploadFile />
               </el-form-item>
-              <el-form-item label="性别">
-                <el-input
-                  v-model="patientInfo.gender"
-                  placeholder="请输入"
-                ></el-input>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{ "角膜地形图" }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form
+              :inline="true"
+              label-position="right"
+              label-width="80px"
+              :model="patientInfo"
+            >
+              <el-form-item label="上传附件" class="font14" style="margin-bottom: 0px;">
+                <UploadFile />
               </el-form-item>
-              <el-form-item label="年龄">
-                <el-input
-                  v-model="patientInfo.age"
-                  placeholder="请输入"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="是否首次">
-                <el-radio-group v-model="patientInfo.isFirstVisit">
-                  <el-radio-button label="是"></el-radio-button>
-                  <el-radio-button label="否"></el-radio-button>
-                </el-radio-group>
-              </el-form-item>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
             </el-form>
           </div>
         </el-card>
@@ -314,37 +322,11 @@
             </div>
           </template>
           <div class="body">
-            <el-form
-              :inline="true"
-              label-position="right"
-              label-width="80px"
-              :model="patientInfo"
-            >
-              <el-form-item label="姓名" class="font14">
-                <el-input
-                  v-model="patientInfo.name"
-                  placeholder="请输入"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="性别">
-                <el-input
-                  v-model="patientInfo.gender"
-                  placeholder="请输入"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="年龄">
-                <el-input
-                  v-model="patientInfo.age"
-                  placeholder="请输入"
-                ></el-input>
-              </el-form-item>
-              <el-form-item label="是否首次">
-                <el-radio-group v-model="patientInfo.isFirstVisit">
-                  <el-radio-button label="是"></el-radio-button>
-                  <el-radio-button label="否"></el-radio-button>
-                </el-radio-group>
-              </el-form-item>
-            </el-form>
+            <div v-for="(item, index) in patientList" :key="index">
+              <div class="patient">
+                {{ `${item.label}挂号排序${index + 1}` }}
+              </div>
+            </div>
           </div>
         </el-card>
       </el-col>
@@ -356,6 +338,7 @@
 import icon_time from "/src/assets/icons/svg/time.svg";
 import { getCache } from "@/api/monitor/cache";
 import * as echarts from "echarts";
+import UploadFile from "/src/components/FileUpload/index.vue";
 
 const patientInfo = ref({
   name: "",
@@ -385,6 +368,29 @@ const euphoropsiaOptions = ref([
   },
 ]);
 
+const patientList = ref([
+  {
+    value: "患者A",
+    label: "患者A",
+  },
+  {
+    value: "患者B",
+    label: "患者B",
+  },
+  {
+    value: "患者C",
+    label: "患者C",
+  },
+  {
+    value: "患者D",
+    label: "患者D",
+  },
+  {
+    value: "患者E",
+    label: "患者E",
+  },
+]);
+console.log("patientList", patientList.value.lenght);
 const cache = ref([]);
 const commandstats = ref(null);
 const usedmemory = ref(null);
@@ -535,6 +541,12 @@ getList();
 
 :deep(.el-card) {
   border: none;
+}
+
+.patient {
+  font-size: 14px;
+  line-height: 14px;
+  padding: 8px 0 20px 0;
 }
 </style>
   
