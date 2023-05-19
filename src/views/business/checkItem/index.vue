@@ -256,9 +256,9 @@
               </el-form>
             </el-row>
             <el-row class="card-btn">
-                <el-button>重置</el-button>
-                <el-button type="primary">提交</el-button>
-              </el-row>
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
           </div>
         </el-card>
       </el-col>
