@@ -2,9 +2,7 @@
   <div class="app-container home flex-row">
     <el-col :span="18">
       <el-col class="card-box">
-        <el-card class="font18 fontW600" shadow="never">
-          {{ "患者信息" }}
-        </el-card>
+        <el-card class="font18 fontW600" shadow="never"> 患者信息 </el-card>
       </el-col>
       <el-col class="card-box">
         <el-card class="update-log" shadow="never">
@@ -49,9 +47,7 @@
         </el-card>
       </el-col>
       <el-col class="card-box">
-        <el-card class="font18 fontW600" shadow="never">
-          {{ "特殊检查室" }}
-        </el-card>
+        <el-card class="font18 fontW600" shadow="never"> 特殊检查室 </el-card>
       </el-col>
       <el-col class="card-box">
         <el-card class="update-log" shadow="never">
@@ -70,7 +66,7 @@
                 <el-row class="flex-row">
                   <el-col :span="12">
                     <div class="ml42 mb16 font14 fontW600">
-                      {{ "远视力左眼：" }}
+                      {{ "远视力L：" }}
                     </div>
                     <el-form-item label="裸眼" class="font14">
                       <el-input
@@ -93,7 +89,7 @@
                   </el-col>
                   <el-col :span="12">
                     <div class="ml42 mb16 font14 fontW600">
-                      {{ "远视力右眼：" }}
+                      {{ "远视力R：" }}
                     </div>
                     <el-form-item label="裸眼" class="font14">
                       <el-input
@@ -118,7 +114,7 @@
                 <el-row class="flex-row">
                   <el-col :span="12">
                     <div class="ml42 mb16 font14 fontW600">
-                      {{ "近视力左眼：" }}
+                      {{ "近视力L：" }}
                     </div>
                     <el-form-item label="裸眼" class="font14">
                       <el-input
@@ -141,7 +137,7 @@
                   </el-col>
                   <el-col :span="12">
                     <div class="ml42 mb16 font14 fontW600">
-                      {{ "近视力右眼：" }}
+                      {{ "近视力R：" }}
                     </div>
                     <el-form-item label="裸眼" class="font14">
                       <el-input
@@ -276,7 +272,11 @@
               label-width="80px"
               :model="patientInfo"
             >
-              <el-form-item label="上传附件" class="font14" style="margin-bottom: 0px;">
+              <el-form-item
+                label="上传附件"
+                class="font14"
+                style="margin-bottom: 0px"
+              >
                 <UploadFile />
               </el-form-item>
               <el-row class="card-btn">
@@ -301,7 +301,11 @@
               label-width="80px"
               :model="patientInfo"
             >
-              <el-form-item label="上传附件" class="font14" style="margin-bottom: 0px;">
+              <el-form-item
+                label="上传附件"
+                class="font14"
+                style="margin-bottom: 0px"
+              >
                 <UploadFile />
               </el-form-item>
               <el-row class="card-btn">
@@ -312,7 +316,909 @@
           </div>
         </el-card>
       </el-col>
+      <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{
+                "生物测量仪（量差、量差图标、周期（量差&周期需要公式计算的） 系统需要帮忙计算左右眼眼轴变化，（填写本次数值后，后面有历史检查记录，下面有差值显示框，选择哪个带出哪个））"
+              }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form
+              :inline="true"
+              label-position="right"
+              label-width="80px"
+              :model="patientInfo"
+            >
+              <el-form-item label="待定" class="font14"> </el-form-item>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{ "内皮细胞检查" }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form
+              :inline="true"
+              label-position="right"
+              label-width="80px"
+              :model="patientInfo"
+            >
+              <el-form-item
+                label="上传附件"
+                class="font14"
+                style="margin-bottom: 0px"
+              >
+                <UploadFile />
+              </el-form-item>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{ "MRT检查" }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form
+              :inline="true"
+              label-position="right"
+              label-width="80px"
+              :model="patientInfo"
+            >
+              <el-form-item
+                label="上传附件"
+                class="font14"
+                style="margin-bottom: 0px"
+              >
+                <UploadFile />
+              </el-form-item>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{ "干眼检查" }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form
+              :inline="true"
+              label-position="right"
+              label-width="80px"
+              :model="patientInfo"
+            >
+              <el-form-item
+                label="上传附件"
+                class="font14"
+                style="margin-bottom: 0px"
+              >
+                <UploadFile />
+              </el-form-item>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{ "眼底检查" }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form
+              label-position="right"
+              label-width="110px"
+              :model="patientInfo"
+            >
+              <el-row>
+                <el-row class="flex-row w100i">
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "玻璃体L：" }}
+                    </div>
+                    <el-form-item label="玻璃体：" class="ml42">
+                      <el-checkbox-group v-model="patientInfo.list">
+                        <el-checkbox label="">正常</el-checkbox>
+                        <el-checkbox label="">
+                          <el-input
+                            type="textarea"
+                            placeholder="其他"
+                            v-model="textarea"
+                            :autosize="{ minRows: 1, maxRows: 2 }"
+                            show-word-limit
+                            style="width: 180px"
+                          >
+                          </el-input>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "玻璃体R：" }}
+                    </div>
+                    <el-form-item label="玻璃体：" class="ml42">
+                      <el-checkbox-group v-model="patientInfo.list">
+                        <el-checkbox label="">正常</el-checkbox>
+                        <el-checkbox label="">
+                          <el-input
+                            type="textarea"
+                            placeholder="其他"
+                            v-model="textarea"
+                            :autosize="{ minRows: 1, maxRows: 2 }"
+                            show-word-limit
+                            style="width: 180px"
+                          >
+                          </el-input>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row class="flex-row">
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "视网膜L：" }}
+                    </div>
+                    <el-form-item label="视网膜：" class="ml42">
+                      <el-checkbox-group v-model="patientInfo.list">
+                        <el-checkbox label="">正常</el-checkbox>
+                        <el-checkbox label="">豹纹状改变</el-checkbox>
+                        <el-checkbox label="">脉络膜环</el-checkbox>
+                        <el-checkbox label="">视盘边界</el-checkbox>
+                        <el-checkbox label="">色</el-checkbox>
+                        <el-checkbox label="">C/D</el-checkbox>
+                        <el-checkbox label="">中心凹反射</el-checkbox>
+                        <el-checkbox label="">出血</el-checkbox>
+                        <el-checkbox label="">渗出</el-checkbox>
+                        <el-checkbox label="">A/V</el-checkbox>
+                        <el-checkbox label="">
+                          <el-input
+                            type="textarea"
+                            placeholder="其他"
+                            v-model="textarea"
+                            :autosize="{ minRows: 1, maxRows: 2 }"
+                            show-word-limit
+                            style="width: 180px"
+                          >
+                          </el-input>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "视网膜R：" }}
+                    </div>
+                    <el-form-item label="视网膜：" class="ml42">
+                      <el-checkbox-group v-model="patientInfo.list">
+                        <el-checkbox label="">正常</el-checkbox>
+                        <el-checkbox label="">豹纹状改变</el-checkbox>
+                        <el-checkbox label="">脉络膜环</el-checkbox>
+                        <el-checkbox label="">视盘边界</el-checkbox>
+                        <el-checkbox label="">色</el-checkbox>
+                        <el-checkbox label="">C/D</el-checkbox>
+                        <el-checkbox label="">中心凹反射</el-checkbox>
+                        <el-checkbox label="">出血</el-checkbox>
+                        <el-checkbox label="">渗出</el-checkbox>
+                        <el-checkbox label="">A/V</el-checkbox>
+                        <el-checkbox label="">
+                          <el-input
+                            type="textarea"
+                            placeholder="其他"
+                            v-model="textarea"
+                            :autosize="{ minRows: 1, maxRows: 2 }"
+                            show-word-limit
+                            style="width: 180px"
+                          >
+                          </el-input>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-row>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{ "眼压" }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form
+              label-position="right"
+              label-width="110px"
+              :model="patientInfo"
+            >
+              <el-row class="mb16">
+                <el-radio-group
+                  v-model="labelPosition"
+                  size=""
+                  @change="typeOnChange"
+                >
+                  <el-radio-button :label="true">指测法</el-radio-button>
+                  <el-radio-button :label="false">Icare</el-radio-button>
+                </el-radio-group>
+              </el-row>
+              <el-row>
+                <el-row class="flex-row w100i">
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "眼压L：" }}
+                    </div>
+                    <el-form-item label="眼压" class="font14">
+                      <el-select
+                        v-if="labelPosition"
+                        v-model="patientInfo.selectIop"
+                        placeholder="请选择"
+                      >
+                        <el-option
+                          v-for="item in IopOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        >
+                        </el-option>
+                      </el-select>
+                      <div v-else>
+                        <el-input
+                          v-model="patientInfo.selectIop"
+                          class="mr24 w180i"
+                          placeholder="请输入"
+                        ></el-input>
+                        <div style="position: absolute; top: 0; right: 120px">
+                          (mmhg)
+                        </div>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "眼压R：" }}
+                    </div>
+                    <el-form-item label="眼压" class="font14">
+                      <el-select
+                        v-if="labelPosition"
+                        v-model="patientInfo.selectIop"
+                        placeholder="请选择"
+                      >
+                        <el-option
+                          v-for="item in IopOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        >
+                        </el-option>
+                      </el-select>
+                      <div v-else>
+                        <el-input
+                          v-model="patientInfo.selectIop"
+                          class="mr24 w180i"
+                          placeholder="请输入"
+                        ></el-input>
+                        <div style="position: absolute; top: 0; right: 120px">
+                          (mmhg)
+                        </div>
+                      </div>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-row>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "角膜接触镜片上电脑验光" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item
+              label="上传附件"
+              class="font14"
+              style="margin-bottom: 0px"
+            >
+              <UploadFile />
+            </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
     </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "角膜接触镜片上角膜地形图" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item
+              label="上传附件"
+              class="font14"
+              style="margin-bottom: 0px"
+            >
+              <UploadFile />
+            </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="font18 fontW600" shadow="never"> 验光室 </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "视力检查" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            label-position="right"
+            label-width="110px"
+            :model="patientInfo"
+          >
+            <el-row>
+              <el-row class="flex-row">
+                <el-col :span="12">
+                  <div class="ml42 mb16 font14 fontW600">
+                    {{ "远视力L：" }}
+                  </div>
+                  <el-form-item label="裸眼" class="font14">
+                    <el-input
+                      v-model="patientInfo.name"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="框架">
+                    <el-input
+                      v-model="patientInfo.gender"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="片上" class="font14">
+                    <el-input
+                      v-model="patientInfo.name"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <div class="ml42 mb16 font14 fontW600">
+                    {{ "远视力R：" }}
+                  </div>
+                  <el-form-item label="裸眼" class="font14">
+                    <el-input
+                      v-model="patientInfo.name"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="框架">
+                    <el-input
+                      v-model="patientInfo.gender"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="片上" class="font14">
+                    <el-input
+                      v-model="patientInfo.name"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row class="flex-row">
+                <el-col :span="12">
+                  <div class="ml42 mb16 font14 fontW600">
+                    {{ "近视力L：" }}
+                  </div>
+                  <el-form-item label="裸眼" class="font14">
+                    <el-input
+                      v-model="patientInfo.name"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="框架">
+                    <el-input
+                      v-model="patientInfo.gender"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="片上" class="font14">
+                    <el-input
+                      v-model="patientInfo.name"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <div class="ml42 mb16 font14 fontW600">
+                    {{ "近视力R：" }}
+                  </div>
+                  <el-form-item label="裸眼" class="font14">
+                    <el-input
+                      v-model="patientInfo.name"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="框架">
+                    <el-input
+                      v-model="patientInfo.gender"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="片上" class="font14">
+                    <el-input
+                      v-model="patientInfo.name"
+                      placeholder="请输入"
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-row>
+            <el-row class="flex-row">
+              <el-col :span="10">
+                <el-col>
+                  <el-form-item label="镜片划痕：" class="ml42">
+                    <el-checkbox-group v-model="patientInfo.list">
+                      <el-checkbox label="">( - )</el-checkbox>
+                      <el-checkbox label="">( + )</el-checkbox>
+                      <el-checkbox label="">( ++ )</el-checkbox>
+                      <el-checkbox label="">( +++ )</el-checkbox>
+                    </el-checkbox-group>
+                  </el-form-item>
+                </el-col>
+              </el-col>
+              <el-col :span="10">
+                <el-col>
+                  <el-form-item label="镜架：" class="ml42">
+                    <el-checkbox-group v-model="patientInfo.list">
+                      <el-checkbox label="">( - )</el-checkbox>
+                      <el-checkbox label="">( + )</el-checkbox>
+                      <el-checkbox label="">( ++ )</el-checkbox>
+                      <el-checkbox label="">( +++ )</el-checkbox>
+                    </el-checkbox-group>
+                  </el-form-item>
+                </el-col>
+              </el-col>
+            </el-row>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "检影" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item label="待定" class="font14"> </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "视功能检查" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item label="待定" class="font14"> </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "主观前四项" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-row>
+            <el-form
+              :inline="true"
+              label-position="right"
+              label-width="80px"
+              :model="patientInfo"
+            >
+              <el-form-item label="辐辏" class="font14">
+                <el-select v-model="patientInfo.name" placeholder="请选择">
+                  <el-option
+                    v-for="item in convergeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="眼位">
+                <el-input
+                  v-model="patientInfo.gender"
+                  placeholder="请输入"
+                  class="mr24 w180i"
+                ></el-input>
+                <div style="position: absolute; top: -30; right: 180px">
+                  /33cm;
+                </div>
+                <el-input
+                  v-model="patientInfo.gender"
+                  placeholder="请输入"
+                  class="ml24 w180i"
+                ></el-input>
+                <div style="position: absolute; top: 0; right: -38px">
+                  /6cm;
+                </div>
+              </el-form-item>
+              <el-form-item label="主导眼">
+                <el-select v-model="patientInfo.name" placeholder="请选择" >
+                  <el-option
+                    v-for="item in euphoropsiaOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-form>
+          </el-row>
+          <el-row class="card-btn">
+            <el-button>重置</el-button>
+            <el-button type="primary">提交</el-button>
+          </el-row>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "主观验光" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item label="待定" class="font14"> </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "试戴" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item label="待定" class="font14"> </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "角膜接触镜片上主观验光" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item label="待定" class="font14"> </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "角膜接触镜片上检影" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item label="待定" class="font14"> </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    <el-col class="card-box">
+      <el-card class="update-log" shadow="never">
+        <template v-slot:header>
+          <div class="clearfix">
+            <span class="font14">{{ "取镜" }}</span>
+          </div>
+        </template>
+        <div class="body">
+          <el-form
+            :inline="true"
+            label-position="right"
+            label-width="80px"
+            :model="patientInfo"
+          >
+            <el-form-item label="待定" class="font14"> </el-form-item>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary">提交</el-button>
+            </el-row>
+          </el-form>
+        </div>
+      </el-card>
+    </el-col>
+    
+    <el-col class="card-box">
+      <el-card class="font18 fontW600" shadow="never"> 诊室1-1 诊室1-2 诊室3-1 诊室3-2 </el-card>
+    </el-col>
+    <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{ "眼底检查" }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form
+              label-position="right"
+              label-width="110px"
+              :model="patientInfo"
+            >
+              <el-row>
+                <el-row class="flex-row w100i">
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "玻璃体L：" }}
+                    </div>
+                    <el-form-item label="玻璃体：" class="ml42">
+                      <el-checkbox-group v-model="patientInfo.list">
+                        <el-checkbox label="">正常</el-checkbox>
+                        <el-checkbox label="">
+                          <el-input
+                            type="textarea"
+                            placeholder="其他"
+                            v-model="textarea"
+                            :autosize="{ minRows: 1, maxRows: 2 }"
+                            show-word-limit
+                            style="width: 180px"
+                          >
+                          </el-input>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "玻璃体R：" }}
+                    </div>
+                    <el-form-item label="玻璃体：" class="ml42">
+                      <el-checkbox-group v-model="patientInfo.list">
+                        <el-checkbox label="">正常</el-checkbox>
+                        <el-checkbox label="">
+                          <el-input
+                            type="textarea"
+                            placeholder="其他"
+                            v-model="textarea"
+                            :autosize="{ minRows: 1, maxRows: 2 }"
+                            show-word-limit
+                            style="width: 180px"
+                          >
+                          </el-input>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row class="flex-row">
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "视网膜L：" }}
+                    </div>
+                    <el-form-item label="视网膜：" class="ml42">
+                      <el-checkbox-group v-model="patientInfo.list">
+                        <el-checkbox label="">正常</el-checkbox>
+                        <el-checkbox label="">豹纹状改变</el-checkbox>
+                        <el-checkbox label="">脉络膜环</el-checkbox>
+                        <el-checkbox label="">视盘边界</el-checkbox>
+                        <el-checkbox label="">色</el-checkbox>
+                        <el-checkbox label="">C/D</el-checkbox>
+                        <el-checkbox label="">中心凹反射</el-checkbox>
+                        <el-checkbox label="">出血</el-checkbox>
+                        <el-checkbox label="">渗出</el-checkbox>
+                        <el-checkbox label="">A/V</el-checkbox>
+                        <el-checkbox label="">
+                          <el-input
+                            type="textarea"
+                            placeholder="其他"
+                            v-model="textarea"
+                            :autosize="{ minRows: 1, maxRows: 2 }"
+                            show-word-limit
+                            style="width: 180px"
+                          >
+                          </el-input>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <div class="ml42 mb16 font14 fontW600">
+                      {{ "视网膜R：" }}
+                    </div>
+                    <el-form-item label="视网膜：" class="ml42">
+                      <el-checkbox-group v-model="patientInfo.list">
+                        <el-checkbox label="">正常</el-checkbox>
+                        <el-checkbox label="">豹纹状改变</el-checkbox>
+                        <el-checkbox label="">脉络膜环</el-checkbox>
+                        <el-checkbox label="">视盘边界</el-checkbox>
+                        <el-checkbox label="">色</el-checkbox>
+                        <el-checkbox label="">C/D</el-checkbox>
+                        <el-checkbox label="">中心凹反射</el-checkbox>
+                        <el-checkbox label="">出血</el-checkbox>
+                        <el-checkbox label="">渗出</el-checkbox>
+                        <el-checkbox label="">A/V</el-checkbox>
+                        <el-checkbox label="">
+                          <el-input
+                            type="textarea"
+                            placeholder="其他"
+                            v-model="textarea"
+                            :autosize="{ minRows: 1, maxRows: 2 }"
+                            show-word-limit
+                            style="width: 180px"
+                          >
+                          </el-input>
+                        </el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </el-row>
+              <el-row class="card-btn">
+                <el-button>重置</el-button>
+                <el-button type="primary">提交</el-button>
+              </el-row>
+            </el-form>
+          </div>
+        </el-card>
+      </el-col>
+  </el-col>
+
+    <!-- right -->
     <el-col :span="6">
       <el-col class="card-box">
         <el-card class="update-log" shadow="never">
@@ -332,9 +1238,25 @@
       </el-col>
     </el-col>
   </div>
+  <!-- <el-backtop target=".page-component__scroll .el-scrollbar__wrap" :bottom="100">
+    <div
+      style="{
+        height: 100%;
+        width: 100%;
+        background-color: #f2f5f6;
+        box-shadow: 0 0 6px rgba(0,0,0, .12);
+        text-align: center;
+        line-height: 40px;
+        color: #1989fa;
+      }"
+    >
+      回到顶部
+    </div>
+  </el-backtop> -->
+  <el-backtop></el-backtop>
 </template>
   
-  <script setup name="Index">
+<script setup name="Index">
 import icon_time from "/src/assets/icons/svg/time.svg";
 import { getCache } from "@/api/monitor/cache";
 import * as echarts from "echarts";
@@ -346,6 +1268,7 @@ const patientInfo = ref({
   age: "",
   isFirstVisit: "是",
   list: [],
+  selectIop: "",
 });
 const convergeOptions = ref([
   {
@@ -365,6 +1288,82 @@ const euphoropsiaOptions = ref([
   {
     value: "左",
     label: "左",
+  },
+]);
+const IopOptions = ref([
+  {
+    value: "Tn-3",
+    label: "Tn-3",
+  },
+  {
+    value: "Tn-2",
+    label: "Tn-2",
+  },
+  {
+    value: "Tn-1",
+    label: "Tn-1",
+  },
+  {
+    value: "Tn",
+    label: "Tn",
+  },
+  {
+    value: "Tn+1",
+    label: "Tn+1",
+  },
+  {
+    value: "Tn+2",
+    label: "Tn+2",
+  },
+  {
+    value: "Tn+3",
+    label: "Tn+3",
+  },
+]);
+const symbolOptions = ref([
+  {
+    value: "+",
+    label: "+",
+  },
+  {
+    value: "-",
+    label: "-",
+  },
+  {
+    value: "±",
+    label: "±",
+  },
+]);
+const numOptions = ref([
+  {
+    value: "2",
+    label: "2",
+  },
+  {
+    value: "3",
+    label: "3",
+  },
+  {
+    value: "4",
+    label: "4",
+  },
+  {
+    value: "5",
+    label: "5",
+  },
+]);
+const unitOptions = ref([
+  {
+    value: "1",
+    label: "右眼抑制",
+  },
+  {
+    value: "2",
+    label: "左眼抑制",
+  },
+  {
+    value: "3",
+    label: "正常",
   },
 ]);
 
@@ -390,7 +1389,18 @@ const patientList = ref([
     label: "患者E",
   },
 ]);
+const textarea = ref("");
+const labelPosition = ref(true);
+
+function typeOnChange(value) {
+  if (!value !== value) {
+    patientInfo.value.selectIop = "";
+  }
+  console.log("first", value, patientInfo.value.selectIop);
+}
+
 console.log("patientList", patientList.value.lenght);
+
 const cache = ref([]);
 const commandstats = ref(null);
 const usedmemory = ref(null);
@@ -548,6 +1558,7 @@ getList();
   line-height: 14px;
   padding: 8px 0 20px 0;
 }
+
 </style>
   
   
