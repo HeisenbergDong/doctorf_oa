@@ -1,4 +1,5 @@
 <template>
+  <!-- 候诊 -->
   <div class="main">
     <div class="header flex-row just-between align-center">
       <div :span="8" class="font24 fontW600">范大夫</div>
