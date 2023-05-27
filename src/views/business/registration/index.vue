@@ -1,5 +1,5 @@
 <template>
-  <!-- 叫号 -->
+  <!-- 挂号 -->
   <div class="app-container home flex-row">
     <el-card class="full_box" shadow="never">
       <template v-slot:header>

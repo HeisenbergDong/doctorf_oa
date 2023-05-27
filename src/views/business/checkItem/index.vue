@@ -2623,18 +2623,62 @@
     <!-- right -->
     <el-col :span="6">
       <el-col class="card-box">
+        <el-card class="font18 fontW600" shadow="never"> 挂号列表 </el-card>
+      </el-col>
+      <el-col class="card-box">
         <el-card class="update-log" shadow="never">
           <template v-slot:header>
             <div class="clearfix">
-              <span class="font14">{{ "挂号列表" }}</span>
+              <span class="font14">{{ "患者列表" }}</span>
             </div>
           </template>
           <div class="body">
             <div v-for="(item, index) in patientList" :key="index">
-              <div class="patient">
-                {{ `${item.label}挂号排序${index + 1}` }}
+              <div class="flex-row just-between text-center">
+                <div class="patient">
+                  {{ `${item.label}挂号排序${index + 1}` }}
+                </div>
+                <div>
+                  <el-button style="height: 28px" type="text">选择</el-button>
+                </div>
               </div>
+              <el-divider v-if="index !== 4"></el-divider>
             </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col class="card-box">
+        <el-card class="font18 fontW600" shadow="never"> 指派 </el-card>
+      </el-col>
+      <el-col class="card-box">
+        <el-card class="update-log" shadow="never">
+          <template v-slot:header>
+            <div class="clearfix">
+              <span class="font14">{{ "指派医生" }}</span>
+            </div>
+          </template>
+          <div class="body">
+            <el-form label-position="right" :model="patientInfo">
+              <el-form-item label="医生" class="font14">
+                <el-select
+                  v-model="patientInfo.selectDoc"
+                  placeholder="请选择"
+                  clearable
+                  class="w100i"
+                >
+                  <el-option
+                    v-for="item in docOption"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <el-row class="card-btn">
+              <el-button>重置</el-button>
+              <el-button type="primary" @click="gotoAssign">指派</el-button>
+            </el-row>
           </div>
         </el-card>
       </el-col>
@@ -2671,6 +2715,7 @@ const patientInfo = ref({
   isFirstVisit: "是",
   list: [],
   selectIop: "",
+  selectDoc: "",
   slecetTag: [],
 });
 const convergeOptions = ref([
@@ -2806,6 +2851,20 @@ const patientList = ref([
     label: "患者E",
   },
 ]);
+const docOption = ref([
+  {
+    value: "0",
+    label: "医生A",
+  },
+  {
+    value: "1",
+    label: "医生B",
+  },
+  {
+    value: "2",
+    label: "医生C",
+  },
+]);
 const textarea = ref("");
 const labelPosition = ref(true);
 
@@ -2844,6 +2903,11 @@ const dataList = ref([
     count: 10,
   },
 ]);
+
+function gotoAssign() {
+  proxy.$modal.msgSuccess("指派成功");
+  patientInfo.value.selectDoc = "";
+}
 function getList() {
   proxy.$modal.loading("正在加载缓存监控数据，请稍候！");
   getCache().then((response) => {
@@ -2973,7 +3037,10 @@ getList();
 .patient {
   font-size: 14px;
   line-height: 14px;
-  padding: 8px 0 20px 0;
+  padding: 8px 0 10px 0;
+}
+:deep(.el-divider--horizontal) {
+  margin: 12px 0;
 }
 </style>
   

@@ -1,5 +1,5 @@
 <template>
-  <!-- 叫号 -->
+  <!-- 数据导入 -->
   <div class="app-container">
     <el-row>
       <el-col class="card-box">
@@ -16,7 +16,7 @@
                 <el-form-item label="姓名" prop="dictName">
                   <el-input
                     v-model="queryParams.dictName"
-                    placeholder="请输入字典名称"
+                    placeholder="请输入"
                     clearable
                     style="width: 240px"
                     @keyup.enter="handleQuery"
@@ -25,7 +25,7 @@
                 <el-form-item label="手机号码" prop="dictType">
                   <el-input
                     v-model="queryParams.dictType"
-                    placeholder="请输入字典类型"
+                    placeholder="请输入"
                     clearable
                     style="width: 240px"
                     @keyup.enter="handleQuery"
@@ -72,16 +72,16 @@
       <el-col class="card-box">
         <el-card class="" shadow="never">
           <el-row :gutter="10" class="mb8">
-            <!-- <el-col :span="1.5">
+            <el-col :span="1.5">
               <el-button
                 type="primary"
                 plain
                 icon="Plus"
                 @click="handleAdd"
                 v-hasPermi="['system:dict:add']"
-                >新增</el-button
+                >导入</el-button
               >
-            </el-col> -->
+            </el-col>
             <!-- <el-col :span="1.5">
               <el-button
                 type="success"
@@ -93,7 +93,7 @@
                 >修改</el-button
               >
             </el-col> -->
-            <el-col :span="1.5">
+            <!-- <el-col :span="1.5">
               <el-button
                 type="danger"
                 plain
@@ -103,7 +103,7 @@
                 v-hasPermi="['system:dict:remove']"
                 >取消</el-button
               >
-            </el-col>
+            </el-col> -->
             <!-- <el-col :span="1.5">
               <el-button
                 type="warning"
@@ -130,11 +130,8 @@
             ></right-toolbar>
           </el-row>
 
-          <el-table
-            :data="typeList"
-            @selection-change="handleSelectionChange"
-          >
-          <!-- v-loading="loading" -->
+          <el-table :data="typeList" @selection-change="handleSelectionChange">
+            <!-- v-loading="loading" -->
 
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="姓名" align="center" prop="name" />
@@ -165,24 +162,20 @@
               prop="phone"
               :show-overflow-tooltip="true"
             />
-            <el-table-column label="是否首次" align="center" prop="isFirstVisit">
-              <!-- <template #default="scope">
-                <dict-tag
-                  :options="sys_normal_disable"
-                  :value="scope.row.status"
-                />
-              </template> -->
-            </el-table-column>
-            <el-table-column label="是否预约" align="center" prop="isOrder">
-              <!-- <template #default="scope">
-                <dict-tag
-                  :options="sys_normal_disable"
-                  :value="scope.row.status"
-                />
-              </template> -->
+
+            <el-table-column
+              label="检查单据"
+              width="250"
+              align="center"
+              prop=" fileInfo"
+              :show-overflow-tooltip="true"
+            >
+              <template #default="scope">
+                  <a class="cur-pointer" style="color: #409EFF;">{{ scope.row.fileInfo }}</a>
+              </template>
             </el-table-column>
             <el-table-column
-              label="备注"
+              label=" 备注"
               width="250"
               align="center"
               prop="remark"
@@ -201,18 +194,18 @@
             <el-table-column
               label="操作"
               align="center"
-              width="220"
+              width="160"
               class-name="small-padding fixed-width"
             >
               <template #default="{ scope }">
-                <el-button
+                <!-- <el-button
                   link
                   type="primary"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:dict:edit']"
-                  >叫号{{ index }}
-                </el-button>
+                  >提醒
+                </el-button> -->
                 <el-button
                   link
                   type="primary"
@@ -227,7 +220,7 @@
                   icon="Delete"
                   @click="handleDelete(scope.row)"
                   v-hasPermi="['system:dict:remove']"
-                  >取消</el-button
+                  >删除</el-button
                 >
               </template>
             </el-table-column>
@@ -305,6 +298,20 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+const option = ref([
+  {
+    value: "0",
+    label: "全部",
+  },
+  {
+    value: "1",
+    label: "是",
+  },
+  {
+    value: "2",
+    label: "否",
+  },
+]);
 
 const data = reactive({
   form: {},
@@ -329,7 +336,7 @@ const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型列表 */
 function getList() {
-//   loading.value = true;
+  //   loading.value = true;
   //   listType(proxy.addDateRange(queryParams.value, dateRange.value)).then(
   //     (response) => {
   //       typeList.value = response.rows;
@@ -343,10 +350,12 @@ function getList() {
     age: idx,
     phone: "电话号码" + idx,
     isFirstVisit: "是",
-    isOrder: "否",
-    remark: "备注"+ idx,
+    isOrder: idx % 2 ? "是" : "否",
+    orderTime: idx % 2 ? "2023-05-10 10:10:10.00 " : "-",
+    fileInfo: " 20230513.pdf",
+    remark: "备注" + idx,
     creatAt: "2023-05-10 10:10:10.00 ",
-    
+    isShow: idx % 2 ? true : false,
   }));
 }
 /** 取消按钮 */

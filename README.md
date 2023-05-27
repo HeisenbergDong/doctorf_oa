@@ -52,7 +52,7 @@ yarn dev
 1. 菜单管理页面中新增菜单，路由地址对应项目中文件名（如：bussiness）
 2. 新增二级菜单，路由地址对应项目中文件名（如：checkItem），组件路径对应项目中index.vue（页面标识）路径（如：business/checkItem/index）
 
-## 当前新增页面
+## 当前新增模块
 ```bash
 # 全局搜索二级菜单名称可快速查看页面（如：检查项目）
 ```
@@ -60,36 +60,41 @@ yarn dev
 1. bigScreen
 ```bash
 # 一级菜单---Dashboard(bigScreen)
+
 # 二级菜单---候诊区(waitingArea)---bigScreen/waitingArea/index
 ```
 2. business
 ```bash
 # 一级菜单---业务管理(business)
+
 # 二级菜单---挂号(registration)     ---business/registration/index
 # 二级菜单---叫号(HOIS)             ---business/HOIS/index
 # 二级菜单---预约(appointment)      ---business/appointment/index
-# 二级菜单---提醒(Reminder)         ---business/Reminder/index
+# 二级菜单---提醒(reminder)         ---business/reminder/index
 # 二级菜单---检查项目(checkItem)    ---business/checkItem/index
 
 ```
 3. dataManagement/checkItem/index
 ```bash
-# 一级菜单---数据管理(dataManagement)
+# 一级菜单---数据中心(dataManagement)
+
 # 二级菜单---黑名单管理(blacklist)       ---dataManagement/blacklist/index
 # 二级菜单---推荐人设置(referrer)        ---dataManagement/referrer/index
 # 二级菜单---患者信息管理(patientInfo)   ---dataManagement/patientInfo/index
 # 二级菜单---数据导入(dataImport)        ---dataManagement/dataImport/index
-# 二级菜单---数据查询(dataQuery)         ---dataManagement/dataQuery/index
+# 二级菜单---统计查询(dataQuery)         ---dataManagement/dataQuery/index
 
 ```
 ## 功能页面
 - 挂号 √
 - 叫号 √
 - 表单 √
-- 预约 
-- 提醒 
-- 黑名单管理 
-- 推荐人设置 
-- 患者信息管理 
-- 数据导入 
-- 数据查询 
+- 预约 √
+- 提醒 √
+- 黑名单管理 √
+- 推荐人设置 √
+- 患者信息管理 √
+- 数据导入 √
+- 数据查询 √
+
+- 页面中各部分功能有待完善

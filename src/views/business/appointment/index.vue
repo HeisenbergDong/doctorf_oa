@@ -1,5 +1,5 @@
 <template>
-  <!-- 叫号 -->
+  <!-- 预约 -->
   <div class="app-container">
     <el-row>
       <el-col class="card-box">
@@ -16,7 +16,7 @@
                 <el-form-item label="姓名" prop="dictName">
                   <el-input
                     v-model="queryParams.dictName"
-                    placeholder="请输入字典名称"
+                    placeholder="请输入"
                     clearable
                     style="width: 240px"
                     @keyup.enter="handleQuery"
@@ -25,7 +25,7 @@
                 <el-form-item label="手机号码" prop="dictType">
                   <el-input
                     v-model="queryParams.dictType"
-                    placeholder="请输入字典类型"
+                    placeholder="请输入"
                     clearable
                     style="width: 240px"
                     @keyup.enter="handleQuery"
@@ -182,6 +182,16 @@
               </template> -->
             </el-table-column>
             <el-table-column
+              label="预约时间"
+              align="center"
+              prop="creatAt"
+              width="180"
+            >
+              <!-- <template #default="scope">
+                <span>{{ parseTime(scope.row.createTime) }}</span>
+              </template> -->
+            </el-table-column>
+            <el-table-column
               label="备注"
               width="250"
               align="center"
@@ -201,7 +211,7 @@
             <el-table-column
               label="操作"
               align="center"
-              width="220"
+              width="100"
               class-name="small-padding fixed-width"
             >
               <template #default="{ scope }">
@@ -211,24 +221,24 @@
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:dict:edit']"
-                  >叫号{{ index }}
+                  >预约
                 </el-button>
-                <el-button
+                <!-- <el-button
                   link
                   type="primary"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:dict:edit']"
                   >修改</el-button
-                >
-                <el-button
+                > -->
+                <!-- <el-button
                   link
                   type="primary"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
                   v-hasPermi="['system:dict:remove']"
                   >取消</el-button
-                >
+                > -->
               </template>
             </el-table-column>
           </el-table>

@@ -1,5 +1,5 @@
 <template>
-  <!-- 叫号 -->
+  <!-- 统计查询 -->
   <div class="app-container">
     <el-row>
       <el-col class="card-box">
@@ -16,37 +16,49 @@
                 <el-form-item label="姓名" prop="dictName">
                   <el-input
                     v-model="queryParams.dictName"
-                    placeholder="请输入字典名称"
+                    placeholder="请输入"
                     clearable
                     style="width: 240px"
                     @keyup.enter="handleQuery"
                   />
                 </el-form-item>
-                <el-form-item label="手机号码" prop="dictType">
+                <el-form-item
+                  v-if="activeName === 'second'"
+                  label="手机号码"
+                  prop="dictType"
+                >
                   <el-input
                     v-model="queryParams.dictType"
-                    placeholder="请输入字典类型"
+                    placeholder="请输入"
                     clearable
                     style="width: 240px"
                     @keyup.enter="handleQuery"
                   />
                 </el-form-item>
-                <!-- <el-form-item label="状态" prop="status">
+                <el-form-item
+                  v-if="activeName === 'second'"
+                  label="主治医生"
+                  prop="status"
+                >
                   <el-select
                     v-model="queryParams.status"
-                    placeholder="字典状态"
+                    placeholder="请选择"
                     clearable
                     style="width: 240px"
                   >
                     <el-option
-                      v-for="dict in sys_normal_disable"
+                      v-for="dict in option"
                       :key="dict.value"
                       :label="dict.label"
                       :value="dict.value"
                     />
                   </el-select>
                 </el-form-item>
-                <el-form-item label="创建时间" style="width: 308px">
+                <el-form-item
+                  v-if="activeName === 'second'"
+                  label="问诊时间"
+                  style="width: 308px"
+                >
                   <el-date-picker
                     v-model="dateRange"
                     value-format="YYYY-MM-DD"
@@ -55,7 +67,7 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                   ></el-date-picker>
-                </el-form-item> -->
+                </el-form-item>
               </div>
               <div>
                 <el-form-item>
@@ -93,7 +105,7 @@
                 >修改</el-button
               >
             </el-col> -->
-            <el-col :span="1.5">
+            <!-- <el-col :span="1.5">
               <el-button
                 type="danger"
                 plain
@@ -103,7 +115,7 @@
                 v-hasPermi="['system:dict:remove']"
                 >取消</el-button
               >
-            </el-col>
+            </el-col> -->
             <!-- <el-col :span="1.5">
               <el-button
                 type="warning"
@@ -129,13 +141,33 @@
               @queryTable="getList"
             ></right-toolbar>
           </el-row>
-
+          <el-row class="w100i">
+            <el-tabs
+              v-model="activeName"
+              @tab-click="handleClick"
+              class="w100i"
+            >
+              <el-tab-pane label="医生工作量" name="first"></el-tab-pane>
+              <el-tab-pane label="患者人流量" name="second"></el-tab-pane>
+            </el-tabs>
+          </el-row>
           <el-table
+            v-if="activeName === 'first'"
             :data="typeList"
             @selection-change="handleSelectionChange"
           >
-          <!-- v-loading="loading" -->
-
+            <el-table-column type="selection" width="55" align="center" />
+            <el-table-column label="医生" align="center" prop="doc" />
+            <el-table-column label="日接待患者" align="center" prop="dayNum" />
+            <el-table-column label="月接待患者" align="center" prop="monthNum" />
+            <el-table-column label="接待患者总数" align="center" prop="sum" />
+          </el-table>
+          <el-table
+            v-else
+            :data="typeList"
+            @selection-change="handleSelectionChange"
+          >
+            <!-- v-loading="loading" -->
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column label="姓名" align="center" prop="name" />
             <el-table-column
@@ -165,20 +197,24 @@
               prop="phone"
               :show-overflow-tooltip="true"
             />
-            <el-table-column label="是否首次" align="center" prop="isFirstVisit">
+            <el-table-column
+              label="问诊时间"
+              align="center"
+              prop="orderTime"
+              width="180"
+            >
               <!-- <template #default="scope">
-                <dict-tag
-                  :options="sys_normal_disable"
-                  :value="scope.row.status"
-                />
+                <span>{{ parseTime(scope.row.createTime) }}</span>
               </template> -->
             </el-table-column>
-            <el-table-column label="是否预约" align="center" prop="isOrder">
+            <el-table-column
+              label="主治医生"
+              align="center"
+              prop="doctor"
+              width="180"
+            >
               <!-- <template #default="scope">
-                <dict-tag
-                  :options="sys_normal_disable"
-                  :value="scope.row.status"
-                />
+                <span>{{ parseTime(scope.row.createTime) }}</span>
               </template> -->
             </el-table-column>
             <el-table-column
@@ -198,10 +234,10 @@
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template> -->
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               label="操作"
               align="center"
-              width="220"
+              width="100"
               class-name="small-padding fixed-width"
             >
               <template #default="{ scope }">
@@ -211,7 +247,7 @@
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:dict:edit']"
-                  >叫号{{ index }}
+                  >提醒
                 </el-button>
                 <el-button
                   link
@@ -230,7 +266,7 @@
                   >取消</el-button
                 >
               </template>
-            </el-table-column>
+            </el-table-column> -->
           </el-table>
         </el-card>
       </el-col>
@@ -305,6 +341,21 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+const activeName = ref("first");
+const option = ref([
+  {
+    value: "0",
+    label: "医生A",
+  },
+  {
+    value: "1",
+    label: "医生B",
+  },
+  {
+    value: "2",
+    label: "医生C",
+  },
+]);
 
 const data = reactive({
   form: {},
@@ -325,11 +376,15 @@ const data = reactive({
   },
 });
 
+function handleClick(tab, event) {
+  console.log(tab, event);
+}
+
 const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型列表 */
 function getList() {
-//   loading.value = true;
+  //   loading.value = true;
   //   listType(proxy.addDateRange(queryParams.value, dateRange.value)).then(
   //     (response) => {
   //       typeList.value = response.rows;
@@ -342,11 +397,16 @@ function getList() {
     gender: idx % 2 ? "女" : "男",
     age: idx,
     phone: "电话号码" + idx,
-    isFirstVisit: "是",
-    isOrder: "否",
-    remark: "备注"+ idx,
+    doctor: "医生" + idx,
+    orderTime: idx % 2 ? "2023-05-10 10:10:10.00 " : "-",
+    remark: "备注" + idx,
     creatAt: "2023-05-10 10:10:10.00 ",
-    
+    isShow: idx % 2 ? true : false,
+
+    doc: "医生" + idx,
+    dayNum: "1" + idx,
+    monthNum: "1" + idx,
+    sum: "1" + idx,
   }));
 }
 /** 取消按钮 */
