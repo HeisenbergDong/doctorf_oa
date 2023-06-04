@@ -68,7 +68,7 @@ yarn dev
 # 一级菜单---业务管理(business)
 
 # 二级菜单---挂号(registration)     ---business/registration/index
-# 二级菜单---叫号(HOIS)             ---business/HOIS/index
+# 二级菜单---指派(HOIS)             ---business/HOIS/index
 # 二级菜单---预约(appointment)      ---business/appointment/index
 # 二级菜单---提醒(reminder)         ---business/reminder/index
 # 二级菜单---检查项目(checkItem)    ---business/checkItem/index

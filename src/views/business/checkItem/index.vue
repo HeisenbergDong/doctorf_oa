@@ -2985,6 +2985,10 @@ function gotoAssign() {
   border: none;
 }
 
+:deep(.el-input__wrapper){
+  width: 180px;
+}
+
 .patient {
   font-size: 14px;
   line-height: 14px;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 叫号 -->
+    <!-- 指派 -->
     <div class="app-container">
       <el-row>
         <el-col class="card-box">
@@ -10,28 +10,58 @@
               ref="queryRef"
               :inline="true"
               v-show="showSearch"
-              label-width="68px"
+              label-width="100px"
             >
-              <div class="flex-row just-between">
+              <div class="flex-row">
                 <div>
-                  <el-form-item label="姓名" prop="dictName">
+                  <el-form-item label="患者姓名" prop="patientName">
                     <el-input
-                      v-model="queryParams.dictName"
-                      placeholder="请输入字典名称"
+                      v-model="queryParams.patientName"
+                      placeholder="请输入患者姓名"
                       clearable
                       style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-                  <el-form-item label="手机号码" prop="dictType">
+                  <el-form-item label="患者电话" prop="patientPhone">
                     <el-input
-                      v-model="queryParams.dictType"
-                      placeholder="请输入字典类型"
+                      v-model="queryParams.patientPhone"
+                      placeholder="请输入患者电话"
                       clearable
                       style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
+                  <el-form-item label="进入队列时间" prop="waitTime">
+                    <el-date-picker
+                      clearable
+                      v-model="queryParams.waitTime"
+                      type="date"
+                      value-format="yyyy-MM-dd"
+                      style="width: 240px"
+                      placeholder="请选择进入队列时间"
+                    >
+                    </el-date-picker>
+                  </el-form-item>
+                  <el-form-item label="接待医生姓名" prop="receptionDocName">
+                    <el-input
+                      v-model="queryParams.receptionDocName"
+                      placeholder="请输入接待医生姓名"
+                      style="width: 240px"
+                      clearable
+                      @keyup.enter="handleQuery"
+                    />
+                  </el-form-item>
+                  <el-form-item label="诊室" prop="room">
+                    <el-input
+                      v-model="queryParams.room"
+                      placeholder="请输入诊室"
+                      style="width: 240px"
+                      clearable
+                      @keyup.enter="handleQuery"
+                    />
+                  </el-form-item>
+
                   <!-- <el-form-item label="状态" prop="status">
                   <el-select
                     v-model="queryParams.status"
@@ -57,9 +87,7 @@
                     end-placeholder="结束日期"
                   ></el-date-picker>
                 </el-form-item> -->
-                </div>
-                <div>
-                  <el-form-item>
+                  <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
                     <el-button type="primary" @click="handleQuery"
                       >查询</el-button
@@ -74,15 +102,15 @@
           <el-card class="" shadow="never">
             <el-row :gutter="10" class="mb8">
               <!-- <el-col :span="1.5">
-              <el-button
-                type="primary"
-                plain
-                icon="Plus"
-                @click="handleAdd"
-                v-hasPermi="['system:dict:add']"
-                >新增</el-button
-              >
-            </el-col> -->
+                <el-button
+                  type="primary"
+                  plain
+                  icon="Plus"
+                  @click="handleAdd"
+                  v-hasPermi="['system:dict:add']"
+                  >新增</el-button
+                >
+              </el-col> -->
               <!-- <el-col :span="1.5">
               <el-button
                 type="success"
@@ -105,17 +133,17 @@
                   >取消</el-button
                 >
               </el-col>
-              <!-- <el-col :span="1.5">
-              <el-button
-                type="warning"
-                plain
-                icon="Download"
-                @click="handleExport"
-                v-hasPermi="['system:dict:export']"
-                >导出</el-button
-              >
-            </el-col> -->
               <el-col :span="1.5">
+                <el-button
+                  type="warning"
+                  plain
+                  icon="Download"
+                  @click="handleExport"
+                  v-hasPermi="['system:dict:export']"
+                  >导出</el-button
+                >
+              </el-col>
+              <!-- <el-col :span="1.5">
                 <el-button
                   type="danger"
                   plain
@@ -124,7 +152,7 @@
                   v-hasPermi="['system:dict:remove']"
                   >刷新缓存</el-button
                 >
-              </el-col>
+              </el-col> -->
               <right-toolbar
                 v-model:showSearch="showSearch"
                 @queryTable="getList"
@@ -134,26 +162,35 @@
             <el-table
               :data="typeList"
               @selection-change="handleSelectionChange"
+              style="width: 100%"
+              v-loading="loading"
             >
-              <!-- v-loading="loading" -->
-
               <el-table-column type="selection" width="55" align="center" />
-              <el-table-column label="姓名" align="center" prop="name" />
+              <el-table-column label="排队id" align="center" prop="id" />
               <el-table-column
-                label="性别"
+                label="患者姓名"
+                width="120"
+                fixed="left"
                 align="center"
-                prop="gender"
+                prop="patientName"
+              />
+              <el-table-column
+                label="患者电话"
+                width="120"
+                align="center"
+                prop="patientPhone"
                 :show-overflow-tooltip="true"
               />
               <el-table-column
-                label="年龄"
+                label="患者排队状态"
+                width="120"
                 align="center"
-                prop="age"
+                prop="patientStatus"
                 :show-overflow-tooltip="true"
               >
                 <!-- <template #default="scope">
                 <router-link
-                  :to="'/system/dict-data/index/' + scope.row.dictId"
+                  :to="'/system/dict-data/index/' + scope.row.waitIds"
                   class="link-type"
                 >
                   <span>{{ scope.row.dictType }}</span>
@@ -161,15 +198,20 @@
               </template> -->
               </el-table-column>
               <el-table-column
-                label="电话号码"
+                label="进入队列时间"
                 align="center"
-                prop="phone"
+                prop="waitTime"
+                width="220"
                 :show-overflow-tooltip="true"
               />
+              <!-- <template #default="scope">
+                <span>{{ parseTime(scope.row.waitTime, '{y}-{m}-{d}') }}</span>
+              </template> -->
               <el-table-column
-                label="是否首次"
+                label="诊室"
                 align="center"
-                prop="isFirstVisit"
+                width="120"
+                prop="room"
               >
                 <!-- <template #default="scope">
                 <dict-tag
@@ -178,34 +220,41 @@
                 />
               </template> -->
               </el-table-column>
-              <el-table-column label="是否预约" align="center" prop="isOrder">
-                <!-- <template #default="scope">
-                <dict-tag
-                  :options="sys_normal_disable"
-                  :value="scope.row.status"
-                />
-              </template> -->
-              </el-table-column>
+              <el-table-column
+                label="调整队列的医生姓名"
+                width="120"
+                align="center"
+                prop="adjustDocName"
+              />
+              <el-table-column
+                label="接待医生姓名"
+                width="120"
+                align="center"
+                prop="adjustDocName"
+              />
+              <el-table-column
+                label="指派医生姓名"
+                width="120"
+                align="center"
+                prop="adjustDocName"
+              />
+              <el-table-column
+                label="指派医生遗嘱"
+                width="220"
+                align="center"
+                prop="assignContent"
+              />
               <el-table-column
                 label="备注"
-                width="250"
+                width="220"
                 align="center"
                 prop="remark"
                 :show-overflow-tooltip="true"
               />
               <el-table-column
-                label="创建时间"
-                align="center"
-                prop="creatAt"
-                width="180"
-              >
-                <!-- <template #default="scope">
-                <span>{{ parseTime(scope.row.createTime) }}</span>
-              </template> -->
-              </el-table-column>
-              <el-table-column
                 label="操作"
                 align="center"
+                fixed="right"
                 width="220"
                 class-name="small-padding fixed-width"
               >
@@ -216,7 +265,7 @@
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
                     v-hasPermi="['system:dict:edit']"
-                    >叫号{{ index }}
+                    >指派
                   </el-button>
                   <el-button
                     link
@@ -240,6 +289,50 @@
           </el-card>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col :span="12" class="card-box">
+          <el-card class="" shadow="never">
+            <template v-slot:header>
+              <div class="clearfix">
+                <span class="font14">{{ "诊室1" }}</span>
+              </div>
+            </template>
+            <div class="body">1</div>
+          </el-card>
+        </el-col>
+        <el-col :span="12" class="card-box">
+          <el-card class="" shadow="never">
+            <template v-slot:header>
+              <div class="clearfix">
+                <span class="font14">{{ "诊室2" }}</span>
+              </div>
+            </template>
+            <div class="body">2</div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12" class="card-box">
+          <el-card class="" shadow="never">
+            <template v-slot:header>
+              <div class="clearfix">
+                <span class="font14">{{ "诊室3" }}</span>
+              </div>
+            </template>
+            <div class="body">3</div>
+          </el-card>
+        </el-col>
+        <el-col :span="12" class="card-box">
+          <el-card class="" shadow="never">
+            <template v-slot:header>
+              <div class="clearfix">
+                <span class="font14">{{ "诊室4" }}</span>
+              </div>
+            </template>
+            <div class="body">4</div>
+          </el-card>
+        </el-col>
+      </el-row>
       <!-- <pagination
          v-show="total > 0"
          :total="total"
@@ -249,30 +342,18 @@
       /> -->
 
       <!-- 添加或修改参数配置对话框 -->
-      <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-        <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="字典名称" prop="dictName">
-            <el-input v-model="form.dictName" placeholder="请输入字典名称" />
-          </el-form-item>
-          <el-form-item label="字典类型" prop="dictType">
-            <el-input v-model="form.dictType" placeholder="请输入字典类型" />
-          </el-form-item>
-          <el-form-item label="状态" prop="status">
-            <el-radio-group v-model="form.status">
-              <el-radio
-                v-for="dict in sys_normal_disable"
-                :key="dict.value"
-                :label="dict.value"
-                >{{ dict.label }}</el-radio
-              >
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="备注" prop="remark">
-            <el-input
-              v-model="form.remark"
-              type="textarea"
-              placeholder="请输入内容"
-            ></el-input>
+      <el-dialog :title="title" v-model="open" width="600px" append-to-body>
+        <el-form ref="dataRef" :model="form" :rules="rules" label-width="120px">
+          <el-form-item label="进入队列时间" prop="waitTime" class="mr24">
+            <el-date-picker
+              clearable
+              v-model="form.waitTime"
+              type="datetime"
+              value-format="yyyy-MM-dd"
+              class="w100i"
+              placeholder="请选择进入队列时间"
+            >
+            </el-date-picker>
           </el-form-item>
         </el-form>
         <template #footer>
@@ -288,7 +369,7 @@
 </template>
 
 <script setup name="Dict">
-import useDictStore from '@/store/modules/dict'
+import useDictStore from "@/store/modules/dict";
 import {
   listType,
   getType,
@@ -296,166 +377,200 @@ import {
   addType,
   updateType,
   refreshCache,
-} from '@/api/system/dict/type'
+} from "@/api/system/dict/type";
 
-const { proxy } = getCurrentInstance()
-const { sys_normal_disable } = proxy.useDict('sys_normal_disable')
+import {
+  listWait,
+  getWait,
+  delWait,
+  addWait,
+  updateWait,
+} from "@/api/system/wait";
 
-const typeList = ref([])
-const open = ref(false)
-// const loading = ref(true);
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref('')
-const dateRange = ref([])
+const { proxy } = getCurrentInstance();
+const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+
+const typeList = ref([]);
+const open = ref(false);
+const loading = ref(true);
+const showSearch = ref(true);
+const ids = ref([]);
+const single = ref(true);
+const multiple = ref(true);
+const total = ref(0);
+const title = ref("");
+const dateRange = ref([]);
 
 const data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    dictName: undefined,
-    dictType: undefined,
-    status: undefined,
+    patientId: null,
+    patientName: null,
+    patientPhone: null,
+    patientStatus: null,
+    waitTime: null,
+    room: null,
+    adjustTime: null,
+    adjustDocId: null,
+    adjustDocName: null,
+    receptionDocId: null,
+    receptionDocName: null,
+    assignDocId: null,
+    assignDocName: null,
+    assignContent: null,
+    parentId: null,
   },
   rules: {
-    dictName: [
-      { required: true, message: '字典名称不能为空', trigger: 'blur' },
-    ],
-    dictType: [
-      { required: true, message: '字典类型不能为空', trigger: 'blur' },
+    waitTime: [
+      { required: true, message: "进入队列时间不能为空", trigger: "blur" },
     ],
   },
-})
+});
 
-const { queryParams, form, rules } = toRefs(data)
+const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型列表 */
 function getList() {
-  //   loading.value = true;
-  //   listType(proxy.addDateRange(queryParams.value, dateRange.value)).then(
-  //     (response) => {
-  //       typeList.value = response.rows;
-  //       total.value = response.total;
-  //       loading.value = false;
-  //     }
-  //   );
-  typeList.value = new Array(25).fill('').map((el, idx) => ({
-    name: '患者' + idx,
-    gender: idx % 2 ? '女' : '男',
-    age: idx,
-    phone: '电话号码' + idx,
-    isFirstVisit: '是',
-    isOrder: '否',
-    remark: '备注' + idx,
-    creatAt: '2023-05-10 10:10:10.00 ',
-  }))
+  loading.value = true;
+  listWait(proxy.addDateRange(queryParams.value)).then((response) => {
+    typeList.value = response.rows;
+    total.value = response.total;
+    loading.value = false;
+    console.log("listWait :>> ", typeList.value);
+  });
+  // typeList.value = new Array(25).fill("").map((el, idx) => ({
+  //   name: "患者" + idx,
+  //   gender: idx % 2 ? "女" : "男",
+  //   age: idx,
+  //   phone: "电话号码" + idx,
+  //   isFirstVisit: "是",
+  //   isOrder: "否",
+  //   remark: "备注" + idx,
+  //   creatAt: "2023-05-10 10:10:10.00 ",
+  // }));
 }
 /** 取消按钮 */
 function cancel() {
-  open.value = false
-  reset()
+  open.value = false;
+  reset();
 }
 /** 表单重置 */
 function reset() {
   form.value = {
-    dictId: undefined,
-    dictName: undefined,
-    dictType: undefined,
-    status: '0',
-    remark: undefined,
-  }
-  proxy.resetForm('dictRef')
+    id: null,
+    patientId: null,
+    patientName: null,
+    patientPhone: null,
+    patientStatus: null,
+    waitTime: null,
+    room: null,
+    adjustTime: null,
+    adjustDocId: null,
+    adjustDocName: null,
+    receptionDocId: null,
+    receptionDocName: null,
+    assignDocId: null,
+    assignDocName: null,
+    assignContent: null,
+    parentId: null,
+    delFlag: null,
+    createBy: null,
+    createTime: null,
+    updateBy: null,
+    updateTime: null,
+    remark: null,
+  };
+  proxy.resetForm("dataRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
-  queryParams.value.pageNum = 1
-  getList()
+  queryParams.value.pageNum = 1;
+  getList();
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  dateRange.value = []
-  proxy.resetForm('queryRef')
-  handleQuery()
+  dateRange.value = [];
+  proxy.resetForm("queryRef");
+  handleQuery();
 }
 /** 新增按钮操作 */
 function handleAdd() {
-  reset()
-  open.value = true
-  title.value = '添加字典类型'
+  reset();
+  open.value = true;
+  title.value = "添加队列时间";
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.dictId)
-  single.value = selection.length != 1
-  multiple.value = !selection.length
+  ids.value = selection.map((item) => item.id);
+  single.value = selection.length != 1;
+  multiple.value = !selection.length;
 }
 /** 修改按钮操作 */
 function handleUpdate(row) {
-  reset()
-  const dictId = row.dictId || ids.value
-  getType(dictId).then((response) => {
-    form.value = response.data
-    open.value = true
-    title.value = '修改字典类型'
-  })
+  reset();
+  const waitIds = row.id || ids.value;
+  getWait(waitIds).then((response) => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "修改队列时间";
+  });
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs['dictRef'].validate((valid) => {
+  proxy.$refs["dataRef"].validate((valid) => {
     if (valid) {
-      if (form.value.dictId != undefined) {
-        updateType(form.value).then((response) => {
-          proxy.$modal.msgSuccess('修改成功')
-          open.value = false
-          getList()
-        })
+      if (form.value.waitIds != undefined) {
+        updateWait(form.value).then((response) => {
+          proxy.$modal.msgSuccess("修改成功");
+          open.value = false;
+          getList();
+        });
       } else {
-        addType(form.value).then((response) => {
-          proxy.$modal.msgSuccess('新增成功')
-          open.value = false
-          getList()
-        })
+        addWait(form.value).then((response) => {
+          proxy.$modal.msgSuccess("新增成功");
+          open.value = false;
+          getList();
+        });
       }
     }
-  })
+  });
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const dictIds = row.dictId || ids.value
+  console.log("object :>> ", row);
+  const waitIds = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除字典编号为"' + dictIds + '"的数据项？')
+    .confirm('是否确认取消排队编号为"' + waitIds + '"的数据项？')
     .then(function () {
-      return delType(dictIds)
+      return delWait(waitIds);
     })
     .then(() => {
-      getList()
-      proxy.$modal.msgSuccess('删除成功')
+      getList();
+      proxy.$modal.msgSuccess("取消成功");
     })
-    .catch(() => {})
+    .catch(() => {});
 }
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    'system/dict/type/export',
+    "system/wait/export",
     {
       ...queryParams.value,
     },
     `dict_${new Date().getTime()}.xlsx`
-  )
+  );
 }
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess('刷新成功')
-    useDictStore().cleanDict()
-  })
+    proxy.$modal.msgSuccess("刷新成功");
+    useDictStore().cleanDict();
+  });
 }
 
-getList()
+getList();
 </script>
 <style lang="scss">
 .form_card .el-card__body {
