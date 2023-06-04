@@ -61,32 +61,6 @@
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-
-                  <!-- <el-form-item label="状态" prop="status">
-                  <el-select
-                    v-model="queryParams.status"
-                    placeholder="字典状态"
-                    clearable
-                    style="width: 240px"
-                  >
-                    <el-option
-                      v-for="dict in sys_normal_disable"
-                      :key="dict.value"
-                      :label="dict.label"
-                      :value="dict.value"
-                    />
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="创建时间" style="width: 308px">
-                  <el-date-picker
-                    v-model="dateRange"
-                    value-format="YYYY-MM-DD"
-                    type="daterange"
-                    range-separator="-"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                  ></el-date-picker>
-                </el-form-item> -->
                   <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
                     <el-button type="primary" @click="handleQuery"
@@ -188,14 +162,6 @@
                 prop="patientStatus"
                 :show-overflow-tooltip="true"
               >
-                <!-- <template #default="scope">
-                <router-link
-                  :to="'/system/dict-data/index/' + scope.row.waitIds"
-                  class="link-type"
-                >
-                  <span>{{ scope.row.dictType }}</span>
-                </router-link>
-              </template> -->
               </el-table-column>
               <el-table-column
                 label="进入队列时间"
@@ -204,21 +170,12 @@
                 width="220"
                 :show-overflow-tooltip="true"
               />
-              <!-- <template #default="scope">
-                <span>{{ parseTime(scope.row.waitTime, '{y}-{m}-{d}') }}</span>
-              </template> -->
               <el-table-column
                 label="诊室"
                 align="center"
                 width="120"
                 prop="room"
               >
-                <!-- <template #default="scope">
-                <dict-tag
-                  :options="sys_normal_disable"
-                  :value="scope.row.status"
-                />
-              </template> -->
               </el-table-column>
               <el-table-column
                 label="调整队列的医生姓名"
@@ -370,14 +327,14 @@
 
 <script setup name="Dict">
 import useDictStore from "@/store/modules/dict";
-import {
-  listType,
-  getType,
-  delType,
-  addType,
-  updateType,
-  refreshCache,
-} from "@/api/system/dict/type";
+// import {
+//   listType,
+//   getType,
+//   delType,
+//   addType,
+//   updateType,
+//   refreshCache,
+// } from "@/api/system/dict/type";
 
 import {
   listWait,
@@ -388,7 +345,7 @@ import {
 } from "@/api/system/wait";
 
 const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+// const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
 const typeList = ref([]);
 const open = ref(false);

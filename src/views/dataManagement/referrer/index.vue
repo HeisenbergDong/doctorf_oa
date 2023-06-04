@@ -325,14 +325,14 @@
 
 <script setup name="Dict">
 import useDictStore from "@/store/modules/dict";
-import {
-  listType,
-  getType,
-  delType,
-  addType,
-  updateType,
-  refreshCache,
-} from "@/api/system/dict/type";
+// import {
+//   listType,
+//   getType,
+//   delType,
+//   addType,
+//   updateType,
+//   refreshCache,
+// } from "@/api/system/dict/type";
 
 import {
   listPoint,
@@ -510,7 +510,7 @@ function handleDelete(row) {
   proxy.$modal
     .confirm('是否确认删除推荐人编号为"' + referreId + '"的数据项？')
     .then(function () {
-      return delType(referreId);
+      return delPoint(referreId);
     })
     .then(() => {
       getList();

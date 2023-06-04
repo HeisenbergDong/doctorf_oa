@@ -173,14 +173,6 @@
                 prop="idCard"
                 :show-overflow-tooltip="true"
               >
-                <!-- <template #default="scope">
-                <router-link
-                  :to="'/system/dict-data/index/' + scope.row.dictId"
-                  class="link-type"
-                >
-                  <span>{{ scope.row.dictType }}</span>
-                </router-link>
-              </template> -->
               </el-table-column>
               <el-table-column
                 label="是否黑名单"
@@ -212,6 +204,7 @@
               <el-table-column
                 label="操作"
                 align="center"
+                fixed="right"
                 width="160"
                 class-name="small-padding fixed-width"
               >
@@ -303,14 +296,14 @@
 
 <script setup name="Dict">
 import useDictStore from "@/store/modules/dict";
-import {
-  listType,
-  getType,
-  delType,
-  addType,
-  updateType,
-  refreshCache,
-} from "@/api/system/dict/type";
+// import {
+//   listType,
+//   getType,
+//   delType,
+//   addType,
+//   updateType,
+//   refreshCache,
+// } from "@/api/system/dict/type";
 
 import {
   listPatient,
@@ -438,7 +431,7 @@ function handleSelectionChange(selection) {
 function handleUpdate(row) {
   reset();
   const patientId = row.id || ids.value;
-  getType(patientId).then((response) => {
+  getPatient(patientId).then((response) => {
     form.value = response.data;
     open.value = true;
     title.value = "修改患者信息";

@@ -152,14 +152,6 @@
                 prop="patientIdCard"
                 :show-overflow-tooltip="true"
               >
-                <!-- <template #default="scope">
-                <router-link
-                  :to="'/system/dict-data/index/' + scope.row.dictId"
-                  class="link-type"
-                >
-                  <span>{{ scope.row.dictType }}</span>
-                </router-link>
-              </template> -->
               </el-table-column>
               <el-table-column
                 label="提醒时间"
@@ -167,11 +159,6 @@
                 prop="remindDate"
                 width="220"
               >
-                <!-- <template slot-scope="scope">
-                  <span>{{
-                    parseTime(scope.row.remindDate, "{y}-{m}-{d}")
-                  }}</span>
-                </template> -->
               </el-table-column>
               <el-table-column
                 label="提醒说明"
@@ -199,10 +186,6 @@
                 class-name="small-padding fixed-width"
               >
                 <template #default="{ scope }">
-                  <el-button link icon="Edit" type="primary">提醒 </el-button>
-                  <!-- 
-                    @click="handleUpdate(scope.row)"
-                    v-hasPermi="['system:dict:edit']" -->
                   <el-button
                     link
                     type="primary"
@@ -291,14 +274,14 @@
 
 <script setup name="Dict">
 import useDictStore from "@/store/modules/dict";
-import {
-  listType,
-  getType,
-  delType,
-  addType,
-  updateType,
-  refreshCache,
-} from "@/api/system/dict/type";
+// import {
+//   listType,
+//   getType,
+//   delType,
+//   addType,
+//   updateType,
+//   refreshCache,
+// } from "@/api/system/dict/type";
 
 import {
   listRemind,
@@ -472,7 +455,7 @@ function handleDelete(row) {
   proxy.$modal
     .confirm('是否确认取消提醒编号为"' + remindId + '"的数据项？')
     .then(function () {
-      return delType(remindId);
+      return delRemind(remindId);
     })
     .then(() => {
       getList();

@@ -52,31 +52,6 @@
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-                  <!-- <el-form-item label="状态" prop="status">
-                  <el-select
-                    v-model="queryParams.status"
-                    placeholder="字典状态"
-                    clearable
-                    style="width: 240px"
-                  >
-                    <el-option
-                      v-for="dict in sys_normal_disable"
-                      :key="dict.value"
-                      :label="dict.label"
-                      :value="dict.value"
-                    />
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="创建时间" style="width: 308px">
-                  <el-date-picker
-                    v-model="dateRange"
-                    value-format="YYYY-MM-DD"
-                    type="daterange"
-                    range-separator="-"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                  ></el-date-picker>
-                </el-form-item> -->
                   <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
                     <el-button type="primary" @click="handleQuery"
@@ -181,9 +156,6 @@
                 prop="preDate"
                 width="220"
               >
-                <!-- <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.preDate, '{y}-{m}-{d}') }}</span>
-        </template> -->
               </el-table-column>
               <el-table-column
                 label="预约说明"
@@ -301,14 +273,14 @@
 
 <script setup name="Dict">
 import useDictStore from "@/store/modules/dict";
-import {
-  listType,
-  getType,
-  delType,
-  addType,
-  updateType,
-  refreshCache,
-} from "@/api/system/dict/type";
+// import {
+//   listType,
+//   getType,
+//   delType,
+//   addType,
+//   updateType,
+//   refreshCache,
+// } from "@/api/system/dict/type";
 
 import {
   listReservation,
@@ -319,7 +291,7 @@ import {
 } from "@/api/system/reservation";
 
 const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+// const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
 const typeList = ref([]);
 const open = ref(false);
@@ -364,7 +336,6 @@ function getList() {
     total.value = response.total;
     loading.value = false;
   });
-
   // typeList.value = new Array(25).fill("").map((el, idx) => ({
   //   name: "患者" + idx,
   //   gender: idx % 2 ? "女" : "男",
