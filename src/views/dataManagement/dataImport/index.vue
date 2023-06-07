@@ -79,7 +79,7 @@
                   plain
                   icon="Plus"
                   @click="handleAdd"
-                  v-hasPermi="['system:dict:add']"
+                  v-hasPermi="['dataManagement:dataImport:add']"
                   >导入</el-button
                 >
               </el-col>
@@ -90,7 +90,7 @@
                 icon="Edit"
                 :disabled="single"
                 @click="handleUpdate"
-                v-hasPermi="['system:dict:edit']"
+                v-hasPermi="['dataManagement:dataImport:edit']"
                 >修改</el-button
               >
             </el-col> -->
@@ -101,7 +101,7 @@
                 icon="Delete"
                 :disabled="multiple"
                 @click="handleDelete"
-                v-hasPermi="['system:dict:remove']"
+                v-hasPermi="['dataManagement:dataImport:remove']"
                 >取消</el-button
               >
             </el-col> -->
@@ -111,7 +111,7 @@
                 plain
                 icon="Download"
                 @click="handleExport"
-                v-hasPermi="['system:dict:export']"
+                v-hasPermi="['dataManagement:dataImport:export']"
                 >导出</el-button
               >
             </el-col> -->
@@ -121,7 +121,7 @@
                   plain
                   icon="Refresh"
                   @click="handleRefreshCache"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['dataManagement:dataImport:remove']"
                   >刷新缓存</el-button
                 >
               </el-col>
@@ -209,7 +209,7 @@
                   type="primary"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:dict:edit']"
+                  v-hasPermi="['dataManagement:dataImport:edit']"
                   >提醒
                 </el-button> -->
                   <el-button

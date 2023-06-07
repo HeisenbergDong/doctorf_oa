@@ -1,5 +1,5 @@
 <template>
-  <!-- 推荐人设置 -->
+  <!-- 阈值 -->
   <div>
     <div class="app-container">
       <el-row>
@@ -10,91 +10,68 @@
               ref="queryRef"
               :inline="true"
               v-show="showSearch"
-              label-width="110px"
+              label-width="100px"
             >
-              <div class="flex-row">
+              <div class="flex-row just-between">
                 <div>
-                  <el-form-item label="推荐人姓名" prop="pointPatientName">
+                  <el-form-item label="患者姓名" prop="name">
                     <el-input
-                      v-model="queryParams.pointPatientName"
-                      placeholder="请输入推荐人姓名"
+                      v-model="queryParams.name"
+                      placeholder="请输入患者姓名"
                       clearable
                       style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-                  <el-form-item label="推荐人电话" prop="pointPatientPhone">
+                  <el-form-item label="患者电话" prop="phone">
                     <el-input
-                      v-model="queryParams.pointPatientPhone"
-                      placeholder="请输入推荐人电话"
+                      v-model="queryParams.phone"
+                      placeholder="请输入患者电话"
                       clearable
                       style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-                  <el-form-item label="推荐人身份证" prop="pointPatientIdCard">
+                  <el-form-item label="患者身份证" prop="idCard">
                     <el-input
-                      v-model="queryParams.pointPatientIdCard"
-                      placeholder="请输入推荐人身份证"
+                      v-model="queryParams.idCard"
+                      placeholder="请输入患者身份证"
                       clearable
                       style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-
-                  <el-form-item label="被推荐人姓名" prop="newPatientName">
-                    <el-input
-                      v-model="queryParams.newPatientName"
-                      placeholder="请输入被推荐人姓名"
-                      clearable
-                      style="width: 240px"
+                  <el-form-item label="是否黑名单" prop="black">
+                    <el-select
+                      v-model="queryParams.black"
+                      placeholder="请选择"
                       @keyup.enter="handleQuery"
-                    />
+                      style="width: 240px"
+                    >
+                      <el-option
+                        v-for="item in option"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                      </el-option>
+                    </el-select>
                   </el-form-item>
-                  <el-form-item label="被推荐人电话" prop="newPatientPhone">
-                    <el-input
-                      v-model="queryParams.newPatientPhone"
-                      placeholder="请输入被推荐人电话"
-                      clearable
-                      style="width: 240px"
+                  <el-form-item label="是否新患者" prop="newPatient">
+                    <el-select
+                      v-model="queryParams.newPatient"
+                      placeholder="请选择"
                       @keyup.enter="handleQuery"
-                    />
-                  </el-form-item>
-                  <el-form-item label="被推荐人身份证" prop="newPatientIdCard">
-                    <el-input
-                      v-model="queryParams.newPatientIdCard"
-                      placeholder="请输入被推荐人身份证"
-                      clearable
                       style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
-                  </el-form-item>
-                  <el-form-item label="眼睛片数" prop="glassesNum">
-                    <el-input
-                      v-model="queryParams.glassesNum"
-                      placeholder="请输入眼睛片数"
-                      clearable
-                      style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
-                  </el-form-item>
-                  <el-form-item label="折扣" prop="pointNum">
-                    <el-input
-                      v-model="queryParams.pointNum"
-                      placeholder="请输入折扣"
-                      clearable
-                      style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
-                  </el-form-item>
-                  <el-form-item label="积分" prop="pointScore">
-                    <el-input
-                      v-model="queryParams.pointScore"
-                      placeholder="请输入积分"
-                      clearable
-                      style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
+                    >
+                      <el-option
+                        v-for="item in option"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      >
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                   <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
@@ -116,7 +93,7 @@
                   plain
                   icon="Plus"
                   @click="handleAdd"
-                  v-hasPermi="['dataManagement:referrer:add']"
+                  v-hasPermi="['dataManagement:patientInfo:add']"
                   >新增</el-button
                 >
               </el-col>
@@ -127,7 +104,7 @@
                 icon="Edit"
                 :disabled="single"
                 @click="handleUpdate"
-                v-hasPermi="['dataManagement:referrer:edit']"
+                v-hasPermi="['dataManagement:patientInfo:edit']"
                 >修改</el-button
               >
             </el-col> -->
@@ -138,7 +115,7 @@
                   icon="Delete"
                   :disabled="multiple"
                   @click="handleDelete"
-                  v-hasPermi="['dataManagement:referrer:remove']"
+                  v-hasPermi="['dataManagement:patientInfo:remove']"
                   >删除</el-button
                 >
               </el-col>
@@ -148,7 +125,7 @@
                   plain
                   icon="Download"
                   @click="handleExport"
-                  v-hasPermi="['dataManagement:referrer:export']"
+                  v-hasPermi="['dataManagement:patientInfo:export']"
                   >导出</el-button
                 >
               </el-col>
@@ -158,7 +135,7 @@
                   plain
                   icon="Refresh"
                   @click="handleRefreshCache"
-                  v-hasPermi="['dataManagement:referrer:remove']"
+                  v-hasPermi="['dataManagement:patientInfo:remove']"
                   >刷新缓存</el-button
                 >
               </el-col> -->
@@ -175,61 +152,51 @@
               v-loading="loading"
             >
               <el-table-column type="selection" width="55" align="center" />
-
               <el-table-column
-                label="推荐人姓名"
+                label="患者姓名"
                 align="center"
+                width="120"
                 fixed="left"
-                width="120"
-                prop="pointPatientName"
+                prop="name"
               />
               <el-table-column
-                label="推荐人电话"
+                label="患者电话"
                 align="center"
+                prop="phone"
                 width="120"
-                prop="pointPatientPhone"
+                :show-overflow-tooltip="true"
               />
               <el-table-column
-                label="推荐人身份证"
+                label="患者身份证"
                 align="center"
                 width="220"
-                prop="pointPatientIdCard"
-              />
-              <el-table-column label="折扣id" align="center" prop="id" />
+                prop="idCard"
+                :show-overflow-tooltip="true"
+              >
+              </el-table-column>
               <el-table-column
-                label="折扣类型0-折扣1-积分"
+                label="是否黑名单"
                 align="center"
-                width="180"
-                prop="pointType"
-              />
+                prop="black"
+                width="120"
+              >
+                <template #default="scope">
+                  <span>{{ scope.row.black === "0" ? "否" : "是" }}</span>
+                </template>
+              </el-table-column>
               <el-table-column
-                label="眼睛片数"
+                label="是否是否新患者"
                 align="center"
                 width="120"
-                prop="glassesNum"
-              />
-              <el-table-column label="折扣" align="center" prop="pointNum" />
-              <el-table-column label="积分" align="center" prop="pointScore" />
-              <el-table-column
-                label="被推荐人姓名"
-                align="center"
-                width="120"
-                prop="newPatientName"
-              />
-              <el-table-column
-                label="被推荐人电话"
-                align="center"
-                width="120"
-                prop="newPatientPhone"
-              />
-              <el-table-column
-                label="被推荐人身份证"
-                align="center"
-                width="220"
-                prop="newPatientIdCard"
-              />
+                prop="newPatient"
+              >
+                <template #default="scope">
+                  <span>{{ scope.row.black === "0" ? "否" : "是" }}</span>
+                </template>
+              </el-table-column>
               <el-table-column
                 label="备注"
+                minWidth="220"
                 align="center"
                 prop="remark"
                 :show-overflow-tooltip="true"
@@ -247,7 +214,7 @@
                     type="primary"
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
-                    v-hasPermi="['dataManagement:referrer:edit']"
+                    v-hasPermi="['dataManagement:patientInfo:edit']"
                     >修改</el-button
                   >
                   <el-button
@@ -255,7 +222,7 @@
                     type="primary"
                     icon="Delete"
                     @click="handleDelete(scope.row)"
-                    v-hasPermi="['dataManagement:referrer:remove']"
+                    v-hasPermi="['dataManagement:patientInfo:remove']"
                     >删除</el-button
                   >
                 </template>
@@ -275,32 +242,36 @@
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="600px" append-to-body>
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="110px">
-          <el-form-item label="推荐人姓名" prop="pointPatientName" class="mr24">
-            <el-input v-model="form.pointPatientName" placeholder="请输入推荐人姓名" />
+          <el-form-item label="患者姓名" prop="name" class="mr24">
+            <el-input v-model="form.name" placeholder="请输入患者姓名" />
           </el-form-item>
-          <el-form-item label="推荐人电话" prop="dipointPatientPhonectType" class="mr24">
-            <el-input v-model="form.pointPatientPhone" placeholder="请输入推荐人电话" />
+          <el-form-item label="患者电话" prop="phone" class="mr24">
+            <el-input v-model="form.phone" placeholder="请输入患者电话" />
           </el-form-item>
-          <el-form-item label="推荐人身份证" prop="pointPatientIdCard" class="mr24">
-            <el-input v-model="form.pointPatientIdCard" placeholder="请输入推荐人身份证" />
+          <el-form-item label="患者身份证" prop="idCard" class="mr24">
+            <el-input v-model="form.idCard" placeholder="请输入患者身份证" />
           </el-form-item>
-          <el-form-item label="眼睛片数" prop="glassesNum" class="mr24">
-            <el-input v-model="form.glassesNum" placeholder="请输入眼睛片数" />
+          <el-form-item label="是否黑名单" prop="black" class="mr24">
+            <el-select v-model="form.black" placeholder="请选择" class="w100i">
+              <el-option
+                v-for="item in option"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item label="折扣" prop="pointNum" class="mr24">
-            <el-input v-model="form.pointNum" placeholder="请输入折扣" />
-          </el-form-item>
-          <el-form-item label="积分" prop="pointScore" class="mr24">
-            <el-input v-model="form.pointScore" placeholder="请输入积分" />
-          </el-form-item>
-          <el-form-item label="被推荐人姓名" prop="newPatientName" class="mr24">
-            <el-input v-model="form.newPatientName" placeholder="请输入被推荐人姓名" />
-          </el-form-item>
-          <el-form-item label="被推荐人电话" prop="newPatientPhone" class="mr24">
-            <el-input v-model="form.newPatientPhone" placeholder="请输入被推荐人电话" />
-          </el-form-item>
-          <el-form-item label="被推荐人身份证" prop="newPatientIdCard" class="mr24">
-            <el-input v-model="form.newPatientIdCard" placeholder="请输入被推荐人身份证" />
+          <el-form-item label="是否新患者" prop="newPatient" class="mr24">
+            <el-select v-model="form.newPatient" placeholder="请选择" class="w100i">
+              <el-option
+                v-for="item in option"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="备注" prop="remark" class="mr24">
             <el-input
@@ -335,12 +306,12 @@ import useDictStore from "@/store/modules/dict";
 // } from "@/api/system/dict/type";
 
 import {
-  listPoint,
-  getPoint,
-  delPoint,
-  addPoint,
-  updatePoint,
-} from "@/api/system/point";
+  listPatient,
+  getPatient,
+  delPatient,
+  addPatient,
+  updatePatient,
+} from "@/api/system/patient";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -358,15 +329,11 @@ const dateRange = ref([]);
 const option = ref([
   {
     value: "0",
-    label: "全部",
+    label: "否",
   },
   {
     value: "1",
     label: "是",
-  },
-  {
-    value: "2",
-    label: "否",
   },
 ]);
 
@@ -375,25 +342,15 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    pointPatientId: null,
-    pointPatientName: null,
-    pointPatientPhone: null,
-    pointPatientIdCard: null,
-    pointType: null,
-    glassesNum: null,
-    pointNum: null,
-    pointScore: null,
-    newPatientId: null,
-    newPatientName: null,
-    newPatientPhone: null,
-    newPatientIdCard: null,
+    name: null,
+    phone: null,
+    idCard: null,
+    black: null,
+    newPatient: null,
   },
   rules: {
     dictName: [
       { required: true, message: "字典名称不能为空", trigger: "blur" },
-    ],
-    dictType: [
-      { required: true, message: "字典类型不能为空", trigger: "blur" },
     ],
   },
 });
@@ -403,7 +360,7 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询字典类型列表 */
 function getList() {
   loading.value = true;
-  listPoint(proxy.addDateRange(queryParams.value)).then((response) => {
+  listPatient(proxy.addDateRange(queryParams.value)).then((response) => {
     typeList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -430,18 +387,11 @@ function cancel() {
 function reset() {
   form.value = {
     id: null,
-    pointPatientId: null,
-    pointPatientName: null,
-    pointPatientPhone: null,
-    pointPatientIdCard: null,
-    pointType: null,
-    glassesNum: null,
-    pointNum: null,
-    pointScore: null,
-    newPatientId: null,
-    newPatientName: null,
-    newPatientPhone: null,
-    newPatientIdCard: null,
+    name: null,
+    phone: null,
+    idCard: null,
+    black: null,
+    newPatient: null,
     delFlag: null,
     createBy: null,
     createTime: null,
@@ -466,7 +416,7 @@ function resetQuery() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加推荐人折扣积分";
+  title.value = "添加患者信息";
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
@@ -477,11 +427,11 @@ function handleSelectionChange(selection) {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const referreId = row.id || ids.value;
-  getPoint(referreId).then((response) => {
+  const patientId = row.id || ids.value;
+  getPatient(patientId).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改推荐人折扣积分";
+    title.value = "修改患者信息";
   });
 }
 /** 提交按钮 */
@@ -489,13 +439,13 @@ function submitForm() {
   proxy.$refs["dataRef"].validate((valid) => {
     if (valid) {
       if (form.value.dictId != undefined) {
-        updatePoint(form.value).then((response) => {
+        updatePatient(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
-        addPoint(form.value).then((response) => {
+        addPatient(form.value).then((response) => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();
@@ -506,11 +456,11 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const referreId = row.id || ids.value;
+  const patientId = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除推荐人编号为"' + referreId + '"的数据项？')
+    .confirm('是否确认删除患者信息编号为"' + patientId + '"的数据项？')
     .then(function () {
-      return delPoint(referreId);
+      return delPatient(patientId);
     })
     .then(() => {
       getList();
@@ -521,7 +471,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    "system/point/export",
+    "system/patient/export",
     {
       ...queryParams.value,
     },

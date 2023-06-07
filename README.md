@@ -83,6 +83,7 @@ yarn dev
 # 二级菜单---患者信息管理(patientInfo)   ---dataManagement/patientInfo/index
 # 二级菜单---数据导入(dataImport)        ---dataManagement/dataImport/index
 # 二级菜单---统计查询(dataQuery)         ---dataManagement/dataQuery/index
+# 二级菜单---阈值(warning)               ---dataManagement/warning/index
 
 ```
 ## 功能页面

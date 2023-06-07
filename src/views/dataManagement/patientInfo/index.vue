@@ -93,7 +93,7 @@
                   plain
                   icon="Plus"
                   @click="handleAdd"
-                  v-hasPermi="['system:dict:add']"
+                  v-hasPermi="['dataManagement:patientInfo:add']"
                   >新增</el-button
                 >
               </el-col>
@@ -104,7 +104,7 @@
                 icon="Edit"
                 :disabled="single"
                 @click="handleUpdate"
-                v-hasPermi="['system:dict:edit']"
+                v-hasPermi="['dataManagement:patientInfo:edit']"
                 >修改</el-button
               >
             </el-col> -->
@@ -115,7 +115,7 @@
                   icon="Delete"
                   :disabled="multiple"
                   @click="handleDelete"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['dataManagement:patientInfo:remove']"
                   >删除</el-button
                 >
               </el-col>
@@ -125,7 +125,7 @@
                   plain
                   icon="Download"
                   @click="handleExport"
-                  v-hasPermi="['system:dict:export']"
+                  v-hasPermi="['dataManagement:patientInfo:export']"
                   >导出</el-button
                 >
               </el-col>
@@ -135,7 +135,7 @@
                   plain
                   icon="Refresh"
                   @click="handleRefreshCache"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['dataManagement:patientInfo:remove']"
                   >刷新缓存</el-button
                 >
               </el-col> -->
@@ -214,7 +214,7 @@
                     type="primary"
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
-                    v-hasPermi="['system:dict:edit']"
+                    v-hasPermi="['dataManagement:patientInfo:edit']"
                     >修改</el-button
                   >
                   <el-button
@@ -222,7 +222,7 @@
                     type="primary"
                     icon="Delete"
                     @click="handleDelete(scope.row)"
-                    v-hasPermi="['system:dict:remove']"
+                    v-hasPermi="['dataManagement:patientInfo:remove']"
                     >删除</el-button
                   >
                 </template>
@@ -351,9 +351,6 @@ const data = reactive({
   rules: {
     dictName: [
       { required: true, message: "字典名称不能为空", trigger: "blur" },
-    ],
-    dictType: [
-      { required: true, message: "字典类型不能为空", trigger: "blur" },
     ],
   },
 });

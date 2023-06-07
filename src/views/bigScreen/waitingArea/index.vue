@@ -12,75 +12,72 @@
       </div>
       <div class="middle flex-column">
         <el-row class="title flex-row text-center font28">
-          <el-col :span="8">诊室</el-col>
-          <el-col :span="8">医生</el-col>
-          <el-col :span="8">等候就诊</el-col>
+          <el-col :span="6">诊室</el-col>
+          <el-col :span="6">医生</el-col>
+          <el-col :span="6">等候就诊</el-col>
+          <el-col :span="6">状态</el-col>
         </el-row>
-        <el-row
-          class="contant flex-row text-center font28"
-          v-for="(item, index) in dataList"
-          :key="index"
-        >
-          <el-col :span="8">
-            {{ item.consultingRoom }}
-          </el-col>
-          <el-col :span="8">
-            {{ item.doctor }}
-          </el-col>
-          <el-col :span="8">
-            {{ item.person }}
-          </el-col>
-        </el-row>
+        <div>
+          <el-row
+            class="flex-row text-center font28"
+            v-for="(item, index) in dataList"
+            :key="index"
+          >
+            <el-col class="contant" :span="6" v-if="index < 8">
+              {{ item.room }}
+            </el-col>
+            <el-col class="contant" :span="6" v-if="index < 8">
+              {{ item.adjustDocName }}
+            </el-col>
+            <el-col class="contant" :span="6" v-if="index < 8">
+              {{ item.patientName }}
+            </el-col>
+            <el-col class="contant" :span="6" v-if="index < 8">
+              {{
+                item.patientStatus === "0"
+                  ? "排队中"
+                  : item.patientStatus === "1"
+                  ? "进行中"
+                  : ""
+              }}
+            </el-col>
+          </el-row>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script setup name="Index">
 import moment from "moment";
+import { listWait } from "@/api/system/wait";
 const nowTime = ref("");
 const nowDate = ref("");
-const dataList = ref([
-  {
-    consultingRoom: "第一诊室",
-    doctor: "医生A",
-    person: "患者A",
+const dataList = ref([]);
+
+const data = reactive({
+  form: {},
+  queryParams: {
+    pageNum: 1,
+    pageSize: 10,
+    patientId: null,
+    patientName: null,
+    patientPhone: null,
+    patientStatus: null,
+    waitTime: null,
+    room: null,
+    adjustTime: null,
+    adjustDocId: null,
+    adjustDocName: null,
+    receptionDocId: null,
+    receptionDocName: null,
+    assignDocId: null,
+    assignDocName: null,
+    assignContent: null,
+    parentId: null,
   },
-  {
-    consultingRoom: "第一诊室",
-    doctor: "医生B",
-    person: "患者B",
-  },
-  {
-    consultingRoom: "第一诊室",
-    doctor: "医生C",
-    person: "患者C",
-  },
-  {
-    consultingRoom: "第一诊室",
-    doctor: "医生D",
-    person: "患者D",
-  },
-  {
-    consultingRoom: "第一诊室",
-    doctor: "医生E",
-    person: "患者E",
-  },
-  {
-    consultingRoom: "第一诊室",
-    doctor: "医生F",
-    person: "患者F",
-  },
-  {
-    consultingRoom: "第一诊室",
-    doctor: "医生G",
-    person: "患者G",
-  },
-  {
-    consultingRoom: "第一诊室",
-    doctor: "医生H",
-    person: "患者H",
-  },
-]);
+});
+const { queryParams } = toRefs(data);
+const { proxy } = getCurrentInstance();
 
 onMounted(() => {
   setInterval(() => {
@@ -124,6 +121,16 @@ function getNowTime() {
   const time = moment().format("HH:mm:ss");
   nowTime.value = " " + time;
 }
+
+/** 查询列表 */
+function getList() {
+  listWait(proxy.addDateRange(queryParams.value)).then((response) => {
+    dataList.value = response.rows.sort(
+      (a, b) => new Date(a.waitTime).getTime() - new Date(b.waitTime).getTime()
+    );
+  });
+}
+getList();
 </script>
 <style lang="scss">
 .main {
@@ -161,7 +168,7 @@ function getNowTime() {
       margin: 20px 0 0 0;
     }
     .contant {
-      padding: 20px;
+      padding: 1.35%;
       border-left: 1px solid rgb(20, 190, 212);
       border-right: 1px solid rgb(20, 190, 212);
       border-bottom: 1px solid rgb(20, 190, 212);
