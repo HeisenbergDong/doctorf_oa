@@ -201,7 +201,13 @@
                 align="center"
                 width="180"
                 prop="pointType"
-              />
+              >
+                <template #default="scope">
+                  <span>{{
+                    scope.row.pointType === "0" ? "折扣" : "积分"
+                  }}</span>
+                </template>
+              </el-table-column>
               <el-table-column
                 label="眼睛片数"
                 align="center"
@@ -241,7 +247,7 @@
                 width="160"
                 class-name="small-padding fixed-width"
               >
-                <template #default="{ scope }">
+                <template #default="scope">
                   <el-button
                     link
                     type="primary"
@@ -276,13 +282,30 @@
       <el-dialog :title="title" v-model="open" width="600px" append-to-body>
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="110px">
           <el-form-item label="推荐人姓名" prop="pointPatientName" class="mr24">
-            <el-input v-model="form.pointPatientName" placeholder="请输入推荐人姓名" />
+            <el-input
+              v-model="form.pointPatientName"
+              placeholder="请输入推荐人姓名"
+            />
           </el-form-item>
-          <el-form-item label="推荐人电话" prop="dipointPatientPhonectType" class="mr24">
-            <el-input v-model="form.pointPatientPhone" placeholder="请输入推荐人电话" />
+          <el-form-item
+            label="推荐人电话"
+            prop="dipointPatientPhonectType"
+            class="mr24"
+          >
+            <el-input
+              v-model="form.pointPatientPhone"
+              placeholder="请输入推荐人电话"
+            />
           </el-form-item>
-          <el-form-item label="推荐人身份证" prop="pointPatientIdCard" class="mr24">
-            <el-input v-model="form.pointPatientIdCard" placeholder="请输入推荐人身份证" />
+          <el-form-item
+            label="推荐人身份证"
+            prop="pointPatientIdCard"
+            class="mr24"
+          >
+            <el-input
+              v-model="form.pointPatientIdCard"
+              placeholder="请输入推荐人身份证"
+            />
           </el-form-item>
           <el-form-item label="眼睛片数" prop="glassesNum" class="mr24">
             <el-input v-model="form.glassesNum" placeholder="请输入眼睛片数" />
@@ -294,13 +317,30 @@
             <el-input v-model="form.pointScore" placeholder="请输入积分" />
           </el-form-item>
           <el-form-item label="被推荐人姓名" prop="newPatientName" class="mr24">
-            <el-input v-model="form.newPatientName" placeholder="请输入被推荐人姓名" />
+            <el-input
+              v-model="form.newPatientName"
+              placeholder="请输入被推荐人姓名"
+            />
           </el-form-item>
-          <el-form-item label="被推荐人电话" prop="newPatientPhone" class="mr24">
-            <el-input v-model="form.newPatientPhone" placeholder="请输入被推荐人电话" />
+          <el-form-item
+            label="被推荐人电话"
+            prop="newPatientPhone"
+            class="mr24"
+          >
+            <el-input
+              v-model="form.newPatientPhone"
+              placeholder="请输入被推荐人电话"
+            />
           </el-form-item>
-          <el-form-item label="被推荐人身份证" prop="newPatientIdCard" class="mr24">
-            <el-input v-model="form.newPatientIdCard" placeholder="请输入被推荐人身份证" />
+          <el-form-item
+            label="被推荐人身份证"
+            prop="newPatientIdCard"
+            class="mr24"
+          >
+            <el-input
+              v-model="form.newPatientIdCard"
+              placeholder="请输入被推荐人身份证"
+            />
           </el-form-item>
           <el-form-item label="备注" prop="remark" class="mr24">
             <el-input
@@ -488,7 +528,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["dataRef"].validate((valid) => {
     if (valid) {
-      if (form.value.dictId != undefined) {
+      if (form.value.id != undefined) {
         updatePoint(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;

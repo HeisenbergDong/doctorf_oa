@@ -14,64 +14,26 @@
             >
               <div class="flex-row just-between">
                 <div>
-                  <el-form-item label="患者姓名" prop="name">
+                  <el-form-item label="阈值大小" prop="num">
                     <el-input
-                      v-model="queryParams.name"
-                      placeholder="请输入患者姓名"
+                      v-model="queryParams.num"
+                      placeholder="请输入阈值大小"
                       clearable
                       style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-                  <el-form-item label="患者电话" prop="phone">
-                    <el-input
-                      v-model="queryParams.phone"
-                      placeholder="请输入患者电话"
+                  <el-form-item label="阈值适用日期" prop="warningDate">
+                    <el-date-picker
                       clearable
+                      v-model="queryParams.warningDate"
                       style="width: 240px"
+                      type="datetime"
+                      value-format="YYYY-MM-DD HH:mm:ss"
+                      placeholder="请选择预约时间"
                       @keyup.enter="handleQuery"
-                    />
-                  </el-form-item>
-                  <el-form-item label="患者身份证" prop="idCard">
-                    <el-input
-                      v-model="queryParams.idCard"
-                      placeholder="请输入患者身份证"
-                      clearable
-                      style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
-                  </el-form-item>
-                  <el-form-item label="是否黑名单" prop="black">
-                    <el-select
-                      v-model="queryParams.black"
-                      placeholder="请选择"
-                      @keyup.enter="handleQuery"
-                      style="width: 240px"
                     >
-                      <el-option
-                        v-for="item in option"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      >
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="是否新患者" prop="newPatient">
-                    <el-select
-                      v-model="queryParams.newPatient"
-                      placeholder="请选择"
-                      @keyup.enter="handleQuery"
-                      style="width: 240px"
-                    >
-                      <el-option
-                        v-for="item in option"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                      >
-                      </el-option>
-                    </el-select>
+                    </el-date-picker>
                   </el-form-item>
                   <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
@@ -129,16 +91,6 @@
                   >导出</el-button
                 >
               </el-col>
-              <!-- <el-col :span="1.5">
-                <el-button
-                  type="danger"
-                  plain
-                  icon="Refresh"
-                  @click="handleRefreshCache"
-                  v-hasPermi="['dataManagement:patientInfo:remove']"
-                  >刷新缓存</el-button
-                >
-              </el-col> -->
               <right-toolbar
                 v-model:showSearch="showSearch"
                 @queryTable="getList"
@@ -153,50 +105,26 @@
             >
               <el-table-column type="selection" width="55" align="center" />
               <el-table-column
-                label="患者姓名"
+                label="阈值类型0-预约阈值1-提醒阈值"
                 align="center"
-                width="120"
                 fixed="left"
-                prop="name"
+                prop="warningType"
               />
               <el-table-column
-                label="患者电话"
+                label="阈值大小"
                 align="center"
-                prop="phone"
-                width="120"
+                prop="num"
                 :show-overflow-tooltip="true"
               />
               <el-table-column
-                label="患者身份证"
+                label="阈值适用日期"
                 align="center"
-                width="220"
-                prop="idCard"
+                prop="warningDate"
                 :show-overflow-tooltip="true"
               >
-              </el-table-column>
-              <el-table-column
-                label="是否黑名单"
-                align="center"
-                prop="black"
-                width="120"
-              >
-                <template #default="scope">
-                  <span>{{ scope.row.black === "0" ? "否" : "是" }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label="是否是否新患者"
-                align="center"
-                width="120"
-                prop="newPatient"
-              >
-                <template #default="scope">
-                  <span>{{ scope.row.black === "0" ? "否" : "是" }}</span>
-                </template>
               </el-table-column>
               <el-table-column
                 label="备注"
-                minWidth="220"
                 align="center"
                 prop="remark"
                 :show-overflow-tooltip="true"
@@ -208,7 +136,7 @@
                 width="160"
                 class-name="small-padding fixed-width"
               >
-                <template #default="{ scope }">
+                <template #default="scope">
                   <el-button
                     link
                     type="primary"
@@ -242,36 +170,23 @@
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="600px" append-to-body>
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="110px">
-          <el-form-item label="患者姓名" prop="name" class="mr24">
-            <el-input v-model="form.name" placeholder="请输入患者姓名" />
+          <el-form-item label="阈值大小" prop="num" class="mr24">
+            <el-input v-model="form.num" placeholder="请输入阈值大小" />
           </el-form-item>
-          <el-form-item label="患者电话" prop="phone" class="mr24">
-            <el-input v-model="form.phone" placeholder="请输入患者电话" />
-          </el-form-item>
-          <el-form-item label="患者身份证" prop="idCard" class="mr24">
-            <el-input v-model="form.idCard" placeholder="请输入患者身份证" />
-          </el-form-item>
-          <el-form-item label="是否黑名单" prop="black" class="mr24">
-            <el-select v-model="form.black" placeholder="请选择" class="w100i">
-              <el-option
-                v-for="item in option"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="是否新患者" prop="newPatient" class="mr24">
-            <el-select v-model="form.newPatient" placeholder="请选择" class="w100i">
-              <el-option
-                v-for="item in option"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
+          <el-form-item
+            label="阈值适用日期，空适用于全部未设置日期"
+            prop="warningDate"
+            class="mr24"
+          >
+            <el-date-picker
+              clearable
+              v-model="form.warningDate"
+              style="width: 240px"
+              type="datetime"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              placeholder="请选择阈值适用日期，空适用于全部未设置日期"
+            >
+            </el-date-picker>
           </el-form-item>
           <el-form-item label="备注" prop="remark" class="mr24">
             <el-input
@@ -306,12 +221,12 @@ import useDictStore from "@/store/modules/dict";
 // } from "@/api/system/dict/type";
 
 import {
-  listPatient,
-  getPatient,
-  delPatient,
-  addPatient,
-  updatePatient,
-} from "@/api/system/patient";
+  listWarning,
+  getWarning,
+  delWarning,
+  addWarning,
+  updateWarning,
+} from "@/api/system/warning";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -342,17 +257,11 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    name: null,
-    phone: null,
-    idCard: null,
-    black: null,
-    newPatient: null,
+    warningType: null,
+    num: null,
+    warningDate: null,
   },
-  rules: {
-    dictName: [
-      { required: true, message: "字典名称不能为空", trigger: "blur" },
-    ],
-  },
+  rules: {},
 });
 
 const { queryParams, form, rules } = toRefs(data);
@@ -360,7 +269,7 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询字典类型列表 */
 function getList() {
   loading.value = true;
-  listPatient(proxy.addDateRange(queryParams.value)).then((response) => {
+  listWarning(proxy.addDateRange(queryParams.value)).then((response) => {
     typeList.value = response.rows;
     total.value = response.total;
     loading.value = false;
@@ -387,11 +296,9 @@ function cancel() {
 function reset() {
   form.value = {
     id: null,
-    name: null,
-    phone: null,
-    idCard: null,
-    black: null,
-    newPatient: null,
+    warningType: null,
+    num: null,
+    warningDate: null,
     delFlag: null,
     createBy: null,
     createTime: null,
@@ -416,7 +323,7 @@ function resetQuery() {
 function handleAdd() {
   reset();
   open.value = true;
-  title.value = "添加患者信息";
+  title.value = "添加阈值";
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
@@ -427,25 +334,25 @@ function handleSelectionChange(selection) {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const patientId = row.id || ids.value;
-  getPatient(patientId).then((response) => {
+  const warningId = row.id || ids.value;
+  getWarning(warningId).then((response) => {
     form.value = response.data;
     open.value = true;
-    title.value = "修改患者信息";
+    title.value = "修改阈值";
   });
 }
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["dataRef"].validate((valid) => {
     if (valid) {
-      if (form.value.dictId != undefined) {
-        updatePatient(form.value).then((response) => {
+      if (form.value.id != undefined) {
+        updateWarning(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
-        addPatient(form.value).then((response) => {
+        addWarning(form.value).then((response) => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();
@@ -456,11 +363,11 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const patientId = row.id || ids.value;
+  const warningId = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除患者信息编号为"' + patientId + '"的数据项？')
+    .confirm('是否确认删除阈值编号为"' + warningId + '"的数据项？')
     .then(function () {
-      return delPatient(patientId);
+      return delWarning(warningId);
     })
     .then(() => {
       getList();
@@ -471,11 +378,11 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    "system/patient/export",
+    "system/warning/export",
     {
       ...queryParams.value,
     },
-    `dict_${new Date().getTime()}.xlsx`
+    `warning_${new Date().getTime()}.xlsx`
   );
 }
 /** 刷新缓存按钮操作 */

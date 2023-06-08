@@ -18,9 +18,9 @@
                     <el-date-picker
                       clearable
                       v-model="queryParams.preDate"
-                      type="date"
                       style="width: 240px"
-                      value-format="yyyy-MM-dd"
+                      type="datetime"
+                      value-format="YYYY-MM-DD HH:mm:ss"
                       placeholder="请选择预约时间"
                     >
                     </el-date-picker>
@@ -162,8 +162,11 @@
                 minWidth="220"
                 align="center"
                 prop="preContent"
-              />
-
+              >
+                <template #default="scope">
+                  <div v-html="scope.row.preContent"></div>
+                </template>
+              </el-table-column>
               <el-table-column
                 label="预约医生姓名"
                 width="120"
@@ -184,7 +187,7 @@
                 width="180"
                 class-name="small-padding fixed-width"
               >
-                <template #default="{ scope }">
+                <template #default="scope">
                   <el-button
                     link
                     type="primary"
@@ -237,9 +240,9 @@
             <el-date-picker
               clearable
               v-model="form.preDate"
-              type="datet"
               class="w100i"
-              value-format="yyyy-MM-dd"
+              type="datetime"
+              value-format="YYYY-MM-DD HH:mm:ss"
               placeholder="请选择预约时间"
             >
             </el-date-picker>
@@ -320,9 +323,15 @@ const data = reactive({
   },
   rules: {
     preDate: [{ required: true, message: "预约时间不能为空", trigger: "blur" }],
-    patientName: [{ required: true, message: "患者姓名不能为空", trigger: "blur" }],
-    patientPhone: [{ required: true, message: "患者电话不能为空", trigger: "blur" }],
-    docName: [{ required: true, message: "预约医生姓名不能为空", trigger: "blur" }],
+    patientName: [
+      { required: true, message: "患者姓名不能为空", trigger: "blur" },
+    ],
+    patientPhone: [
+      { required: true, message: "患者电话不能为空", trigger: "blur" },
+    ],
+    docName: [
+      { required: true, message: "预约医生姓名不能为空", trigger: "blur" },
+    ],
   },
 });
 

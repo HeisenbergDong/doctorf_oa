@@ -208,7 +208,7 @@
                 width="160"
                 class-name="small-padding fixed-width"
               >
-                <template #default="{ scope }">
+                <template #default="scope">
                   <el-button
                     link
                     type="primary"
@@ -438,7 +438,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["dataRef"].validate((valid) => {
     if (valid) {
-      if (form.value.dictId != undefined) {
+      if (form.value.id != undefined) {
         updatePatient(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
@@ -475,7 +475,7 @@ function handleExport() {
     {
       ...queryParams.value,
     },
-    `dict_${new Date().getTime()}.xlsx`
+    `patient_${new Date().getTime()}.xlsx`
   );
 }
 /** 刷新缓存按钮操作 */

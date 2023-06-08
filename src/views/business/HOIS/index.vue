@@ -36,8 +36,8 @@
                     <el-date-picker
                       clearable
                       v-model="queryParams.waitTime"
-                      type="date"
-                      value-format="yyyy-MM-dd"
+                      type="datetime"
+                      value-format="YYYY-MM-DD HH:mm:ss"
                       style="width: 240px"
                       placeholder="请选择进入队列时间"
                     >
@@ -81,7 +81,7 @@
                   plain
                   icon="Plus"
                   @click="handleAdd"
-                  v-hasPermi="['system:dict:add']"
+                  v-hasPermi="['business:HOIS:add']"
                   >新增</el-button
                 >
               </el-col> -->
@@ -92,7 +92,7 @@
                 icon="Edit"
                 :disabled="single"
                 @click="handleUpdate"
-                v-hasPermi="['system:dict:edit']"
+                v-hasPermi="['business:HOIS:edit']"
                 >修改</el-button
               >
             </el-col> -->
@@ -103,7 +103,7 @@
                   icon="Delete"
                   :disabled="multiple"
                   @click="handleDelete"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['business:HOIS:remove']"
                   >取消</el-button
                 >
               </el-col>
@@ -113,7 +113,7 @@
                   plain
                   icon="Download"
                   @click="handleExport"
-                  v-hasPermi="['system:dict:export']"
+                  v-hasPermi="['business:HOIS:export']"
                   >导出</el-button
                 >
               </el-col>
@@ -123,7 +123,7 @@
                   plain
                   icon="Refresh"
                   @click="handleRefreshCache"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['business:HOIS:remove']"
                   >刷新缓存</el-button
                 >
               </el-col> -->
@@ -215,13 +215,13 @@
                 width="220"
                 class-name="small-padding fixed-width"
               >
-                <template #default="{ scope }">
+                <template #default="scope">
                   <el-button
                     link
                     type="primary"
                     icon="Edit"
-                    @click="handleUpdate(scope.row)"
-                    v-hasPermi="['system:dict:edit']"
+                    @click="handleAssign(scope.row)"
+                    v-hasPermi="['business:HOIS:edit']"
                     >指派
                   </el-button>
                   <el-button
@@ -229,7 +229,7 @@
                     type="primary"
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
-                    v-hasPermi="['system:dict:edit']"
+                    v-hasPermi="['business:HOIS:edit']"
                     >修改</el-button
                   >
                   <el-button
@@ -237,7 +237,7 @@
                     type="primary"
                     icon="Delete"
                     @click="handleDelete(scope.row)"
-                    v-hasPermi="['system:dict:remove']"
+                    v-hasPermi="['business:HOIS:remove']"
                     >取消</el-button
                   >
                 </template>
@@ -306,7 +306,7 @@
               clearable
               v-model="form.waitTime"
               type="datetime"
-              value-format="yyyy-MM-dd"
+              value-format="YYYY-MM-DD HH:mm:ss"
               class="w100i"
               placeholder="请选择进入队列时间"
             >
@@ -343,6 +343,11 @@ import {
   addWait,
   updateWait,
 } from "@/api/system/wait";
+import { onMounted } from "vue";
+// import { onUnmounted } from "vue";
+// import SockJS from "sockjs-client";
+// import Stomp from "stompjs";
+import Speech from "speak-tts";
 
 const { proxy } = getCurrentInstance();
 // const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -384,6 +389,39 @@ const data = reactive({
       { required: true, message: "进入队列时间不能为空", trigger: "blur" },
     ],
   },
+});
+// 链接websocket
+// let socket = new SockJS("http://192.168.3.130:9527/socket-js-stomp");
+// let stompClient = Stomp.over(socket);
+// const headers = {
+//   "user-type": "doc_ui",
+//   "user-id": 1,
+// };
+// stompClient.connect(headers, {}, function (frame) {
+//   stompClient.subscribe("/topic/game_chat", function (message) {
+//     console.warn(message.body);
+//     console.warn(JSON.parse(message.body));
+//   });
+// });
+
+// onUnmounted(() => {});
+
+// 语音播报
+const speech = ref(null);
+function speechInit() {
+  speech.value = new Speech();
+  speech.value.setLanguage("zh-CN");
+  speech.value.init().then(() => {
+    console.log("语音播报初始化完成...");
+  });
+}
+function handleAssign(row) {
+  speech.value.speak({ text: `请${row.id}号患者到${row.room}就诊` }).then(() => {
+    console.log("读取成功");
+  });
+}
+onMounted(() => {
+  speechInit();
 });
 
 const { queryParams, form, rules } = toRefs(data);
@@ -468,6 +506,8 @@ function handleSelectionChange(selection) {
 function handleUpdate(row) {
   reset();
   const waitIds = row.id || ids.value;
+  console.log("waitIds :>> ", waitIds);
+
   getWait(waitIds).then((response) => {
     form.value = response.data;
     open.value = true;
@@ -478,7 +518,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["dataRef"].validate((valid) => {
     if (valid) {
-      if (form.value.waitIds != undefined) {
+      if (form.value.id != undefined) {
         updateWait(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;

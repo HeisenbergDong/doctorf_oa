@@ -12,7 +12,7 @@
               v-show="showSearch"
               label-width="90px"
             >
-              <div class="flex-row just-between">
+              <div class="flex-row">
                 <div>
                   <el-form-item label="患者姓名" prop="name">
                     <el-input
@@ -48,9 +48,7 @@
                       </el-option>
                     </el-select>
                   </el-form-item>
-                </div>
-                <div>
-                  <el-form-item>
+                  <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
                     <el-button type="primary" @click="handleQuery"
                       >查询</el-button
@@ -128,8 +126,6 @@
               style="width: 100%"
               v-loading="loading"
             >
-              
-
               <el-table-column type="selection" width="55" align="center" />
               <el-table-column
                 label="患者姓名"
@@ -177,14 +173,14 @@
                 width="120"
                 class-name="small-padding fixed-width"
               >
-                <template #default="{ scope }">
+                <template #default="scope">
                   <el-button
                     link
                     type="primary"
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
                     v-hasPermi="['dataManagement:blacklist:edit']"
-                    >黑名单设置
+                    >{{ scope.row.black === "0" ? "加入黑名单" : "移出黑名单" }}
                   </el-button>
                   <!-- <el-button
                   link
@@ -384,7 +380,7 @@ function handleSelectionChange(selection) {
 function handleUpdate(row) {
   reset();
   const blackId = row.id || ids.value;
-  getType(blackId).then((response) => {
+  getPatient(blackId).then((response) => {
     form.value = response.data;
     open.value = true;
     title.value = "修改黑名单";
@@ -394,7 +390,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["dictRef"].validate((valid) => {
     if (valid) {
-      if (form.value.dictId != undefined) {
+      if (form.value.id != undefined) {
         updatePatient(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;

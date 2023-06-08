@@ -18,25 +18,25 @@
                     <el-date-picker
                       clearable
                       v-model="queryParams.remindDate"
-                      type="date"
                       style="width: 240px"
-                      value-format="yyyy-MM-dd"
+                      type="datetime"
+                      value-format="YYYY-MM-DD HH:mm:ss"
                       placeholder="请选择提醒时间"
                     >
                     </el-date-picker>
                   </el-form-item>
-                  <el-form-item label="患者姓名" prop="dictName">
+                  <el-form-item label="患者姓名" prop="patientName">
                     <el-input
-                      v-model="queryParams.dictName"
+                      v-model="queryParams.patientName"
                       placeholder="请输入患者姓名"
                       clearable
                       style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-                  <el-form-item label="患者电话" prop="dictType">
+                  <el-form-item label="患者电话" prop="patientPhone">
                     <el-input
-                      v-model="queryParams.dictType"
+                      v-model="queryParams.patientPhone"
                       placeholder="请输入患者电话"
                       clearable
                       style="width: 240px"
@@ -164,7 +164,11 @@
                 label="提醒说明"
                 align="center"
                 prop="remindContent"
-              />
+              >
+                <template #default="scope">
+                  <div v-html="scope.row.remindContent"></div>
+                </template>
+              </el-table-column>
               <el-table-column
                 label="提醒医生姓名"
                 align="center"
@@ -185,7 +189,7 @@
                 width="220"
                 class-name="small-padding fixed-width"
               >
-                <template #default="{ scope }">
+                <template #default="scope">
                   <el-button
                     link
                     type="primary"
@@ -238,15 +242,15 @@
             <el-date-picker
               clearable
               v-model="form.remindDate"
-              type="date"
               class="w100i"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              type="datetime"
+              value-format="YYYY-MM-DD HH:mm:ss"
               placeholder="请选择提醒时间"
             >
             </el-date-picker>
           </el-form-item>
           <el-form-item label="提醒说明" class="mr24">
-            <editor v-model="form.preContent" :min-height="192" />
+            <editor v-model="form.remindContent" :min-height="192" />
           </el-form-item>
           <el-form-item label="提醒医生姓名" prop="docName" class="mr24">
             <el-input v-model="form.docName" placeholder="请输入提醒医生姓名" />
@@ -433,7 +437,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["dataRef"].validate((valid) => {
     if (valid) {
-      if (form.value.dictId != undefined) {
+      if (form.value.id != undefined) {
         updateRemind(form.value).then((response) => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;

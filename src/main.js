@@ -10,6 +10,7 @@ import "@/assets/css/index.scss"
 
 import App from './App'
 import store from './store'
+import print from 'vue3-print-nb'
 import router from './router'
 import directive from './directive' // directive
 
@@ -68,6 +69,7 @@ app.component('Editor', Editor)
 
 app.use(router)
 app.use(store)
+app.use(print)
 app.use(plugins)
 app.use(elementIcons)
 app.component('svg-icon', SvgIcon)

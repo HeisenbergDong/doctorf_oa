@@ -14,52 +14,16 @@
             >
               <div class="flex-row just-between">
                 <div>
-                  <el-form-item label="姓名" prop="dictName">
+                  <el-form-item label="文件名" prop="fileName">
                     <el-input
-                      v-model="queryParams.dictName"
+                      v-model="queryParams.fileName"
                       placeholder="请输入"
                       clearable
                       style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
-                  <el-form-item label="手机号码" prop="dictType">
-                    <el-input
-                      v-model="queryParams.dictType"
-                      placeholder="请输入"
-                      clearable
-                      style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
-                  </el-form-item>
-                  <!-- <el-form-item label="状态" prop="status">
-                  <el-select
-                    v-model="queryParams.status"
-                    placeholder="字典状态"
-                    clearable
-                    style="width: 240px"
-                  >
-                    <el-option
-                      v-for="dict in sys_normal_disable"
-                      :key="dict.value"
-                      :label="dict.label"
-                      :value="dict.value"
-                    />
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="创建时间" style="width: 308px">
-                  <el-date-picker
-                    v-model="dateRange"
-                    value-format="YYYY-MM-DD"
-                    type="daterange"
-                    range-separator="-"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                  ></el-date-picker>
-                </el-form-item> -->
-                </div>
-                <div>
-                  <el-form-item>
+                  <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
                     <el-button type="primary" @click="handleQuery"
                       >查询</el-button
@@ -80,49 +44,18 @@
                   icon="Plus"
                   @click="handleAdd"
                   v-hasPermi="['dataManagement:dataImport:add']"
-                  >导入</el-button
+                  >新增</el-button
                 >
               </el-col>
-              <!-- <el-col :span="1.5">
-              <el-button
-                type="success"
-                plain
-                icon="Edit"
-                :disabled="single"
-                @click="handleUpdate"
-                v-hasPermi="['dataManagement:dataImport:edit']"
-                >修改</el-button
-              >
-            </el-col> -->
-              <!-- <el-col :span="1.5">
-              <el-button
-                type="danger"
-                plain
-                icon="Delete"
-                :disabled="multiple"
-                @click="handleDelete"
-                v-hasPermi="['dataManagement:dataImport:remove']"
-                >取消</el-button
-              >
-            </el-col> -->
-              <!-- <el-col :span="1.5">
-              <el-button
-                type="warning"
-                plain
-                icon="Download"
-                @click="handleExport"
-                v-hasPermi="['dataManagement:dataImport:export']"
-                >导出</el-button
-              >
-            </el-col> -->
               <el-col :span="1.5">
                 <el-button
                   type="danger"
                   plain
-                  icon="Refresh"
-                  @click="handleRefreshCache"
+                  icon="Delete"
+                  :disabled="multiple"
+                  @click="handleDelete"
                   v-hasPermi="['dataManagement:dataImport:remove']"
-                  >刷新缓存</el-button
+                  >删除</el-button
                 >
               </el-col>
               <right-toolbar
@@ -134,76 +67,17 @@
             <el-table
               :data="typeList"
               @selection-change="handleSelectionChange"
+              v-loading="loading"
             >
-              <!-- v-loading="loading" -->
-
               <el-table-column type="selection" width="55" align="center" />
-              <el-table-column label="姓名" align="center" prop="name" />
-              <el-table-column
-                label="性别"
-                align="center"
-                prop="gender"
-                :show-overflow-tooltip="true"
-              />
-              <el-table-column
-                label="年龄"
-                align="center"
-                prop="age"
-                :show-overflow-tooltip="true"
-              >
-                <!-- <template #default="scope">
-                <router-link
-                  :to="'/system/dict-data/index/' + scope.row.dictId"
-                  class="link-type"
-                >
-                  <span>{{ scope.row.dictType }}</span>
-                </router-link>
-              </template> -->
-              </el-table-column>
-              <el-table-column
-                label="电话号码"
-                align="center"
-                prop="phone"
-                :show-overflow-tooltip="true"
-              />
-
-              <el-table-column
-                label="检查单据"
-                width="250"
-                align="center"
-                prop=" fileInfo"
-                :show-overflow-tooltip="true"
-              >
-                <template #default="scope">
-                  <a class="cur-pointer" style="color: #409eff">{{
-                    scope.row.fileInfo
-                  }}</a>
-                </template>
-              </el-table-column>
-              <el-table-column
-                label=" 备注"
-                width="250"
-                align="center"
-                prop="remark"
-                :show-overflow-tooltip="true"
-              />
-              <el-table-column
-                label="创建时间"
-                align="center"
-                prop="creatAt"
-                width="180"
-              >
-                <!-- <template #default="scope">
-                <span>{{ parseTime(scope.row.createTime) }}</span>
-              </template> -->
-              </el-table-column>
+              <el-table-column label="文件" align="left" prop="fileName" />
               <el-table-column
                 label="操作"
                 align="center"
                 width="160"
                 class-name="small-padding fixed-width"
               >
-                <template #default="{ scope }">
+                <template #default="scope">
                   <!-- <el-button
                   link
                   type="primary"
@@ -244,29 +118,9 @@
 
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-        <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="字典名称" prop="dictName">
-            <el-input v-model="form.dictName" placeholder="请输入字典名称" />
-          </el-form-item>
-          <el-form-item label="字典类型" prop="dictType">
-            <el-input v-model="form.dictType" placeholder="请输入字典类型" />
-          </el-form-item>
-          <el-form-item label="状态" prop="status">
-            <el-radio-group v-model="form.status">
-              <el-radio
-                v-for="dict in sys_normal_disable"
-                :key="dict.value"
-                :label="dict.value"
-                >{{ dict.label }}</el-radio
-              >
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="备注" prop="remark">
-            <el-input
-              v-model="form.remark"
-              type="textarea"
-              placeholder="请输入内容"
-            ></el-input>
+        <el-form ref="dataRef" :model="form" :rules="rules" label-width="80px">
+          <el-form-item label="上传附件" prop="fileName">
+            <UploadFile />
           </el-form-item>
         </el-form>
         <template #footer>
@@ -282,191 +136,178 @@
 </template>
 
 <script setup name="Dict">
-import useDictStore from '@/store/modules/dict'
+import useDictStore from "@/store/modules/dict";
+// import {
+//   listType,
+//   getType,
+//   delType,
+//   addType,
+//   updateType,
+//   refreshCache,
+// } from "@/api/system/dict/type";
 import {
-  listType,
-  getType,
-  delType,
-  addType,
-  updateType,
-  refreshCache,
-} from '@/api/system/dict/type'
+  listFile,
+  getFile,
+  addFile,
+  updateFile,
+  delFile,
+} from "@/api/system/file";
 
-const { proxy } = getCurrentInstance()
-const { sys_normal_disable } = proxy.useDict('sys_normal_disable')
+import UploadFile from "/src/components/FileUpload/index.vue";
 
-const typeList = ref([])
-const open = ref(false)
-// const loading = ref(true);
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref('')
-const dateRange = ref([])
-const option = ref([
-  {
-    value: '0',
-    label: '全部',
-  },
-  {
-    value: '1',
-    label: '是',
-  },
-  {
-    value: '2',
-    label: '否',
-  },
-])
+const { proxy } = getCurrentInstance();
+const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+
+const typeList = ref([]);
+const open = ref(false);
+const loading = ref(true);
+const showSearch = ref(true);
+const ids = ref([]);
+const single = ref(true);
+const multiple = ref(true);
+const total = ref(0);
+const title = ref("");
+const dateRange = ref([]);
 
 const data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    dictName: undefined,
-    dictType: undefined,
-    status: undefined,
+    fileUrl: null,
+    fileName: null,
   },
-  rules: {
-    dictName: [
-      { required: true, message: '字典名称不能为空', trigger: 'blur' },
-    ],
-    dictType: [
-      { required: true, message: '字典类型不能为空', trigger: 'blur' },
-    ],
-  },
-})
+  rules: {},
+});
 
-const { queryParams, form, rules } = toRefs(data)
+const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型列表 */
 function getList() {
-  //   loading.value = true;
-  //   listType(proxy.addDateRange(queryParams.value, dateRange.value)).then(
-  //     (response) => {
-  //       typeList.value = response.rows;
-  //       total.value = response.total;
-  //       loading.value = false;
-  //     }
-  //   );
-  typeList.value = new Array(25).fill('').map((el, idx) => ({
-    name: '患者' + idx,
-    gender: idx % 2 ? '女' : '男',
-    age: idx,
-    phone: '电话号码' + idx,
-    isFirstVisit: '是',
-    isOrder: idx % 2 ? '是' : '否',
-    orderTime: idx % 2 ? '2023-05-10 10:10:10.00 ' : '-',
-    fileInfo: ' 20230513.pdf',
-    remark: '备注' + idx,
-    creatAt: '2023-05-10 10:10:10.00 ',
-    isShow: idx % 2 ? true : false,
-  }))
+    loading.value = true;
+    listFile(proxy.addDateRange(queryParams.value, dateRange.value)).then(
+      (response) => {
+        typeList.value = response.rows;
+        total.value = response.total;
+        loading.value = false;
+    console.log('object :>> ', response.rows);
+
+      }
+    );
+  // typeList.value = new Array(25).fill("").map((el, idx) => ({
+  //   name: "患者" + idx,
+  //   gender: idx % 2 ? "女" : "男",
+  //   age: idx,
+  //   phone: "电话号码" + idx,
+  //   isFirstVisit: "是",
+  //   isOrder: idx % 2 ? "是" : "否",
+  //   orderTime: idx % 2 ? "2023-05-10 10:10:10.00 " : "-",
+  //   fileInfo: " 20230513.pdf",
+  //   remark: "备注" + idx,
+  //   creatAt: "2023-05-10 10:10:10.00 ",
+  //   isShow: idx % 2 ? true : false,
+  // }));
 }
 /** 取消按钮 */
 function cancel() {
-  open.value = false
-  reset()
+  open.value = false;
+  reset();
 }
 /** 表单重置 */
 function reset() {
   form.value = {
-    dictId: undefined,
-    dictName: undefined,
-    dictType: undefined,
-    status: '0',
-    remark: undefined,
-  }
-  proxy.resetForm('dictRef')
+    id: null,
+    fileUrl: null,
+    fileName: null,
+  };
+  proxy.resetForm("dataRef");
 }
 /** 搜索按钮操作 */
 function handleQuery() {
-  queryParams.value.pageNum = 1
-  getList()
+  queryParams.value.pageNum = 1;
+  getList();
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  dateRange.value = []
-  proxy.resetForm('queryRef')
-  handleQuery()
+  dateRange.value = [];
+  proxy.resetForm("queryRef");
+  handleQuery();
 }
 /** 新增按钮操作 */
 function handleAdd() {
-  reset()
-  open.value = true
-  title.value = '添加字典类型'
+  reset();
+  open.value = true;
+  title.value = "添加文件";
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.dictId)
-  single.value = selection.length != 1
-  multiple.value = !selection.length
+  ids.value = selection.map((item) => item.id);
+  single.value = selection.length != 1;
+  multiple.value = !selection.length;
 }
 /** 修改按钮操作 */
 function handleUpdate(row) {
-  reset()
-  const dictId = row.dictId || ids.value
-  getType(dictId).then((response) => {
-    form.value = response.data
-    open.value = true
-    title.value = '修改字典类型'
-  })
+  reset();
+  const fileId = row.id || ids.value;
+  getType(fileId).then((response) => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "修改文件";
+  });
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs['dictRef'].validate((valid) => {
+  proxy.$refs["dataRef"].validate((valid) => {
     if (valid) {
-      if (form.value.dictId != undefined) {
-        updateType(form.value).then((response) => {
-          proxy.$modal.msgSuccess('修改成功')
-          open.value = false
-          getList()
-        })
+      if (form.value.id != undefined) {
+        updateFile(form.value).then((response) => {
+          proxy.$modal.msgSuccess("修改成功");
+          open.value = false;
+          getList();
+        });
       } else {
-        addType(form.value).then((response) => {
-          proxy.$modal.msgSuccess('新增成功')
-          open.value = false
-          getList()
-        })
+        addFile(form.value).then((response) => {
+          proxy.$modal.msgSuccess("上传成功");
+          open.value = false;
+          getList();
+        });
       }
     }
-  })
+  });
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const dictIds = row.dictId || ids.value
+  const fileId = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认删除字典编号为"' + dictIds + '"的数据项？')
+    .confirm('是否确认删除文件编号为"' + fileId + '"的数据项？')
     .then(function () {
-      return delType(dictIds)
+      return delFile(fileId);
     })
     .then(() => {
-      getList()
-      proxy.$modal.msgSuccess('删除成功')
+      getList();
+      proxy.$modal.msgSuccess("删除成功");
     })
-    .catch(() => {})
+    .catch(() => {});
 }
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    'system/dict/type/export',
+    "system/file/export",
     {
       ...queryParams.value,
     },
     `dict_${new Date().getTime()}.xlsx`
-  )
+  );
 }
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess('刷新成功')
-    useDictStore().cleanDict()
-  })
+    proxy.$modal.msgSuccess("刷新成功");
+    useDictStore().cleanDict();
+  });
 }
 
-getList()
+getList();
 </script>
 <style lang="scss">
 .form_card .el-card__body {
