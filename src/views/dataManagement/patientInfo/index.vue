@@ -294,16 +294,8 @@
   </div>
 </template>
 
-<script setup name="Dict">
+<script setup name="Patient">
 import useDictStore from "@/store/modules/dict";
-// import {
-//   listType,
-//   getType,
-//   delType,
-//   addType,
-//   updateType,
-//   refreshCache,
-// } from "@/api/system/dict/type";
 
 import {
   listPatient,
@@ -357,7 +349,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询字典类型列表 */
+/** 查询列表 */
 function getList() {
   loading.value = true;
   listPatient(proxy.addDateRange(queryParams.value)).then((response) => {
@@ -365,18 +357,6 @@ function getList() {
     total.value = response.total;
     loading.value = false;
   });
-  // typeList.value = new Array(25).fill("").map((el, idx) => ({
-  //   name: "患者" + idx,
-  //   gender: idx % 2 ? "女" : "男",
-  //   age: idx,
-  //   phone: "电话号码" + idx,
-  //   isFirstVisit: "是",
-  //   isOrder: idx % 2 ? "是" : "否",
-  //   orderTime: idx % 2 ? "2023-05-10 10:10:10.00 " : "-",
-  //   remark: "备注" + idx,
-  //   creatAt: "2023-05-10 10:10:10.00 ",
-  //   isShow: idx % 2 ? true : false,
-  // }));
 }
 /** 取消按钮 */
 function cancel() {

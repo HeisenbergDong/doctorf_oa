@@ -107,7 +107,7 @@
                   >取消</el-button
                 >
               </el-col>
-              <el-col :span="1.5">
+              <!-- <el-col :span="1.5">
                 <el-button
                   type="warning"
                   plain
@@ -116,7 +116,7 @@
                   v-hasPermi="['business:HOIS:export']"
                   >导出</el-button
                 >
-              </el-col>
+              </el-col> -->
               <!-- <el-col :span="1.5">
                 <el-button
                   type="danger"
@@ -327,15 +327,6 @@
 
 <script setup name="Dict">
 import useDictStore from "@/store/modules/dict";
-// import {
-//   listType,
-//   getType,
-//   delType,
-//   addType,
-//   updateType,
-//   refreshCache,
-// } from "@/api/system/dict/type";
-
 import {
   listWait,
   getWait,
@@ -412,7 +403,7 @@ onMounted(() => {
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询字典类型列表 */
+/** 查询列表 */
 function getList() {
   loading.value = true;
   listWait(proxy.addDateRange(queryParams.value)).then((response) => {
@@ -421,16 +412,6 @@ function getList() {
     loading.value = false;
     console.log("listWait :>> ", typeList.value);
   });
-  // typeList.value = new Array(25).fill("").map((el, idx) => ({
-  //   name: "患者" + idx,
-  //   gender: idx % 2 ? "女" : "男",
-  //   age: idx,
-  //   phone: "电话号码" + idx,
-  //   isFirstVisit: "是",
-  //   isOrder: "否",
-  //   remark: "备注" + idx,
-  //   creatAt: "2023-05-10 10:10:10.00 ",
-  // }));
 }
 /** 取消按钮 */
 function cancel() {

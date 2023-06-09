@@ -184,6 +184,12 @@
                 prop="pointPatientName"
               />
               <el-table-column
+                label="推荐人id"
+                align="center"
+                width="120"
+                prop="pointPatientId"
+              />
+              <el-table-column
                 label="推荐人电话"
                 align="center"
                 width="120"
@@ -221,6 +227,12 @@
                 align="center"
                 width="120"
                 prop="newPatientName"
+              />
+              <el-table-column
+                label="被推荐人id"
+                align="center"
+                width="120"
+                prop="newPatientId"
               />
               <el-table-column
                 label="被推荐人电话"
@@ -281,6 +293,12 @@
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="600px" append-to-body>
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="110px">
+          <el-form-item label="推荐人id" prop="pointPatientId" class="mr24">
+            <el-input
+              v-model="form.pointPatientId"
+              placeholder="请输入推荐人id"
+            />
+          </el-form-item>
           <el-form-item label="推荐人姓名" prop="pointPatientName" class="mr24">
             <el-input
               v-model="form.pointPatientName"
@@ -310,11 +328,32 @@
           <el-form-item label="眼睛片数" prop="glassesNum" class="mr24">
             <el-input v-model="form.glassesNum" placeholder="请输入眼睛片数" />
           </el-form-item>
+          <el-form-item label="折扣类型" prop="pointType" class="mr24">
+            <el-select
+              v-model="form.pointType"
+              placeholder="请选择"
+              class="w100i"
+            >
+              <el-option
+                v-for="item in option"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="折扣" prop="pointNum" class="mr24">
             <el-input v-model="form.pointNum" placeholder="请输入折扣" />
           </el-form-item>
           <el-form-item label="积分" prop="pointScore" class="mr24">
             <el-input v-model="form.pointScore" placeholder="请输入积分" />
+          </el-form-item>
+          <el-form-item label="被推荐人id" prop="newPatientId" class="mr24">
+            <el-input
+              v-model="form.newPatientId"
+              placeholder="请输入被推荐人id"
+            />
           </el-form-item>
           <el-form-item label="被推荐人姓名" prop="newPatientName" class="mr24">
             <el-input
@@ -395,18 +434,15 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+
 const option = ref([
   {
     value: "0",
-    label: "全部",
+    label: "折扣",
   },
   {
     value: "1",
-    label: "是",
-  },
-  {
-    value: "2",
-    label: "否",
+    label: "积分",
   },
 ]);
 

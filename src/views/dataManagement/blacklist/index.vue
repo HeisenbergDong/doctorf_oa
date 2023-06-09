@@ -309,7 +309,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询字典类型列表 */
+/** 查询列表 */
 function getList() {
   loading.value = true;
   listPatient(proxy.addDateRange(queryParams.value)).then((response) => {

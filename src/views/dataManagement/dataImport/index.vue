@@ -119,8 +119,8 @@
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="上传附件" prop="fileName">
-            <UploadFile />
+          <el-form-item label="上传附件" >
+            <UploadFile @update="updateFileFid" ref="fileUpload" />
           </el-form-item>
         </el-form>
         <template #footer>
@@ -168,6 +168,7 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+const fileUpload = ref("");
 
 const data = reactive({
   form: {},
@@ -184,16 +185,15 @@ const { queryParams, form, rules } = toRefs(data);
 
 /** 查询字典类型列表 */
 function getList() {
-    loading.value = true;
-    listFile(proxy.addDateRange(queryParams.value, dateRange.value)).then(
-      (response) => {
-        typeList.value = response.rows;
-        total.value = response.total;
-        loading.value = false;
-    console.log('object :>> ', response.rows);
-
-      }
-    );
+  loading.value = true;
+  listFile(proxy.addDateRange(queryParams.value, dateRange.value)).then(
+    (response) => {
+      typeList.value = response.rows;
+      total.value = response.total;
+      loading.value = false;
+      console.log("object :>> ", response.rows);
+    }
+  );
   // typeList.value = new Array(25).fill("").map((el, idx) => ({
   //   name: "患者" + idx,
   //   gender: idx % 2 ? "女" : "男",
@@ -257,23 +257,27 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["dataRef"].validate((valid) => {
-    if (valid) {
-      if (form.value.id != undefined) {
-        updateFile(form.value).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
-      } else {
-        addFile(form.value).then((response) => {
-          proxy.$modal.msgSuccess("上传成功");
-          open.value = false;
-          getList();
-        });
-      }
-    }
-  });
+  const res = fileUpload.value.uploadedSuccessfully();
+  console.log('res', res)
+  // proxy.$refs["dataRef"].validate((valid) => {
+  //   if (valid) {
+  //     if (form.value.id != undefined) {
+  //       updateFile(form.value).then((response) => {
+  //         proxy.$modal.msgSuccess("修改成功");
+  //         open.value = false;
+  //         getList();
+  //       });
+  //     } else {
+  //       const res = fileUpload.value.uploadedSuccessfully();
+  //       console.log("res :>> ", res);
+  //       addFile(form.value).then((response) => {
+  //         proxy.$modal.msgSuccess("上传成功");
+  //         open.value = false;
+  //         getList();
+  //       });
+  //     }
+  //   }
+  // });
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
@@ -306,7 +310,9 @@ function handleRefreshCache() {
     useDictStore().cleanDict();
   });
 }
-
+function updateFileFid ( e,obj,val) {
+  console.log(e,obj,val);
+};
 getList();
 </script>
 <style lang="scss">
