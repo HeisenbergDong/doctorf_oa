@@ -120,7 +120,7 @@
       <el-dialog :title="title" v-model="open" width="500px" append-to-body>
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="80px">
           <el-form-item label="上传附件" >
-            <UploadFile @update="updateFileFid" ref="fileUpload" />
+            <UploadFile ref="fileUpload"/>
           </el-form-item>
         </el-form>
         <template #footer>
@@ -137,14 +137,6 @@
 
 <script setup name="Dict">
 import useDictStore from "@/store/modules/dict";
-// import {
-//   listType,
-//   getType,
-//   delType,
-//   addType,
-//   updateType,
-//   refreshCache,
-// } from "@/api/system/dict/type";
 import {
   listFile,
   getFile,
@@ -153,7 +145,7 @@ import {
   delFile,
 } from "@/api/system/file";
 
-import UploadFile from "/src/components/FileUpload/index.vue";
+import UploadFile from "@/components/FileUpload/index.vue";
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -169,6 +161,7 @@ const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
 const fileUpload = ref("");
+const fileList = ref([]);
 
 const data = reactive({
   form: {},
@@ -183,7 +176,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询字典类型列表 */
+/** 查询列表 */
 function getList() {
   loading.value = true;
   listFile(proxy.addDateRange(queryParams.value, dateRange.value)).then(
@@ -257,8 +250,7 @@ function handleUpdate(row) {
 }
 /** 提交按钮 */
 function submitForm() {
-  const res = fileUpload.value.uploadedSuccessfully();
-  console.log('res', res)
+  console.log('fileUpload.value', fileUpload.value.handleUploadSuccess())
   // proxy.$refs["dataRef"].validate((valid) => {
   //   if (valid) {
   //     if (form.value.id != undefined) {

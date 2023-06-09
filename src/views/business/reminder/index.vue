@@ -1,6 +1,6 @@
 <template>
-  <!-- 提醒 -->
   <div>
+    <!-- 提醒 -->
     <div class="app-container">
       <el-row>
         <el-col class="card-box">
@@ -12,7 +12,7 @@
               v-show="showSearch"
               label-width="100px"
             >
-              <div class="flex-row just-between">
+              <div class="flex-row">
                 <div>
                   <el-form-item label="提醒时间" prop="remindDate">
                     <el-date-picker
@@ -47,8 +47,8 @@
                     <el-input
                       v-model="queryParams.docName"
                       placeholder="请输入提醒医生姓名"
-                      style="width: 240px"
                       clearable
+                      style="width: 240px"
                       @keyup.enter="handleQuery"
                     />
                   </el-form-item>
@@ -72,7 +72,7 @@
                   plain
                   icon="Plus"
                   @click="handleAdd"
-                  v-hasPermi="['system:dict:add']"
+                  v-hasPermi="['system:remind:add']"
                   >新增</el-button
                 >
               </el-col>
@@ -83,7 +83,7 @@
                 icon="Edit"
                 :disabled="single"
                 @click="handleUpdate"
-                v-hasPermi="['system:dict:edit']"
+                v-hasPermi="['system:remind:edit']"
                 >修改</el-button
               >
             </el-col> -->
@@ -94,7 +94,7 @@
                   icon="Delete"
                   :disabled="multiple"
                   @click="handleDelete"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['system:remind:remove']"
                   >取消</el-button
                 >
               </el-col>
@@ -104,7 +104,7 @@
                   plain
                   icon="Download"
                   @click="handleExport"
-                  v-hasPermi="['system:dict:export']"
+                  v-hasPermi="['system:remind:export']"
                   >导出</el-button
                 >
               </el-col>
@@ -114,7 +114,7 @@
                   plain
                   icon="Refresh"
                   @click="handleRefreshCache"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['system:remind:remove']"
                   >刷新缓存</el-button
                 >
               </el-col> -->
@@ -133,26 +133,23 @@
               <el-table-column type="selection" width="55" align="center" />
               <el-table-column
                 label="患者姓名"
-                align="center"
-                fixed="left"
                 width="120"
+                fixed="left"
+                align="center"
                 prop="patientName"
               />
               <el-table-column
                 label="患者电话"
-                align="center"
                 width="120"
+                align="center"
                 prop="patientPhone"
-                :show-overflow-tooltip="true"
               />
               <el-table-column
                 label="患者身份证"
-                align="center"
                 width="220"
+                align="center"
                 prop="patientIdCard"
-                :show-overflow-tooltip="true"
-              >
-              </el-table-column>
+              />
               <el-table-column
                 label="提醒时间"
                 align="center"
@@ -162,6 +159,7 @@
               </el-table-column>
               <el-table-column
                 label="提醒说明"
+                minWidth="220"
                 align="center"
                 prop="remindContent"
               >
@@ -171,8 +169,8 @@
               </el-table-column>
               <el-table-column
                 label="提醒医生姓名"
-                align="center"
                 width="120"
+                align="center"
                 prop="docName"
               />
               <el-table-column
@@ -186,7 +184,7 @@
                 label="操作"
                 align="center"
                 fixed="right"
-                width="220"
+                width="180"
                 class-name="small-padding fixed-width"
               >
                 <template #default="scope">
@@ -195,15 +193,15 @@
                     type="primary"
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
-                    v-hasPermi="['system:dict:edit']"
-                    >编辑
+                    v-hasPermi="['system:remind:edit']"
+                    >修改
                   </el-button>
                   <el-button
                     link
                     type="primary"
                     icon="Delete"
                     @click="handleDelete(scope.row)"
-                    v-hasPermi="['system:dict:remove']"
+                    v-hasPermi="['system:remind:remove']"
                     >取消</el-button
                   >
                 </template>
@@ -224,7 +222,11 @@
       <el-dialog :title="title" v-model="open" width="600px" append-to-body>
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="110px">
           <el-form-item label="患者姓名" prop="patientName" class="mr24">
-            <el-input v-model="form.patientName" placeholder="请输入患者姓名" />
+            <el-input
+              @focus="handChange"
+              v-model="form.patientName"
+              placeholder="请输入患者姓名"
+            />
           </el-form-item>
           <el-form-item label="患者电话" prop="patientPhone" class="mr24">
             <el-input
@@ -249,8 +251,8 @@
             >
             </el-date-picker>
           </el-form-item>
-          <el-form-item label="提醒说明" class="mr24">
-            <editor v-model="form.remindContent" :min-height="192" />
+          <el-form-item label="提醒说明"  class="mr24">
+            <editor v-model="content" :min-height="192" />
           </el-form-item>
           <el-form-item label="提醒医生姓名" prop="docName" class="mr24">
             <el-input v-model="form.docName" placeholder="请输入提醒医生姓名" />
@@ -261,13 +263,91 @@
               type="textarea"
               :autosize="{ minRows: 2, maxRows: 3 }"
               placeholder="请输入内容"
-            ></el-input>
+            />
           </el-form-item>
         </el-form>
         <template #footer>
           <div class="dialog-footer">
             <el-button type="primary" @click="submitForm">确 定</el-button>
             <el-button @click="cancel">取 消</el-button>
+          </div>
+        </template>
+      </el-dialog>
+      <!-- 选择患者 -->
+      <el-dialog :title="titleP" v-model="openP" width="650px" append-to-body>
+        <div>
+          <el-col>
+            <el-form
+              :model="queryPatientParams"
+              ref="queryPatientRef"
+              :inline="true"
+              v-show="showSearch"
+              label-width="80px"
+            >
+              <el-form-item label="患者姓名" prop="name">
+                <el-input
+                  v-model="queryPatientParams.name"
+                  placeholder="请输入患者姓名"
+                  clearable
+                  style="width: 240px"
+                />
+              </el-form-item>
+              <el-form-item>
+                <el-button @click="resetPatientQuery">重置</el-button>
+                <el-button type="primary" @click="handlePatientQuery"
+                  >查询</el-button
+                >
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col>
+            <el-table :data="patientList" style="width: 100%">
+              <el-table-column width="55" align="center" />
+              <el-table-column
+                label="患者姓名"
+                align="center"
+                fixed="left"
+                prop="name"
+              />
+              <el-table-column
+                label="患者电话"
+                align="center"
+                prop="phone"
+                :show-overflow-tooltip="true"
+              />
+              <el-table-column
+                label="操作"
+                align="center"
+                fixed="right"
+                width="80"
+                class-name="small-padding fixed-width"
+              >
+                <template #default="scope">
+                  <el-button
+                    link
+                    type="primary"
+                    icon="Edit"
+                    @click="handleChoose(scope.row)"
+                    v-hasPermi="['dataManagement:patientInfo:edit']"
+                    >选择</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-col>
+          <el-col style="padding-right: 8px">
+            <pagination
+              v-show="total > 0"
+              :total="total"
+              v-model:page="queryPatientParams.pageNum"
+              v-model:limit="queryPatientParams.pageSize"
+              @pagination="getPatientList"
+            />
+          </el-col>
+        </div>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="onCancel">取 消</el-button>
           </div>
         </template>
       </el-dialog>
@@ -295,8 +375,10 @@ import {
   updateRemind,
 } from "@/api/system/remind";
 
+import { listPatient } from "@/api/system/patient";
+
 const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+// const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
 const typeList = ref([]);
 const open = ref(false);
@@ -308,20 +390,11 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
-const option = ref([
-  {
-    value: "0",
-    label: "全部",
-  },
-  {
-    value: "1",
-    label: "是",
-  },
-  {
-    value: "2",
-    label: "否",
-  },
-]);
+const content = ref("");
+
+const patientList = ref([]);
+const titleP = ref("");
+const openP = ref(false);
 
 const data = reactive({
   form: {},
@@ -337,8 +410,19 @@ const data = reactive({
     docId: null,
     docName: null,
   },
+  queryPatientParams: {
+    pageNum: 1,
+    pageSize: 10,
+    name: null,
+    phone: null,
+    idCard: null,
+    black: null,
+    newPatient: null,
+  },
   rules: {
-    preDate: [{ required: true, message: "提醒时间不能为空", trigger: "blur" }],
+    remindDate: [
+      { required: true, message: "提醒时间不能为空", trigger: "blur" },
+    ],
     patientName: [
       { required: true, message: "患者姓名不能为空", trigger: "blur" },
     ],
@@ -351,28 +435,16 @@ const data = reactive({
   },
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const { queryParams, queryPatientParams, form, rules } = toRefs(data);
 
-/** 查询字典类型列表 */
+/** 查询列表 */
 function getList() {
   loading.value = true;
   listRemind(proxy.addDateRange(queryParams.value)).then((response) => {
     typeList.value = response.rows;
-    total.value = response.total;
+
     loading.value = false;
   });
-  // typeList.value = new Array(25).fill("").map((el, idx) => ({
-  //   name: "患者" + idx,
-  //   gender: idx % 2 ? "女" : "男",
-  //   age: idx,
-  //   phone: "电话号码" + idx,
-  //   isFirstVisit: "是",
-  //   isOrder: idx % 2 ? "是" : "否",
-  //   orderTime: idx % 2 ? "2023-05-10 10:10:10.00 " : "-",
-  //   remark: "备注" + idx,
-  //   creatAt: "2023-05-10 10:10:10.00 ",
-  //   isShow: idx % 2 ? true : false,
-  // }));
 }
 /** 取消按钮 */
 function cancel() {
@@ -419,16 +491,17 @@ function handleAdd() {
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map((item) => item.dictId);
+  ids.value = selection.map((item) => item.id);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const remindId = row.id || ids.value;
-  getRemind(remindId).then((response) => {
+  const id = row.dictId || ids.value;
+  getRemind(id).then((response) => {
     form.value = response.data;
+    content.value = response.data.remindContent;
     open.value = true;
     title.value = "修改提醒";
   });
@@ -444,6 +517,7 @@ function submitForm() {
           getList();
         });
       } else {
+        form.value.remindContent = content.value;
         addRemind(form.value).then((response) => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
@@ -455,11 +529,11 @@ function submitForm() {
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const remindId = row.id || ids.value;
+  const reservationIds = row.id || ids.value;
   proxy.$modal
-    .confirm('是否确认取消提醒编号为"' + remindId + '"的数据项？')
+    .confirm('是否确认取消提醒编号为"' + reservationIds + '"的数据项？')
     .then(function () {
-      return delRemind(remindId);
+      return delRemind(reservationIds);
     })
     .then(() => {
       getList();
@@ -470,7 +544,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    "system/remind/export",
+    "system/reservation/export",
     {
       ...queryParams.value,
     },
@@ -485,9 +559,44 @@ function handleRefreshCache() {
   });
 }
 
+// 选择患者弹窗
+function handChange() {
+  titleP.value = "选择患者";
+  openP.value = true;
+}
+/** 患者搜索按钮操作 */
+function handlePatientQuery() {
+  queryPatientParams.value.pageNum = 1;
+  getPatientList();
+}
+/** 患者重置按钮操作 */
+function resetPatientQuery() {
+  proxy.resetForm("queryPatientRef");
+  handlePatientQuery();
+}
+/** 查询患者列表 */
+function getPatientList() {
+  listPatient(proxy.addDateRange(queryPatientParams.value)).then((response) => {
+    patientList.value = response.rows;
+    total.value = response.total;
+  });
+}
+function handleChoose(row) {
+  console.log("row", row);
+  form.value.patientId = row.id;
+  form.value.patientName = row.name;
+  form.value.patientIdCard = row.idCard;
+  form.value.patientPhone = row.phone;
+  openP.value = false;
+  console.log("handleChoose", form.value);
+}
+function onCancel() {
+  openP.value = false;
+}
 getList();
+getPatientList();
 </script>
-<style lang="scss">
+<style  lang="scss" >
 .form_card .el-card__body {
   padding: 15px 20px 0px 20px !important;
 }

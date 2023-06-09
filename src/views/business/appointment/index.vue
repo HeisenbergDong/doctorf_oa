@@ -252,7 +252,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="预约说明" class="mr24">
-            <editor v-model="form.preContent" :min-height="192" />
+            <editor v-model="content" :min-height="192" />
           </el-form-item>
           <el-form-item label="预约医生姓名" prop="docName" class="mr24">
             <el-input v-model="form.docName" placeholder="请输入预约医生姓名" />
@@ -358,15 +358,6 @@
 
 <script setup name="Dict">
 import useDictStore from "@/store/modules/dict";
-// import {
-//   listType,
-//   getType,
-//   delType,
-//   addType,
-//   updateType,
-//   refreshCache,
-// } from "@/api/system/dict/type";
-
 import {
   listReservation,
   getReservation,
@@ -390,6 +381,7 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+const content = ref("");
 
 const patientList = ref([]);
 const titleP = ref("");
@@ -452,21 +444,14 @@ function cancel() {
 function reset() {
   form.value = {
     id: null,
+    preDate: null,
+    preContent: null,
     patientId: null,
     patientName: null,
     patientPhone: null,
-    patientStatus: null,
-    waitTime: null,
-    room: null,
-    adjustTime: null,
-    adjustDocId: null,
-    adjustDocName: null,
-    receptionDocId: null,
-    receptionDocName: null,
-    assignDocId: null,
-    assignDocName: null,
-    assignContent: null,
-    parentId: null,
+    patientIdCard: null,
+    docId: null,
+    docName: null,
     delFlag: null,
     createBy: null,
     createTime: null,
@@ -505,6 +490,7 @@ function handleUpdate(row) {
   const id = row.dictId || ids.value;
   getReservation(id).then((response) => {
     form.value = response.data;
+    content.value = response.data.preContent;
     open.value = true;
     title.value = "修改预约";
   });
@@ -520,6 +506,7 @@ function submitForm() {
           getList();
         });
       } else {
+        form.value.preContent = content.value;
         addReservation(form.value).then((response) => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;

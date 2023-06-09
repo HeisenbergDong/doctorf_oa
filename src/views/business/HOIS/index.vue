@@ -380,7 +380,6 @@ const data = reactive({
   },
 });
 
-
 // onUnmounted(() => {});
 
 // 语音播报
@@ -393,9 +392,16 @@ function speechInit() {
   });
 }
 function handleAssign(row) {
-  speech.value.speak({ text: `请${row.id}号患者到${row.room}就诊` }).then(() => {
-    console.log("读取成功");
+  form.value.id = row.id;
+  addWait(form.value).then((response) => {
+    open.value = false;
+    getList();
   });
+  speech.value
+    .speak({ text: `请${row.id}号患者到${row.room}就诊` })
+    .then(() => {
+      console.log("读取成功");
+    });
 }
 onMounted(() => {
   speechInit();
