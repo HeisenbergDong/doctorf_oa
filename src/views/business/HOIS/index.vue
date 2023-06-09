@@ -345,8 +345,6 @@ import {
 } from "@/api/system/wait";
 import { onMounted } from "vue";
 // import { onUnmounted } from "vue";
-// import SockJS from "sockjs-client";
-// import Stomp from "stompjs";
 import Speech from "speak-tts";
 
 const { proxy } = getCurrentInstance();
@@ -390,19 +388,7 @@ const data = reactive({
     ],
   },
 });
-// 链接websocket
-// let socket = new SockJS("http://192.168.3.130:9527/socket-js-stomp");
-// let stompClient = Stomp.over(socket);
-// const headers = {
-//   "user-type": "doc_ui",
-//   "user-id": 1,
-// };
-// stompClient.connect(headers, {}, function (frame) {
-//   stompClient.subscribe("/topic/game_chat", function (message) {
-//     console.warn(message.body);
-//     console.warn(JSON.parse(message.body));
-//   });
-// });
+
 
 // onUnmounted(() => {});
 
