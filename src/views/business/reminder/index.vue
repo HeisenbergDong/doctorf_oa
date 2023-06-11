@@ -255,7 +255,7 @@
             <editor v-model="content" :min-height="192" />
           </el-form-item>
           <el-form-item label="提醒医生姓名" prop="docName" class="mr24">
-            <el-input v-model="form.docName" placeholder="请输入提醒医生姓名" />
+            <el-input @focus="handChangeDoc" v-model="form.docName" placeholder="请输入提醒医生姓名" />
           </el-form-item>
           <el-form-item label="备注" prop="remark" class="mr24">
             <el-input
@@ -351,6 +351,84 @@
           </div>
         </template>
       </el-dialog>
+      <!-- 选择医生 -->
+      <el-dialog :title="titleD" v-model="openD" width="650px" append-to-body>
+        <div>
+          <el-col>
+            <el-form
+              :model="queryDocParams"
+              ref="queryPatientRef"
+              :inline="true"
+              v-show="showSearch"
+              label-width="80px"
+            >
+              <el-form-item label="医生姓名" prop="name">
+                <el-input
+                  v-model="queryDocParams.name"
+                  placeholder="请输入医生姓名"
+                  clearable
+                  style="width: 240px"
+                />
+              </el-form-item>
+              <el-form-item>
+                <el-button @click="resetDocQuery">重置</el-button>
+                <el-button type="primary" @click="handleDocQuery"
+                  >查询</el-button
+                >
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col>
+            <el-table :data="docList" style="width: 100%">
+              <el-table-column width="55" align="center" />
+              <el-table-column
+                label="医生姓名"
+                align="center"
+                fixed="left"
+                prop="userName"
+              />
+              <el-table-column
+                label="医生电话"
+                align="center"
+                prop="phonenumber"
+                :show-overflow-tooltip="true"
+              />
+              <el-table-column
+                label="操作"
+                align="center"
+                fixed="right"
+                width="80"
+                class-name="small-padding fixed-width"
+              >
+                <template #default="scope">
+                  <el-button
+                    link
+                    type="primary"
+                    icon="Edit"
+                    @click="handleChooseDoc(scope.row)"
+                    v-hasPermi="['dataManagement:doc:edit']"
+                    >选择</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-col>
+          <el-col style="padding-right: 8px">
+            <pagination
+              v-show="total > 0"
+              :total="total"
+              v-model:page="queryDocParams.pageNum"
+              v-model:limit="queryDocParams.pageSize"
+              @pagination="getDocList"
+            />
+          </el-col>
+        </div>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="onCancelDoc">取 消</el-button>
+          </div>
+        </template>
+      </el-dialog>
     </div>
     <el-backtop></el-backtop>
   </div>
@@ -376,6 +454,7 @@ import {
 } from "@/api/system/remind";
 
 import { listPatient } from "@/api/system/patient";
+import { listUser } from "@/api/system/user";
 
 const { proxy } = getCurrentInstance();
 // const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -395,6 +474,10 @@ const content = ref("");
 const patientList = ref([]);
 const titleP = ref("");
 const openP = ref(false);
+
+const docList = ref([]);
+const titleD = ref("");
+const openD = ref(false);
 
 const data = reactive({
   form: {},
@@ -419,23 +502,32 @@ const data = reactive({
     black: null,
     newPatient: null,
   },
+  queryDocParams: {
+    pageNum: 1,
+    pageSize: 10,
+    name: null,
+    phone: null,
+    idCard: null,
+    black: null,
+    newPatient: null,
+  },
   rules: {
     remindDate: [
       { required: true, message: "提醒时间不能为空", trigger: "blur" },
     ],
     patientName: [
-      { required: true, message: "患者姓名不能为空", trigger: "blur" },
+      { required: true, message: "患者姓名不能为空" },
     ],
     patientPhone: [
       { required: true, message: "患者电话不能为空", trigger: "blur" },
     ],
     docName: [
-      { required: true, message: "提醒医生姓名不能为空", trigger: "blur" },
+      { required: true, message: "提醒医生姓名不能为空" },
     ],
   },
 });
 
-const { queryParams, queryPatientParams, form, rules } = toRefs(data);
+const { queryParams, queryPatientParams, queryDocParams, form, rules } = toRefs(data);
 
 /** 查询列表 */
 function getList() {
@@ -593,8 +685,43 @@ function handleChoose(row) {
 function onCancel() {
   openP.value = false;
 }
+
+// 选择医生弹窗
+function handChangeDoc() {
+  titleD.value = "选择医生";
+  openD.value = true;
+}
+/** 医生搜索按钮操作 */
+function handleDocQuery() {
+  queryDocParams.value.pageNum = 1;
+  getDocList();
+}
+/** 医生重置按钮操作 */
+function resetDocQuery() {
+  proxy.resetForm("queryDocRef");
+  handleDocQuery();
+}
+/** 查询医生列表 */
+function getDocList() {
+  listUser(proxy.addDateRange(queryDocParams.value)).then((response) => {
+    docList.value = response.rows;
+    total.value = response.total;
+  });
+}
+function handleChooseDoc(row) {
+  console.log("row", row);
+  form.value.docId = row.userId;
+  form.value.docName = row.userName;
+  openD.value = false;
+  console.log("handleChoose", form.value);
+}
+function onCancelDoc() {
+  openD.value = false;
+}
+
 getList();
 getPatientList();
+getDocList();
 </script>
 <style  lang="scss" >
 .form_card .el-card__body {

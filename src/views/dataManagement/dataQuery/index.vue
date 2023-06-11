@@ -273,22 +273,22 @@ function getList() {
     total.value = response.total;
     // loading.value = false;
   });
-  typeList.value = new Array(25).fill("").map((el, idx) => ({
-    name: "患者" + idx,
-    gender: idx % 2 ? "女" : "男",
-    age: idx,
-    phone: "电话号码" + idx,
-    doctor: "医生" + idx,
-    orderTime: idx % 2 ? "2023-05-10 10:10:10.00 " : "-",
-    remark: "备注" + idx,
-    creatAt: "2023-05-10 10:10:10.00 ",
-    isShow: idx % 2 ? true : false,
+  // typeList.value = new Array(25).fill("").map((el, idx) => ({
+  //   name: "患者" + idx,
+  //   gender: idx % 2 ? "女" : "男",
+  //   age: idx,
+  //   phone: "电话号码" + idx,
+  //   doctor: "医生" + idx,
+  //   orderTime: idx % 2 ? "2023-05-10 10:10:10.00 " : "-",
+  //   remark: "备注" + idx,
+  //   creatAt: "2023-05-10 10:10:10.00 ",
+  //   isShow: idx % 2 ? true : false,
 
-    doc: "医生" + idx,
-    dayNum: "1" + idx,
-    monthNum: "1" + idx,
-    sum: "1" + idx,
-  }));
+  //   doc: "医生" + idx,
+  //   dayNum: "1" + idx,
+  //   monthNum: "1" + idx,
+  //   sum: "1" + idx,
+  // }));
 }
 /** 取消按钮 */
 function cancel() {
