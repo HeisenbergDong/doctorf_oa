@@ -253,7 +253,6 @@ function submitForm() {
         open.value = true;
       })
       .catch((response) => {
-        proxy.$modal.msgError("登记失败");
       });
   });
 }

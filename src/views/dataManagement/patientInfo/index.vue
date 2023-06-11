@@ -262,7 +262,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="是否新患者" prop="newPatient" class="mr24">
+          <!-- <el-form-item label="是否新患者" prop="newPatient" class="mr24">
             <el-select v-model="form.newPatient" placeholder="请选择" class="w100i">
               <el-option
                 v-for="item in option"
@@ -272,7 +272,7 @@
               >
               </el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="备注" prop="remark" class="mr24">
             <el-input
               v-model="form.remark"
