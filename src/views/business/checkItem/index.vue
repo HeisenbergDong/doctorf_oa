@@ -194,13 +194,17 @@
             <el-card class="font18 fontW600" shadow="never"> 咨询室 </el-card>
           </el-col>
           <el-col class="card-box">
-            <WrittenConsent :id="id" :data="formData" @update="updateFormAction"/>
+            <WrittenConsent
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
           </el-col>
           <el-col class="card-box">
             <el-card class="font18 fontW600" shadow="never"> 其他单据 </el-card>
           </el-col>
           <el-col class="card-box">
-            <Documents :id="id" :data="formData" @update="updateFormAction"/>
+            <Documents :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
         </el-col>
       </el-col>
@@ -225,7 +229,7 @@
                   </div>
                   <div>
                     <el-button
-                      v-if="index===0"
+                      v-if="index === 0"
                       @click="choosePatient(item)"
                       style="height: 28px"
                       type="text"
@@ -384,33 +388,50 @@ const choosePatient = (item) => {
   docData.value = [];
   docForm.value = {};
   getForm(item.id).then((res) => {
-    console.log(res);
+    console.log("getForm", res);
   });
 };
 const updateFormAction = async (e, val) => {
   const res = await getForm(id.value);
   console.log("updateFormAction  =--- ", res);
-  // updateForm({
 
-  // });
   console.log("e :>> ", e, val);
   const { regNo, patientId, patientName, patientPhone, patientIdCard } =
     patientInfo.value;
-  addForm({
-    regNo,
-    patientId,
-    patientName,
-    patientPhone,
-    patientIdCard,
-    docId: docForm.value.docId,
-    room: docForm.value.room,
-    formContent: e === false ? val : "",
-    fileUrl: e === true ? val : "",
-    type: "form",
-    formTime: moment().format("YYYY-MM-DD"),
-  }).then((res1) => {
-    console.log("addForm --- ", res1);
-  });
+
+  if (res) {
+    updateForm({
+      regNo,
+      patientId,
+      patientName,
+      patientPhone,
+      patientIdCard,
+      docId: docForm.value.docId,
+      room: docForm.value.room,
+      formContent: res.formContent.push(e === false ? val : "") ,
+      fileUrl: res.fileUrl.push(e === true ? val : ""),
+      type: "form",
+      formTime: moment().format("YYYY-MM-DD HH:mm:ss"),
+    }).then((res1) => {
+      console.log("addForm --- ", res1);
+    });
+  } else {
+    addForm({
+      regNo,
+      patientId,
+      patientName,
+      patientPhone,
+      patientIdCard,
+      docId: docForm.value.docId,
+      room: docForm.value.room,
+      formContent: e === false ? val : "",
+      fileUrl: e === true ? val : "",
+      type: "form",
+      formTime: moment().format("YYYY-MM-DD HH:mm:ss"),
+    }).then((res1) => {
+      console.log("addForm --- ", res1);
+    });
+  }
 };
 const onDocChange = () => {
   console.log(docData.value, "----docData");
