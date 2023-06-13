@@ -15,7 +15,7 @@
             :model="patientInfo"
           >
             <el-form-item label="辐辏" class="font14">
-              <el-select v-model="patientInfo.convergence" placeholder="请选择">
+              <el-select v-model="patientInfo.convergenceOptometry" placeholder="请选择">
                 <el-option
                   v-for="item in convergeOptions"
                   :key="item.value"
@@ -27,7 +27,7 @@
             </el-form-item>
             <el-form-item label="眼位">
               <el-input
-                v-model="patientInfo.positionOne"
+                v-model="patientInfo.positionOneOptometry"
                 placeholder="请输入"
                 class="mr24 w180i"
               ></el-input>
@@ -35,14 +35,14 @@
                 /33cm;
               </div>
               <el-input
-                v-model="patientInfo.positionTwo"
+                v-model="patientInfo.positionTwoOptometry"
                 placeholder="请输入"
                 class="ml24 w180i"
               ></el-input>
               <div style="position: absolute; top: 0; right: -38px">/6cm;</div>
             </el-form-item>
             <el-form-item label="主导眼">
-              <el-select v-model="patientInfo.dominant" placeholder="请选择">
+              <el-select v-model="patientInfo.dominantOptometry" placeholder="请选择">
                 <el-option
                   v-for="item in euphoropsiaOptions"
                   :key="item.value"
@@ -63,20 +63,18 @@
   </div>
 </template>
   
-  <script setup name="subjectiveFour">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
+<script setup name="subjectiveFourRoom">
 
+const emit = defineEmits(['update']);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data:{
+    type:Object,
+    default:()=>({})
+  }
 });
 const convergeOptions = ref([
   {
@@ -98,6 +96,9 @@ const euphoropsiaOptions = ref([
     label: "左",
   },
 ]);
+watch(()=>props.data,(val)=>{
+  patientInfo.value = val;
+})
 const form = ref({
   id: "",
   type: "",
@@ -112,64 +113,33 @@ const form = ref({
 });
 
 const patientInfo = ref({
-  convergence: "",
-  positionOne: "",
-  positionTwo: "",
-  dominant: "",
+  convergenceOptometry: "",
+  positionOneOptometry: "",
+  positionTwoOptometry: "",
+  dominantOptometry: "",
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-      };
-    }
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
-    convergence: "",
-    positionOne: "",
-    positionTwo: "",
-    dominant: "",
+    convergenceOptometry: "",
+    positionOneOptometry: "",
+    positionTwoOptometry: "",
+    dominantOptometry: "",
   };
 }
 /** 提交按钮 */
 function submitForm() {
   let sq = {
-    convergence: patientInfo.value.convergence,
-    positionOne: patientInfo.value.positionOne,
-    positionTwo: patientInfo.value.positionTwo,
-    dominant: patientInfo.value.dominant,
+    convergenceOptometry: patientInfo.value.convergenceOptometry,
+    positionOneOptometry: patientInfo.value.positionOneOptometry,
+    positionTwoOptometry: patientInfo.value.positionTwoOptometry,
+    dominantOptometry: patientInfo.value.dominantOptometry,
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({subjectiveFourRoom:sq});
+  emit('update',contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
+  
 }
-getData();
 </script>
   
 <style>

@@ -19,13 +19,13 @@
                   {{ "玻璃体L：" }}
                 </div>
                 <el-form-item label="玻璃体：" class="ml42">
-                  <el-checkbox-group v-model="patientInfo.vitreumL">
+                  <el-checkbox-group v-model="patientInfo.vitreumRoomL">
                     <el-checkbox :label="'正常'">正常</el-checkbox>
-                    <el-checkbox :label="textarea">
+                    <el-checkbox :label="vitreumTextRoomL">
                       <el-input
                         type="textarea"
                         placeholder="其他"
-                        v-model="textarea"
+                        v-model="vitreumTextRoomL"
                         :autosize="{ minRows: 1, maxRows: 2 }"
                         show-word-limit
                         style="width: 180px"
@@ -40,13 +40,13 @@
                   {{ "玻璃体R：" }}
                 </div>
                 <el-form-item label="玻璃体：" class="ml42">
-                  <el-checkbox-group v-model="patientInfo.vitreumR">
+                  <el-checkbox-group v-model="patientInfo.vitreumRoomR">
                     <el-checkbox :label="'正常'">正常</el-checkbox>
-                    <el-checkbox :label="textarea">
+                    <el-checkbox :label="vitreumTextRoomR">
                       <el-input
                         type="textarea"
                         placeholder="其他"
-                        v-model="textarea"
+                        v-model="vitreumTextRoomR"
                         :autosize="{ minRows: 1, maxRows: 2 }"
                         show-word-limit
                         style="width: 180px"
@@ -63,7 +63,7 @@
                   {{ "视网膜L：" }}
                 </div>
                 <el-form-item label="视网膜：" class="ml42">
-                  <el-checkbox-group v-model="patientInfo.retinaL">
+                  <el-checkbox-group v-model="patientInfo.retinaRoomL">
                     <el-checkbox :label="'正常'">正常</el-checkbox>
                     <el-checkbox :label="'豹纹状改变'">豹纹状改变</el-checkbox>
                     <el-checkbox :label="'脉络膜环'">脉络膜环</el-checkbox>
@@ -74,11 +74,11 @@
                     <el-checkbox :label="'出血'">出血</el-checkbox>
                     <el-checkbox :label="'渗出'">渗出</el-checkbox>
                     <el-checkbox :label="'A/V'">A/V</el-checkbox>
-                    <el-checkbox :label="textarea">
+                    <el-checkbox :label="retinaTextRoomL">
                       <el-input
                         type="textarea"
                         placeholder="其他"
-                        v-model="textarea"
+                        v-model="retinaTextRoomL"
                         :autosize="{ minRows: 1, maxRows: 2 }"
                         show-word-limit
                         style="width: 180px"
@@ -93,7 +93,7 @@
                   {{ "视网膜R：" }}
                 </div>
                 <el-form-item label="视网膜：" class="ml42">
-                  <el-checkbox-group v-model="patientInfo.retinaR">
+                  <el-checkbox-group v-model="patientInfo.retinaRoomR">
                     <el-checkbox :label="'正常'">正常</el-checkbox>
                     <el-checkbox :label="'豹纹状改变'">豹纹状改变</el-checkbox>
                     <el-checkbox :label="'脉络膜环'">脉络膜环</el-checkbox>
@@ -104,11 +104,11 @@
                     <el-checkbox :label="'出血'">出血</el-checkbox>
                     <el-checkbox :label="'渗出'">渗出</el-checkbox>
                     <el-checkbox :label="'A/V'">A/V</el-checkbox>
-                    <el-checkbox :label="textarea">
+                    <el-checkbox :label="retinaTextRoomR">
                       <el-input
                         type="textarea"
                         placeholder="其他"
-                        v-model="textarea"
+                        v-model="retinaTextRoomR"
                         :autosize="{ minRows: 1, maxRows: 2 }"
                         show-word-limit
                         style="width: 180px"
@@ -121,8 +121,8 @@
             </el-row>
           </el-row>
           <el-row class="card-btn">
-            <el-button>重置</el-button>
-            <el-button type="primary">提交</el-button>
+            <el-button @click="resetQuery">重置</el-button>
+            <el-button type="primary" @click="submitForm">提交</el-button>
           </el-row>
         </el-form>
       </div>
@@ -131,20 +131,25 @@
 </template>
   
 <script setup name="fundusTestRoom">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
 
+const emit = defineEmits(['update']);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data:{
+    type:Object,
+    default:()=>({})
+  }
 });
+watch(()=>props.data,(val)=>{
+  patientInfo.value = val;
+})
+const vitreumTextRoomL = ref("");
+const vitreumTextRoomR = ref("");
+const retinaTextRoomL = ref("");
+const retinaTextRoomR = ref("");
 const form = ref({
   id: "",
   type: "",
@@ -159,70 +164,32 @@ const form = ref({
 });
 
 const patientInfo = ref({
-  vitreumL: [],
-  vitreumR: [],
-  retinaL: [],
-  retinaR: [],
+  vitreumRoomL: [],
+  vitreumRoomR: [],
+  retinaRoomL: [],
+  retinaRoomR: [],
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-        vitreumL: dataJson.value.vitreumL.split(),
-        vitreumR: dataJson.value.vitreumR.split(),
-        retinaL: dataJson.value.retinaL.split(),
-        retinaR: dataJson.value.retinaR.split(),
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
-    vitreumL: [],
-    vitreumR: [],
-    retinaL: [],
-    retinaR: [],
+    vitreumRoomL: [],
+    vitreumRoomR: [],
+    retinaRoomL: [],
+    retinaRoomR: [],
   };
 }
 /** 提交按钮 */
 function submitForm() {
   let sq = {
-    vitreumL: patientInfo.value.vitreumL.toString(),
-    vitreumR: patientInfo.value.vitreumR.toString(),
-    retinaL: patientInfo.value.retinaL.toString(),
-    retinaR: patientInfo.value.retinaR.toString(),
+    vitreumRoomL: patientInfo.value.vitreumRoomL.toString(),
+    vitreumRoomR: patientInfo.value.vitreumRoomR.toString(),
+    retinaRoomL: patientInfo.value.retinaRoomL.toString(),
+    retinaRoomR: patientInfo.value.retinaRoomR.toString(),
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({fundusTestRoom:sq});
+  emit('update',contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
-getData();
 </script>
   
   <style>

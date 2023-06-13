@@ -60,20 +60,23 @@
 </template>
   
 <script setup name="handlingSuggestion">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
-
+const emit = defineEmits(["update"]);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 });
+watch(
+  () => props.data,
+  (val) => {
+    patientInfo.value = val;
+  }
+);
 const form = ref({
   id: "",
   type: "",
@@ -92,26 +95,6 @@ const patientInfo = ref({
   num: "",
   opinion: [],
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-        artificialTears: dataJson.value.artificialTears.split(),
-        opinion: dataJson.value.opinion.split(),
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
@@ -127,26 +110,10 @@ function submitForm() {
     num: patientInfo.value.num,
     opinion: patientInfo.value.opinion.toString(),
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({ handlingSuggestion: sq });
+  emit("update", contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
-getData();
 </script>
   
   <style>

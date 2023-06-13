@@ -21,11 +21,11 @@
                 <el-form-item label="玻璃体：" class="ml42">
                   <el-checkbox-group v-model="patientInfo.vitreumL">
                     <el-checkbox :label="'正常'">正常</el-checkbox>
-                    <el-checkbox :label="textarea">
+                    <el-checkbox :label="vitreumTextL">
                       <el-input
                         type="textarea"
                         placeholder="其他"
-                        v-model="textarea"
+                        v-model="vitreumTextL"
                         :autosize="{ minRows: 1, maxRows: 2 }"
                         show-word-limit
                         style="width: 180px"
@@ -42,11 +42,11 @@
                 <el-form-item label="玻璃体：" class="ml42">
                   <el-checkbox-group v-model="patientInfo.vitreumR">
                     <el-checkbox :label="'正常'">正常</el-checkbox>
-                    <el-checkbox :label="textarea">
+                    <el-checkbox :label="vitreumTextR">
                       <el-input
                         type="textarea"
                         placeholder="其他"
-                        v-model="textarea"
+                        v-model="vitreumTextR"
                         :autosize="{ minRows: 1, maxRows: 2 }"
                         show-word-limit
                         style="width: 180px"
@@ -74,11 +74,11 @@
                     <el-checkbox :label="'出血'">出血</el-checkbox>
                     <el-checkbox :label="'渗出'">渗出</el-checkbox>
                     <el-checkbox :label="'A/V'">A/V</el-checkbox>
-                    <el-checkbox :label="textarea">
+                    <el-checkbox :label="retinaTextL">
                       <el-input
                         type="textarea"
                         placeholder="其他"
-                        v-model="textarea"
+                        v-model="retinaTextL"
                         :autosize="{ minRows: 1, maxRows: 2 }"
                         show-word-limit
                         style="width: 180px"
@@ -104,11 +104,11 @@
                     <el-checkbox :label="'出血'">出血</el-checkbox>
                     <el-checkbox :label="'渗出'">渗出</el-checkbox>
                     <el-checkbox :label="'A/V'">A/V</el-checkbox>
-                    <el-checkbox :label="textarea">
+                    <el-checkbox :label="retinaTextR">
                       <el-input
                         type="textarea"
                         placeholder="其他"
-                        v-model="textarea"
+                        v-model="retinaTextR"
                         :autosize="{ minRows: 1, maxRows: 2 }"
                         show-word-limit
                         style="width: 180px"
@@ -121,8 +121,8 @@
             </el-row>
           </el-row>
           <el-row class="card-btn">
-            <el-button>重置</el-button>
-            <el-button type="primary">提交</el-button>
+            <el-button @click="resetQuery">重置</el-button>
+            <el-button type="primary" @click="submitForm">提交</el-button>
           </el-row>
         </el-form>
       </div>
@@ -131,20 +131,25 @@
 </template>
   
 <script setup name="fundusTest">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
 
+const emit = defineEmits(['update']);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data:{
+    type:Object,
+    default:()=>({})
+  }
 });
+watch(()=>props.data,(val)=>{
+  patientInfo.value = val;
+})
+const vitreumTextL = ref("");
+const vitreumTextR = ref("");
+const retinaTextL = ref("");
+const retinaTextR = ref("");
 const form = ref({
   id: "",
   type: "",
@@ -164,28 +169,6 @@ const patientInfo = ref({
   retinaL: [],
   retinaR: [],
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-        vitreumL: dataJson.value.vitreumL.split(),
-        vitreumR: dataJson.value.vitreumR.split(),
-        retinaL: dataJson.value.retinaL.split(),
-        retinaR: dataJson.value.retinaR.split(),
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
@@ -203,26 +186,10 @@ function submitForm() {
     retinaL: patientInfo.value.retinaL.toString(),
     retinaR: patientInfo.value.retinaR.toString(),
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({fundusTest:sq});
+  emit('update',contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
-getData();
 </script>
   
   <style>

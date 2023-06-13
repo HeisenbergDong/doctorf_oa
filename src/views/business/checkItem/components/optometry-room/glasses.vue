@@ -25,13 +25,6 @@
 </template>
       
 <script setup name="glasses">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
 
 const props = defineProps({
   id: {
@@ -78,22 +71,7 @@ const patientInfo = ref({
   positionTwo: "",
   dominant: "",
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-      };
-    }
-    console.log("getForm", response, isInfo.value);
-  });
-}
+
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
@@ -113,24 +91,7 @@ function submitForm() {
   };
   const contant = JSON.stringify(sq);
   //   const obj = JSON.parse(contant);
-  console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
-getData();
 </script>
       
 <style>

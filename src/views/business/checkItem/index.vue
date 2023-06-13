@@ -22,141 +22,186 @@
               >
                 <el-form-item label="姓名" class="font14">
                   <el-input
-                    v-model="patientInfo.name"
+                    v-model="patientInfo.patientName"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="性别">
+                <el-form-item label="手机号">
                   <el-input
-                    v-model="patientInfo.gender"
+                    v-model="patientInfo.patientPhone"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="年龄">
+                <el-form-item label="身份证号">
                   <el-input
-                    v-model="patientInfo.age"
+                    v-model="patientInfo.patientIdCard"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="是否首次">
+                <!-- <el-form-item label="是否首次">
                   <el-radio-group v-model="patientInfo.isFirstVisit">
                     <el-radio-button label="是"></el-radio-button>
                     <el-radio-button label="否"></el-radio-button>
                   </el-radio-group>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
             </div>
           </el-card>
         </el-col>
-        <el-col class="card-box">
-          <el-card class="font18 fontW600" shadow="never"> 特殊检查室 </el-card>
-        </el-col>
-        <el-col class="card-box">
-          <SightTest :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <SubjectiveFour :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <ComputerRefraction :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <CorneaTopography :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <BiometricInstrument :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <Endothelial :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <MRT :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <DryEyeTest :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <FundusTest :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <IOP :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <UpComputerRefraction :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <UpCorneaTopography :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <el-card class="font18 fontW600" shadow="never"> 验光室 </el-card>
-        </el-col>
-        <el-col class="card-box">
-          <SightTestRoom :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <Skiascopy :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <VisualFunctionTest :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <SubjectiveFourRoom :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <SubjectiveRefraction :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <TryOn :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <UpSubjectiveRefraction :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <UpSkiascopy :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <Glasses :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <el-card class="font18 fontW600" shadow="never">
-            诊室1-1 诊室1-2 诊室3-1 诊室3-2
-          </el-card>
-        </el-col>
-        <el-col class="card-box">
-          <SlitLamp :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <handlingSuggestion :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <FundusTestRoom :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <skiascopyRoom :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <el-card class="font18 fontW600" shadow="never"> 摘戴室 </el-card>
-        </el-col>
-        <el-col class="card-box">
-          <TryOnRoom :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <SliceExtraction :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <Train :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <el-card class="font18 fontW600" shadow="never"> 咨询室 </el-card>
-        </el-col>
-        <el-col class="card-box">
-          <WrittenConsent :id="id" />
-        </el-col>
-        <el-col class="card-box">
-          <el-card class="font18 fontW600" shadow="never"> 其他单据 </el-card>
-        </el-col>
-        <el-col class="card-box">
-          <Documents :id="id" />
+        <el-col>
+          <!-- v-if="id && docForm.docId" -->
+          <el-col class="card-box">
+            <el-card class="font18 fontW600" shadow="never">
+              特殊检查室
+            </el-card>
+          </el-col>
+          <el-col class="card-box">
+            <SightTest :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <SubjectiveFour
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <ComputerRefraction
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <CorneaTopography
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <BiometricInstrument :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <Endothelial :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <MRT :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <DryEyeTest :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <FundusTest :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <IOP :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <UpComputerRefraction
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <UpCorneaTopography
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <el-card class="font18 fontW600" shadow="never"> 验光室 </el-card>
+          </el-col>
+          <el-col class="card-box">
+            <SightTestRoom
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <Skiascopy :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <VisualFunctionTest :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <SubjectiveFourRoom
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <SubjectiveRefraction :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <TryOn :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <UpSubjectiveRefraction :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <UpSkiascopy :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <Glasses :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <el-card class="font18 fontW600" shadow="never">
+              诊室1-1 诊室1-2 诊室3-1 诊室3-2
+            </el-card>
+          </el-col>
+          <el-col class="card-box">
+            <SlitLamp :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <handlingSuggestion
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <FundusTestRoom
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <skiascopyRoom
+              :id="id"
+              :data="formData"
+              @update="updateFormAction"
+            />
+          </el-col>
+          <el-col class="card-box">
+            <el-card class="font18 fontW600" shadow="never"> 摘戴室 </el-card>
+          </el-col>
+          <el-col class="card-box">
+            <TryOnRoom :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <SliceExtraction :id="id" />
+          </el-col>
+          <el-col class="card-box">
+            <Train :id="id" :data="formData" @update="updateFormAction" />
+          </el-col>
+          <el-col class="card-box">
+            <el-card class="font18 fontW600" shadow="never"> 咨询室 </el-card>
+          </el-col>
+          <el-col class="card-box">
+            <WrittenConsent :id="id" :data="formData" @update="updateFormAction"/>
+          </el-col>
+          <el-col class="card-box">
+            <el-card class="font18 fontW600" shadow="never"> 其他单据 </el-card>
+          </el-col>
+          <el-col class="card-box">
+            <Documents :id="id" :data="formData" @update="updateFormAction"/>
+          </el-col>
         </el-col>
       </el-col>
 
@@ -172,17 +217,25 @@
                 <span class="font14">{{ "患者列表" }}</span>
               </div>
             </template>
-            <div class="body">
-              <div v-for="(item, index) in patientList" :key="index">
+            <div class="body" style="max-height: 300px; overflow-y: over">
+              <div v-for="(item, index) in patientList" :key="item.id">
                 <div class="flex-row just-between text-center">
                   <div class="patient">
-                    {{ `${item.label}挂号排序${index + 1}` }}
+                    {{ `${item.label}挂号排序${item.id}` }}
                   </div>
                   <div>
-                    <el-button style="height: 28px" type="text">选择</el-button>
+                    <el-button
+                      v-if="index===0"
+                      @click="choosePatient(item)"
+                      style="height: 28px"
+                      type="text"
+                      >选择</el-button
+                    >
                   </div>
                 </div>
-                <el-divider v-if="index !== 4"></el-divider>
+                <el-divider
+                  v-if="index !== patientList.length - 1"
+                ></el-divider>
               </div>
             </div>
           </el-card>
@@ -200,23 +253,17 @@
             <div class="body">
               <el-form label-position="right" :model="patientInfo">
                 <el-form-item label="医生" class="font14">
-                  <el-select
-                    v-model="patientInfo.selectDoc"
-                    placeholder="请选择"
-                    clearable
-                    class="w100i"
-                  >
-                    <el-option
-                      v-for="item in docOption"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    />
-                  </el-select>
+                  <el-cascader
+                    :props="waitProps"
+                    v-model="docData"
+                    @change="onDocChange"
+                  ></el-cascader>
                 </el-form-item>
               </el-form>
               <el-row class="card-btn">
-                <el-button>重置</el-button>
+                <el-button @click="(docData = []), (docForm = {})"
+                  >重置</el-button
+                >
                 <el-button type="primary" @click="gotoAssign">指派</el-button>
               </el-row>
             </div>
@@ -230,7 +277,6 @@
 
 <script setup name="Index">
 import icon_time from "/src/assets/icons/svg/time.svg";
-import UploadFile from "/src/components/FileUpload/index.vue";
 import SightTest from "./components/special-examination/sightTest.vue";
 import SubjectiveFour from "./components/special-examination/subjectiveFour.vue";
 import ComputerRefraction from "./components/special-examination/computerRefraction.vue";
@@ -261,7 +307,22 @@ import SliceExtraction from "./components/dressing-room/sliceExtraction.vue";
 import Train from "./components/dressing-room/train.vue";
 import WrittenConsent from "./components/advisory-room/writtenConsent.vue";
 import Documents from "./components/offer-document/documents.vue";
-const id = ref("24");
+import { listPatient, getPatient } from "@/api/system/patient";
+import { addWait, listWait } from "@/api/system/wait";
+import moment from "moment";
+
+import { listUser, deptTreeSelect } from "@/api/system/user";
+import {
+  listForm,
+  getForm,
+  delForm,
+  addForm,
+  updateForm,
+} from "@/api/system/form";
+const id = ref("");
+const formData = ref(null);
+const docData = ref([]);
+const docForm = ref({});
 const patientInfo = ref({
   name: "",
   gender: "",
@@ -272,155 +333,20 @@ const patientInfo = ref({
   selectDoc: "",
   slecetTag: [],
 });
-const convergeOptions = ref([
-  {
-    value: "良",
-    label: "良",
-  },
-  {
-    value: "欠",
-    label: "欠",
-  },
-]);
-const euphoropsiaOptions = ref([
-  {
-    value: "右",
-    label: "右",
-  },
-  {
-    value: "左",
-    label: "左",
-  },
-]);
-const IopOptions = ref([
-  {
-    value: "Tn-3",
-    label: "Tn-3",
-  },
-  {
-    value: "Tn-2",
-    label: "Tn-2",
-  },
-  {
-    value: "Tn-1",
-    label: "Tn-1",
-  },
-  {
-    value: "Tn",
-    label: "Tn",
-  },
-  {
-    value: "Tn+1",
-    label: "Tn+1",
-  },
-  {
-    value: "Tn+2",
-    label: "Tn+2",
-  },
-  {
-    value: "Tn+3",
-    label: "Tn+3",
-  },
-]);
-const symbolOptions = ref([
-  {
-    value: "+",
-    label: "+",
-  },
-  {
-    value: "-",
-    label: "-",
-  },
-  {
-    value: "±",
-    label: "±",
-  },
-]);
-const numOptions = ref([
-  {
-    value: "2",
-    label: "2",
-  },
-  {
-    value: "3",
-    label: "3",
-  },
-  {
-    value: "4",
-    label: "4",
-  },
-  {
-    value: "5",
-    label: "5",
-  },
-]);
-const unitOptions = ref([
-  {
-    value: "1",
-    label: "右眼抑制",
-  },
-  {
-    value: "2",
-    label: "左眼抑制",
-  },
-  {
-    value: "3",
-    label: "正常",
-  },
-]);
-const tensionOptions = ref([
-  {
-    value: "1",
-    label: "正常",
-  },
-  {
-    value: "2",
-    label: "紧张",
-  },
-  {
-    value: "3",
-    label: "松弛",
-  },
-]);
 
-const patientList = ref([
-  {
-    value: "患者A",
-    label: "患者A",
-  },
-  {
-    value: "患者B",
-    label: "患者B",
-  },
-  {
-    value: "患者C",
-    label: "患者C",
-  },
-  {
-    value: "患者D",
-    label: "患者D",
-  },
-  {
-    value: "患者E",
-    label: "患者E",
-  },
-]);
-const docOption = ref([
-  {
-    value: "0",
-    label: "医生A",
-  },
-  {
-    value: "1",
-    label: "医生B",
-  },
-  {
-    value: "2",
-    label: "医生C",
-  },
-]);
-const textarea = ref("");
-const labelPosition = ref(true);
+const patientList = ref([]);
+
+listWait({
+  pageNum: 1,
+  pageSize: 999,
+}).then((res) => {
+  console.log("patientList === ", res);
+  patientList.value = res.rows.map((el) => ({
+    ...el,
+    label: el.patientName,
+    value: el.patientId,
+  }));
+});
 
 function typeOnChange(value) {
   if (!value !== value) {
@@ -431,37 +357,114 @@ function typeOnChange(value) {
 
 console.log("patientList", patientList.value.lenght);
 
-const cache = ref([]);
-const commandstats = ref(null);
-const usedmemory = ref(null);
 const { proxy } = getCurrentInstance();
 
 // const version = ref("3.8.5");
-const dataList = ref([
-  {
-    title: "预约",
-    name: "预约数",
-    icon: icon_time,
-    count: 10,
-  },
-  {
-    title: "提醒",
-    name: "提醒数",
-    icon: icon_time,
-    count: 10,
-  },
-  {
-    title: "今日",
-    name: "已完成",
-    icon: icon_time,
-    count: 10,
-  },
-]);
 
 function gotoAssign() {
-  proxy.$modal.msgSuccess("指派成功");
-  patientInfo.value.selectDoc = "";
+  if (docData.value.length === 0) {
+    proxy.$modal.msgError("未选择科室及医生！");
+    return;
+  }
+  addWait({
+    ...patientInfo.value,
+    assignDocId: docData.value[3],
+    room: docData.value[2],
+  }).then((response) => {
+    docForm.value.docId = docData.value[3];
+    docForm.value.room = docData.value[2];
+    proxy.$modal.msgSuccess("指派成功");
+  });
 }
+
+const choosePatient = (item) => {
+  id.value = item.id;
+  console.log("item === ", item);
+  patientInfo.value = item;
+  docData.value = [];
+  docForm.value = {};
+  getForm(item.id).then((res) => {
+    console.log(res);
+  });
+};
+const updateFormAction = async (e, val) => {
+  const res = await getForm(id.value);
+  console.log("updateFormAction  =--- ", res);
+  // updateForm({
+
+  // });
+  console.log("e :>> ", e, val);
+  const { regNo, patientId, patientName, patientPhone, patientIdCard } =
+    patientInfo.value;
+  addForm({
+    regNo,
+    patientId,
+    patientName,
+    patientPhone,
+    patientIdCard,
+    docId: docForm.value.docId,
+    room: docForm.value.room,
+    formContent: e === false ? val : "",
+    fileUrl: e === true ? val : "",
+    type: "form",
+    formTime: moment().format("YYYY-MM-DD"),
+  }).then((res1) => {
+    console.log("addForm --- ", res1);
+  });
+};
+const onDocChange = () => {
+  console.log(docData.value, "----docData");
+};
+
+const loopFormat = (data) => {
+  if (!data) {
+    return [];
+  }
+  return data.map((el) => ({
+    ...el,
+    value: el.label,
+    children: loopFormat(el.children),
+  }));
+};
+/** 查询部门下拉树结构 */
+function getDeptTree() {
+  return new Promise((resolve) => {
+    deptTreeSelect().then((response) => {
+      resolve(loopFormat(response.data));
+    });
+  });
+}
+const waitProps = {
+  lazy: true,
+  lazyLoad(node, resolve) {
+    const { level } = node;
+    if (level === 0) {
+      getDeptTree().then((res) => {
+        resolve(res);
+      });
+    } else if (node.children.length === 0) {
+      listUser({
+        pageNum: 1,
+        pageSize: 990,
+        userName: undefined,
+        phonenumber: undefined,
+        status: undefined,
+        deptId: node.data.id,
+      }).then((res) => {
+        resolve(
+          res.rows.map((el) => ({
+            ...el,
+            value: el.userId,
+            label: el.nickName,
+            leaf: true,
+          }))
+        );
+      });
+    } else {
+      resolve([]);
+    }
+  },
+};
 
 // function goTarget(url) {
 //   window.open(url, "__blank");
@@ -476,12 +479,14 @@ function gotoAssign() {
     font-size: 17.5px;
     border-left: 5px solid #eee;
   }
+
   hr {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
     border-top: 1px solid #eee;
   }
+
   .col-item {
     margin-bottom: 20px;
   }
@@ -533,6 +538,7 @@ function gotoAssign() {
 
 :deep(.el-card) {
   border: none;
+  overflow-y: overlay;
 }
 
 :deep(.el-input__wrapper) {
@@ -544,6 +550,7 @@ function gotoAssign() {
   line-height: 14px;
   padding: 8px 0 10px 0;
 }
+
 :deep(.el-divider--horizontal) {
   margin: 12px 0;
 }

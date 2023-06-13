@@ -20,7 +20,7 @@ export function getWait(id) {
 // 新增排队
 export function addWait(data) {
   return request({
-    url: '/doc/wait',
+    url: '/doc/wait/dispatch',
     method: 'post',
     data: data
   })

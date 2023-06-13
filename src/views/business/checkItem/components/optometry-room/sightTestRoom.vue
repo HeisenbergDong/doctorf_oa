@@ -20,19 +20,19 @@
                 </div>
                 <el-form-item label="裸眼" class="font14">
                   <el-input
-                    v-model="patientInfo.distantNakedL"
+                    v-model="patientInfo.distantNakedOptometryL"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="框架">
                   <el-input
-                    v-model="patientInfo.distantFrameL"
+                    v-model="patientInfo.distantFrameOptometryL"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="片上" class="font14">
                   <el-input
-                    v-model="patientInfo.distantOnL"
+                    v-model="patientInfo.distantOnOptometryL"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
@@ -43,19 +43,19 @@
                 </div>
                 <el-form-item label="裸眼" class="font14">
                   <el-input
-                    v-model="patientInfo.distantNakedR"
+                    v-model="patientInfo.distantNakedOptometryR"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="框架">
                   <el-input
-                    v-model="patientInfo.distantFrameR"
+                    v-model="patientInfo.distantFrameOptometryR"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="片上" class="font14">
                   <el-input
-                    v-model="patientInfo.distantOnR"
+                    v-model="patientInfo.distantOnOptometryR"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
@@ -68,19 +68,19 @@
                 </div>
                 <el-form-item label="裸眼" class="font14">
                   <el-input
-                    v-model="patientInfo.nearNakedL"
+                    v-model="patientInfo.nearNakedOptometryL"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="框架">
                   <el-input
-                    v-model="patientInfo.nearFrameL"
+                    v-model="patientInfo.nearFrameOptometryL"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="片上" class="font14">
                   <el-input
-                    v-model="patientInfo.nearOnL"
+                    v-model="patientInfo.nearOnOptometryL"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
@@ -91,19 +91,19 @@
                 </div>
                 <el-form-item label="裸眼" class="font14">
                   <el-input
-                    v-model="patientInfo.nearNakedR"
+                    v-model="patientInfo.nearNakedOptometryR"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="框架">
                   <el-input
-                    v-model="patientInfo.nearFrameR"
+                    v-model="patientInfo.nearFrameOptometryR"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="片上" class="font14">
                   <el-input
-                    v-model="patientInfo.nearOnR"
+                    v-model="patientInfo.nearOnOptometryR"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
@@ -114,7 +114,7 @@
             <el-col :span="10">
               <el-col>
                 <el-form-item label="镜片划痕：" class="ml42">
-                  <el-checkbox-group v-model="patientInfo.lensScratch">
+                  <el-checkbox-group v-model="patientInfo.lensScratchOptometry">
                     <el-checkbox label="-">( - )</el-checkbox>
                     <el-checkbox label="+">( + )</el-checkbox>
                     <el-checkbox label="++">( ++ )</el-checkbox>
@@ -126,7 +126,9 @@
             <el-col :span="10">
               <el-col>
                 <el-form-item label="镜架：" class="ml42">
-                  <el-checkbox-group v-model="patientInfo.eyeglassFrame">
+                  <el-checkbox-group
+                    v-model="patientInfo.eyeglassFrameOptometry"
+                  >
                     <el-checkbox label="-">( - )</el-checkbox>
                     <el-checkbox label="+">( + )</el-checkbox>
                     <el-checkbox label="++">( ++ )</el-checkbox>
@@ -147,20 +149,23 @@
 </template>
 
 <script setup name="sightTestRoom">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
-
+const emit = defineEmits(["update"]);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 });
+watch(
+  () => props.data,
+  (val) => {
+    patientInfo.value = val;
+  }
+);
 const form = ref({
   id: "",
   type: "",
@@ -175,98 +180,62 @@ const form = ref({
 });
 
 const patientInfo = ref({
-  distantNakedL: "",
-  distantFrameL: "",
-  distantOnL: "",
-  distantNakedR: "",
-  distantFrameR: "",
-  distantOnR: "",
-  nearNakedL: "",
-  nearFrameL: "",
-  nearOnL: "",
-  nearNakedR: "",
-  nearFrameR: "",
-  nearOnR: "",
-  lensScratch: [],
-  eyeglassFrame: [],
+  distantNakedOptometryL: "",
+  distantFrameOptometryL: "",
+  distantOnOptometryL: "",
+  distantNakedOptometryR: "",
+  distantFrameOptometryR: "",
+  distantOnOptometryR: "",
+  nearNakedOptometryL: "",
+  nearFrameOptometryL: "",
+  nearOnOptometryL: "",
+  nearNakedOptometryR: "",
+  nearFrameOptometryR: "",
+  nearOnOptometryR: "",
+  lensScratchOptometry: [],
+  eyeglassFrameOptometry: [],
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-        lensScratch: dataJson.value.lensScratch.split(),
-        eyeglassFrame: dataJson.value.eyeglassFrame.split(),
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
-    distantNakedL: "",
-    distantFrameL: "",
-    distantOnL: "",
-    distantNakedR: "",
-    distantFrameR: "",
-    distantOnR: "",
-    nearNakedL: "",
-    nearFrameL: "",
-    nearOnL: "",
-    nearNakedR: "",
-    nearFrameR: "",
-    nearOnR: "",
-    lensScratch: [],
-    eyeglassFrame: [],
+    distantNakedOptometryL: "",
+    distantFrameOptometryL: "",
+    distantOnOptometryL: "",
+    distantNakedOptometryR: "",
+    distantFrameOptometryR: "",
+    distantOnOptometryR: "",
+    nearNakedOptometryL: "",
+    nearFrameOptometryL: "",
+    nearOnOptometryL: "",
+    nearNakedOptometryR: "",
+    nearFrameOptometryR: "",
+    nearOnOptometryR: "",
+    lensScratchOptometry: [],
+    eyeglassFrameOptometry: [],
   };
 }
 /** 提交按钮 */
 function submitForm() {
   let sq = {
-    distantNakedL: patientInfo.value.distantNakedL,
-    distantFrameL: patientInfo.value.distantFrameL,
-    distantOnL: patientInfo.value.distantOnL,
-    distantNakedR: patientInfo.value.distantNakedR,
-    distantFrameR: patientInfo.value.distantFrameR,
-    distantOnR: patientInfo.value.distantOnR,
-    nearNakedL: patientInfo.value.nearNakedL,
-    nearFrameL: patientInfo.value.nearFrameL,
-    nearOnL: patientInfo.value.nearOnL,
-    nearNakedR: patientInfo.value.nearNakedR,
-    nearFrameR: patientInfo.value.nearFrameR,
-    nearOnR: patientInfo.value.nearOnR,
-    lensScratch: patientInfo.value.lensScratch.toString(),
-    eyeglassFrame: patientInfo.value.eyeglassFrame.toString(),
+    distantNakedOptometryL: patientInfo.value.distantNakedOptometryL,
+    distantFrameOptometryL: patientInfo.value.distantFrameOptometryL,
+    distantOnOptometryL: patientInfo.value.distantOnOptometryL,
+    distantNakedOptometryR: patientInfo.value.distantNakedOptometryR,
+    distantFrameOptometryR: patientInfo.value.distantFrameOptometryR,
+    distantOnOptometryR: patientInfo.value.distantOnOptometryR,
+    nearNakedOptometryL: patientInfo.value.nearNakedOptometryL,
+    nearFrameOptometryL: patientInfo.value.nearFrameOptometryL,
+    nearOnOptometryL: patientInfo.value.nearOnOptometryL,
+    nearNakedOptometryR: patientInfo.value.nearNakedOptometryR,
+    nearFrameOptometryR: patientInfo.value.nearFrameOptometryR,
+    nearOnOptometryR: patientInfo.value.nearOnOptometryR,
+    lensScratchOptometry: patientInfo.value.lensScratchOptometry.toString(),
+    eyeglassFrameOptometry: patientInfo.value.eyeglassFrameOptometry.toString(),
   };
-  const contant = JSON.stringify(sq);
-//   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({ sightTestRoom: sq });
+  emit("update", contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
-getData();
 </script>
 
 <style>

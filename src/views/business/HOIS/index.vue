@@ -5,67 +5,33 @@
       <el-row>
         <el-col class="card-box">
           <el-card class="form_card" shadow="never">
-            <el-form
-              :model="queryParams"
-              ref="queryRef"
-              :inline="true"
-              v-show="showSearch"
-              label-width="100px"
-            >
+            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
               <div class="flex-row">
                 <div>
                   <el-form-item label="患者姓名" prop="patientName">
-                    <el-input
-                      v-model="queryParams.patientName"
-                      placeholder="请输入患者姓名"
-                      clearable
-                      style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
+                    <el-input v-model="queryParams.patientName" placeholder="请输入患者姓名" clearable style="width: 240px"
+                      @keyup.enter="handleQuery" />
                   </el-form-item>
                   <el-form-item label="患者电话" prop="patientPhone">
-                    <el-input
-                      v-model="queryParams.patientPhone"
-                      placeholder="请输入患者电话"
-                      clearable
-                      style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
+                    <el-input v-model="queryParams.patientPhone" placeholder="请输入患者电话" clearable style="width: 240px"
+                      @keyup.enter="handleQuery" />
                   </el-form-item>
                   <el-form-item label="进入队列时间" prop="waitTime">
-                    <el-date-picker
-                      clearable
-                      v-model="queryParams.waitTime"
-                      type="datetime"
-                      value-format="YYYY-MM-DD HH:mm:ss"
-                      style="width: 240px"
-                      placeholder="请选择进入队列时间"
-                    >
+                    <el-date-picker clearable v-model="queryParams.waitTime" type="datetime"
+                      value-format="YYYY-MM-DD HH:mm:ss" style="width: 240px" placeholder="请选择进入队列时间">
                     </el-date-picker>
                   </el-form-item>
                   <el-form-item label="接待医生姓名" prop="receptionDocName">
-                    <el-input
-                      v-model="queryParams.receptionDocName"
-                      placeholder="请输入接待医生姓名"
-                      style="width: 240px"
-                      clearable
-                      @keyup.enter="handleQuery"
-                    />
+                    <el-input v-model="queryParams.receptionDocName" placeholder="请输入接待医生姓名" style="width: 240px"
+                      clearable @keyup.enter="handleQuery" />
                   </el-form-item>
                   <el-form-item label="诊室" prop="room">
-                    <el-input
-                      v-model="queryParams.room"
-                      placeholder="请输入诊室"
-                      style="width: 240px"
-                      clearable
-                      @keyup.enter="handleQuery"
-                    />
+                    <el-input v-model="queryParams.room" placeholder="请输入诊室" style="width: 240px" clearable
+                      @keyup.enter="handleQuery" />
                   </el-form-item>
                   <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
-                    <el-button type="primary" @click="handleQuery"
-                      >查询</el-button
-                    >
+                    <el-button type="primary" @click="handleQuery">查询</el-button>
                   </el-form-item>
                 </div>
               </div>
@@ -97,15 +63,8 @@
               >
             </el-col> -->
               <el-col :span="1.5">
-                <el-button
-                  type="danger"
-                  plain
-                  icon="Delete"
-                  :disabled="multiple"
-                  @click="handleDelete"
-                  v-hasPermi="['business:HOIS:remove']"
-                  >取消</el-button
-                >
+                <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+                  v-hasPermi="['business:HOIS:remove']">取消</el-button>
               </el-col>
               <!-- <el-col :span="1.5">
                 <el-button
@@ -127,119 +86,35 @@
                   >刷新缓存</el-button
                 >
               </el-col> -->
-              <right-toolbar
-                v-model:showSearch="showSearch"
-                @queryTable="getList"
-              ></right-toolbar>
+              <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
             </el-row>
 
-            <el-table
-              :data="typeList"
-              @selection-change="handleSelectionChange"
-              style="width: 100%"
-              v-loading="loading"
-            >
+            <el-table :data="typeList" @selection-change="handleSelectionChange" style="width: 100%" v-loading="loading">
               <el-table-column type="selection" width="55" align="center" />
               <el-table-column label="排队id" align="center" prop="id" />
-              <el-table-column
-                label="患者姓名"
-                width="120"
-                fixed="left"
-                align="center"
-                prop="patientName"
-              />
-              <el-table-column
-                label="患者电话"
-                width="120"
-                align="center"
-                prop="patientPhone"
-                :show-overflow-tooltip="true"
-              />
-              <el-table-column
-                label="患者排队状态"
-                width="120"
-                align="center"
-                prop="patientStatus"
-                :show-overflow-tooltip="true"
-              >
+              <el-table-column label="患者姓名" width="120" fixed="left" align="center" prop="patientName" />
+              <el-table-column label="患者电话" width="120" align="center" prop="patientPhone"
+                :show-overflow-tooltip="true" />
+              <el-table-column label="患者排队状态" width="120" align="center" prop="patientStatus"
+                :show-overflow-tooltip="true">
               </el-table-column>
-              <el-table-column
-                label="进入队列时间"
-                align="center"
-                prop="waitTime"
-                width="220"
-                :show-overflow-tooltip="true"
-              />
-              <el-table-column
-                label="诊室"
-                align="center"
-                width="120"
-                prop="room"
-              >
+              <el-table-column label="进入队列时间" align="center" prop="waitTime" width="220" :show-overflow-tooltip="true" />
+              <el-table-column label="诊室" align="center" width="120" prop="room">
               </el-table-column>
-              <el-table-column
-                label="调整队列的医生姓名"
-                width="120"
-                align="center"
-                prop="adjustDocName"
-              />
-              <el-table-column
-                label="接待医生姓名"
-                width="120"
-                align="center"
-                prop="adjustDocName"
-              />
-              <el-table-column
-                label="指派医生姓名"
-                width="120"
-                align="center"
-                prop="adjustDocName"
-              />
-              <el-table-column
-                label="指派医生遗嘱"
-                width="220"
-                align="center"
-                prop="assignContent"
-              />
-              <el-table-column
-                label="备注"
-                width="220"
-                align="center"
-                prop="remark"
-                :show-overflow-tooltip="true"
-              />
-              <el-table-column
-                label="操作"
-                align="center"
-                fixed="right"
-                width="220"
-                class-name="small-padding fixed-width"
-              >
+              <el-table-column label="调整队列的医生姓名" width="120" align="center" prop="adjustDocName" />
+              <el-table-column label="接待医生姓名" width="120" align="center" prop="adjustDocName" />
+              <el-table-column label="指派医生姓名" width="120" align="center" prop="adjustDocName" />
+              <el-table-column label="指派医生遗嘱" width="220" align="center" prop="assignContent" />
+              <el-table-column label="备注" width="220" align="center" prop="remark" :show-overflow-tooltip="true" />
+              <el-table-column label="操作" align="center" fixed="right" width="220" class-name="small-padding fixed-width">
                 <template #default="scope">
-                  <el-button
-                    link
-                    type="primary"
-                    icon="Edit"
-                    @click="handleAssign(scope.row)"
-                    v-hasPermi="['business:HOIS:edit']"
-                    >指派
+                  <el-button link type="primary" icon="Edit" @click="handleAssign(scope.row)"
+                    v-hasPermi="['business:HOIS:edit']">指派
                   </el-button>
-                  <el-button
-                    link
-                    type="primary"
-                    icon="Edit"
-                    @click="handleUpdate(scope.row)"
-                    v-hasPermi="['business:HOIS:edit']"
-                    >修改</el-button
-                  >
-                  <el-button
-                    link
-                    type="primary"
-                    icon="Delete"
-                    @click="handleDelete(scope.row)"
-                    v-hasPermi="['business:HOIS:remove']"
-                    >取消</el-button
-                  >
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+                    v-hasPermi="['business:HOIS:edit']">修改</el-button>
+                  <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+                    v-hasPermi="['business:HOIS:remove']">取消</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -297,19 +172,27 @@
          v-model:limit="queryParams.pageSize"
          @pagination="getList"
       /> -->
-
+      <!-- 指派对话框 -->
+      <el-dialog title="指派" v-model="waitOpen" width="600px" append-to-body>
+        <!-- :rules="rules" -->
+        <el-form ref="dataRef" :model="waitForm" label-width="120px">
+          <el-form-item label="指派科室-人员" prop="waitTime" class="mr24">
+            <el-cascader :props="waitProps" v-model="waitForm.waitIdList"></el-cascader>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button type="primary" @click="waitSubmitForm">确 定</el-button>
+            <el-button @click="waitCancel">取 消</el-button>
+          </div>
+        </template>
+      </el-dialog>
       <!-- 添加或修改参数配置对话框 -->
       <el-dialog :title="title" v-model="open" width="600px" append-to-body>
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="120px">
           <el-form-item label="进入队列时间" prop="waitTime" class="mr24">
-            <el-date-picker
-              clearable
-              v-model="form.waitTime"
-              type="datetime"
-              value-format="YYYY-MM-DD HH:mm:ss"
-              class="w100i"
-              placeholder="请选择进入队列时间"
-            >
+            <el-date-picker clearable v-model="form.waitTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss"
+              class="w100i" placeholder="请选择进入队列时间">
             </el-date-picker>
           </el-form-item>
         </el-form>
@@ -337,12 +220,17 @@ import {
 import { onMounted } from "vue";
 // import { onUnmounted } from "vue";
 import Speech from "speak-tts";
+import {
+  listUser,
+  deptTreeSelect,
+} from "@/api/system/user";
 
 const { proxy } = getCurrentInstance();
 // const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
 const typeList = ref([]);
 const open = ref(false);
+const waitOpen = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
@@ -378,6 +266,12 @@ const data = reactive({
       { required: true, message: "进入队列时间不能为空", trigger: "blur" },
     ],
   },
+  waitForm: {
+    assignDocId: '',
+    assignDocName: '',
+    room: '',
+    waitIdList:[],
+  }
 });
 
 // onUnmounted(() => {});
@@ -393,21 +287,24 @@ function speechInit() {
 }
 function handleAssign(row) {
   form.value.id = row.id;
-  addWait(form.value).then((response) => {
-    open.value = false;
-    getList();
-  });
-  speech.value
-    .speak({ text: `请${row.id}号患者到${row.room}就诊` })
-    .then(() => {
-      console.log("读取成功");
-    });
+  waitOpen.value = true;
+  waitForm.value = row;
+  waitForm.value.waitIdList = [];
+  // addWait(form.value).then((response) => {
+  //   open.value = false;
+  //   getList();
+  // });
+  // speech.value
+  //   .speak({ text: `请${row.id}号患者到${row.room}就诊` })
+  //   .then(() => {
+  //     console.log("读取成功");
+  //   });
 }
 onMounted(() => {
   speechInit();
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const { queryParams, form, rules, waitForm } = toRefs(data);
 
 /** 查询列表 */
 function getList() {
@@ -487,6 +384,31 @@ function handleUpdate(row) {
     title.value = "修改队列时间";
   });
 }
+/** 指派确定按钮 */
+function waitSubmitForm() {
+  if(!waitForm.value.waitIdList || waitForm.value.waitIdList.length === 0){
+    proxy.$modal.msgError('请选择科室及指派医生！');
+    return;
+  }
+  addWait({
+    ...waitForm.value,
+    assignDocId:waitForm.value.waitIdList[3],
+    room:waitForm.value.waitIdList[2]
+  }).then((response) => {
+    waitOpen.value = false;
+    getList();
+  });
+  speech.value
+    .speak({ text: `请${waitForm.value.id}号患者到${waitForm.value.room}就诊` })
+    .then(() => {
+      console.log("读取成功");
+    });
+}
+/** 指派取消按钮 */
+function waitCancel() {
+  waitOpen.value = false;
+  reset();
+}
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["dataRef"].validate((valid) => {
@@ -520,7 +442,7 @@ function handleDelete(row) {
       getList();
       proxy.$modal.msgSuccess("取消成功");
     })
-    .catch(() => {});
+    .catch(() => { });
 }
 /** 导出按钮操作 */
 function handleExport() {
@@ -539,8 +461,55 @@ function handleRefreshCache() {
     useDictStore().cleanDict();
   });
 }
+const loopFormat = (data)=>{
+  if(!data){
+    return [];
+  }
+  return data.map(el=>({
+    ...el,
+    value:el.label,
+    children:loopFormat(el.children)
+  }))
+}
+/** 查询部门下拉树结构 */
+function getDeptTree() {
+  return new Promise(resolve => {
 
+    deptTreeSelect().then((response) => {
+      resolve(loopFormat(response.data));
+    });
+  })
+}
 getList();
+const waitProps = {
+  lazy: true,
+  lazyLoad(node, resolve) {
+    const { level } = node;
+    if(level===0){
+      getDeptTree().then(res=>{
+        resolve(res);
+      })
+    }else if(node.children.length ===0){
+      listUser({
+        pageNum: 1,
+        pageSize: 990,
+        userName: undefined,
+        phonenumber: undefined,
+        status: undefined,
+        deptId: node.data.id,
+      }).then(res=>{
+        resolve(res.rows.map(el=>({
+          ...el,
+          value:el.userId,
+          label:el.nickName,
+          leaf:true
+        })));
+      });
+    }else{
+      resolve([]);
+    }
+  }
+}
 </script>
 <style lang="scss">
 .form_card .el-card__body {

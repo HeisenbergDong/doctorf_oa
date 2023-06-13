@@ -115,10 +115,10 @@
               <el-col>
                 <el-form-item label="镜片划痕：" class="ml42">
                   <el-checkbox-group v-model="patientInfo.lensScratch">
-                    <el-checkbox :label="'-'">( - )</el-checkbox>
-                    <el-checkbox :label="'+'">( + )</el-checkbox>
-                    <el-checkbox :label="'++'">( ++ )</el-checkbox>
-                    <el-checkbox :label="'+++'">( +++ )</el-checkbox>
+                    <el-checkbox label="-">( - )</el-checkbox>
+                    <el-checkbox label="+">( + )</el-checkbox>
+                    <el-checkbox label="++">( ++ )</el-checkbox>
+                    <el-checkbox label="+++">( +++ )</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
               </el-col>
@@ -127,10 +127,10 @@
               <el-col>
                 <el-form-item label="镜架：" class="ml42">
                   <el-checkbox-group v-model="patientInfo.eyeglassFrame">
-                    <el-checkbox :label="'-'">( - )</el-checkbox>
-                    <el-checkbox :label="'+'">( + )</el-checkbox>
-                    <el-checkbox :label="'++'">( ++ )</el-checkbox>
-                    <el-checkbox :label="'+++'">( +++ )</el-checkbox>
+                    <el-checkbox label="-">( - )</el-checkbox>
+                    <el-checkbox label="+">( + )</el-checkbox>
+                    <el-checkbox label="++">( ++ )</el-checkbox>
+                    <el-checkbox label="+++">( +++ )</el-checkbox>
                   </el-checkbox-group>
                 </el-form-item>
               </el-col>
@@ -146,21 +146,24 @@
   </div>
 </template>
 
-<script setup name="sightTest">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
-
+<script setup name="sightTestRoom">
+const emit = defineEmits(["update"]);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 });
+watch(
+  () => props.data,
+  (val) => {
+    patientInfo.value = val;
+  }
+);
 const form = ref({
   id: "",
   type: "",
@@ -190,26 +193,6 @@ const patientInfo = ref({
   lensScratch: [],
   eyeglassFrame: [],
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-        lensScratch: dataJson.value.lensScratch.split(),
-        eyeglassFrame: dataJson.value.eyeglassFrame.split(),
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
@@ -247,26 +230,11 @@ function submitForm() {
     lensScratch: patientInfo.value.lensScratch.toString(),
     eyeglassFrame: patientInfo.value.eyeglassFrame.toString(),
   };
-  const contant = JSON.stringify(sq);
-//   const obj = JSON.parse(contant);
-  console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
+  const isFile = false;
+  const contant = JSON.stringify({ sightTest: sq });
+  emit("update", isFile, contant);
+  console.log("object :>> ", contant);
 }
-getData();
 </script>
 
 <style>

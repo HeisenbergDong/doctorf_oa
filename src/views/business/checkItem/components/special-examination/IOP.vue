@@ -14,12 +14,12 @@
         >
           <el-row class="mb16">
             <el-radio-group
-              v-model="labelPosition"
+              v-model="patientInfo.labelPosition"
               size=""
               @change="typeOnChange"
             >
-              <el-radio-button :label="true">指测法</el-radio-button>
-              <el-radio-button :label="false">Icare</el-radio-button>
+              <el-radio-button :label="'0'">指测法</el-radio-button>
+              <el-radio-button :label="'1'">Icare</el-radio-button>
             </el-radio-group>
           </el-row>
           <el-row>
@@ -30,7 +30,7 @@
                 </div>
                 <el-form-item label="眼压" class="font14">
                   <el-select
-                    v-if="labelPosition"
+                    v-if="patientInfo.labelPosition"
                     v-model="patientInfo.fingerMethodL"
                     placeholder="请选择"
                   >
@@ -60,7 +60,7 @@
                 </div>
                 <el-form-item label="眼压" class="font14">
                   <el-select
-                    v-if="labelPosition"
+                    v-if="patientInfo.labelPosition"
                     v-model="patientInfo.fingerMethodR"
                     placeholder="请选择"
                   >
@@ -97,20 +97,22 @@
 </template>
   
 <script setup name="IOP">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
-
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 });
+watch(
+  () => props.data,
+  (val) => {
+    patientInfo.value = val;
+  }
+);
 const form = ref({
   id: "",
   type: "",
@@ -125,32 +127,16 @@ const form = ref({
 });
 
 const patientInfo = ref({
+  labelPosition: "0",
   fingerMethodL: "",
   IcareL: "",
   fingerMethodR: "",
   IcareR: "",
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
+    labelPosition: "0",
     fingerMethodL: "",
     IcareL: "",
     fingerMethodR: "",
@@ -160,29 +146,15 @@ function resetQuery() {
 /** 提交按钮 */
 function submitForm() {
   let sq = {
+    labelPosition: patientInfo.value.labelPosition,
     fingerMethodL: patientInfo.value.fingerMethodL,
     IcareL: patientInfo.value.IcareL,
     fingerMethodR: patientInfo.value.fingerMethodR,
     IcareR: patientInfo.value.IcareR,
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({ IOP: sq });
+  emit("update", contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
 const IopOptions = ref([
   {
@@ -214,7 +186,6 @@ const IopOptions = ref([
     label: "Tn+3",
   },
 ]);
-getData();
 </script>
   
   <style>

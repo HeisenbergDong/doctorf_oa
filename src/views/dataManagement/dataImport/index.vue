@@ -5,29 +5,16 @@
       <el-row>
         <el-col class="card-box">
           <el-card class="form_card" shadow="never">
-            <el-form
-              :model="queryParams"
-              ref="queryRef"
-              :inline="true"
-              v-show="showSearch"
-              label-width="68px"
-            >
+            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
               <div class="flex-row just-between">
                 <div>
                   <el-form-item label="文件名" prop="fileName">
-                    <el-input
-                      v-model="queryParams.fileName"
-                      placeholder="请输入"
-                      clearable
-                      style="width: 240px"
-                      @keyup.enter="handleQuery"
-                    />
+                    <el-input v-model="queryParams.fileName" placeholder="请输入" clearable style="width: 240px"
+                      @keyup.enter="handleQuery" />
                   </el-form-item>
                   <el-form-item class="ml24">
                     <el-button @click="resetQuery">重置</el-button>
-                    <el-button type="primary" @click="handleQuery"
-                      >查询</el-button
-                    >
+                    <el-button type="primary" @click="handleQuery">查询</el-button>
                   </el-form-item>
                 </div>
               </div>
@@ -38,45 +25,20 @@
           <el-card class="" shadow="never">
             <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
-                <el-button
-                  type="primary"
-                  plain
-                  icon="Plus"
-                  @click="handleAdd"
-                  v-hasPermi="['dataManagement:dataImport:add']"
-                  >新增</el-button
-                >
+                <el-button type="primary" plain icon="Plus" @click="handleAdd"
+                  v-hasPermi="['dataManagement:dataImport:add']">新增</el-button>
               </el-col>
               <el-col :span="1.5">
-                <el-button
-                  type="danger"
-                  plain
-                  icon="Delete"
-                  :disabled="multiple"
-                  @click="handleDelete"
-                  v-hasPermi="['dataManagement:dataImport:remove']"
-                  >删除</el-button
-                >
+                <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+                  v-hasPermi="['dataManagement:dataImport:remove']">删除</el-button>
               </el-col>
-              <right-toolbar
-                v-model:showSearch="showSearch"
-                @queryTable="getList"
-              ></right-toolbar>
+              <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
             </el-row>
 
-            <el-table
-              :data="typeList"
-              @selection-change="handleSelectionChange"
-              v-loading="loading"
-            >
+            <el-table :data="typeList" @selection-change="handleSelectionChange" v-loading="loading">
               <el-table-column type="selection" width="55" align="center" />
               <el-table-column label="文件" align="left" prop="fileName" />
-              <el-table-column
-                label="操作"
-                align="center"
-                width="160"
-                class-name="small-padding fixed-width"
-              >
+              <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
                 <template #default="scope">
                   <!-- <el-button
                   link
@@ -86,22 +48,10 @@
                   v-hasPermi="['dataManagement:dataImport:edit']"
                   >提醒
                 </el-button> -->
-                  <el-button
-                    link
-                    type="primary"
-                    icon="Edit"
-                    @click="handleUpdate(scope.row)"
-                    v-hasPermi="['system:dict:edit']"
-                    >修改</el-button
-                  >
-                  <el-button
-                    link
-                    type="primary"
-                    icon="Delete"
-                    @click="handleDelete(scope.row)"
-                    v-hasPermi="['system:dict:remove']"
-                    >删除</el-button
-                  >
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+                    v-hasPermi="['system:dict:edit']">修改</el-button>
+                  <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+                    v-hasPermi="['system:dict:remove']">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -117,10 +67,10 @@
       /> -->
 
       <!-- 添加或修改参数配置对话框 -->
-      <el-dialog :title="title" v-model="open" width="500px" append-to-body>
+      <el-dialog :title="title" v-model="open" width="500px">
         <el-form ref="dataRef" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="上传附件" >
-            <UploadFile ref="fileUpload"/>
+          <el-form-item label="上传附件">
+            <UploadFile ref="fileUpload" :modelValue="fileList" @uploadChange="onchange" :limit="1" />
           </el-form-item>
         </el-form>
         <template #footer>
@@ -146,6 +96,7 @@ import {
 } from "@/api/system/file";
 
 import UploadFile from "@/components/FileUpload/index.vue";
+import { ElMessage } from 'element-plus'
 
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -160,11 +111,16 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
-const fileUpload = ref("");
+const fileUpload = ref();
 const fileList = ref([]);
+const isUpdate = ref(false);
 
 const data = reactive({
-  form: {},
+  form: {
+    id: null,
+    fileUrl: null,
+    fileName: null,
+  },
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -203,6 +159,7 @@ function getList() {
 }
 /** 取消按钮 */
 function cancel() {
+  console.log('fileUpload.value', fileUpload.value);
   open.value = false;
   reset();
 }
@@ -214,6 +171,7 @@ function reset() {
     fileName: null,
   };
   proxy.resetForm("dataRef");
+  fileList.value = [];
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -242,34 +200,49 @@ function handleSelectionChange(selection) {
 function handleUpdate(row) {
   reset();
   const fileId = row.id || ids.value;
-  getType(fileId).then((response) => {
+  isUpdate.value = true;
+  getFile(fileId).then((response) => {
     form.value = response.data;
     open.value = true;
     title.value = "修改文件";
   });
 }
 /** 提交按钮 */
-function submitForm() {
-  console.log('fileUpload.value', fileUpload.value.handleUploadSuccess())
-  // proxy.$refs["dataRef"].validate((valid) => {
-  //   if (valid) {
-  //     if (form.value.id != undefined) {
-  //       updateFile(form.value).then((response) => {
-  //         proxy.$modal.msgSuccess("修改成功");
-  //         open.value = false;
-  //         getList();
-  //       });
-  //     } else {
-  //       const res = fileUpload.value.uploadedSuccessfully();
-  //       console.log("res :>> ", res);
-  //       addFile(form.value).then((response) => {
-  //         proxy.$modal.msgSuccess("上传成功");
-  //         open.value = false;
-  //         getList();
-  //       });
-  //     }
-  //   }
-  // });
+async function submitForm() {
+  if (!fileList.value.length) {
+
+    proxy.$modal.msgError(`未上传文件！`);
+
+    return;
+  }
+  console.log('fileUpload.value', fileList.value);
+  if (isUpdate.value) {
+    const { name: fileName, url: fileUrl } = fileList.value[0];
+    const id = form.value.id;
+    updateFile({
+      id, fileName, fileUrl
+    }).then(res => {
+      if (res.code === 200) {
+        proxy.$modal.msgSuccess(`修改成功！`);
+        handleQuery();
+        open.value = false;
+        reset();
+        isUpdate.value = false;
+
+      }
+
+    })
+    return;
+  }
+  const { name: fileName, url: fileUrl } = fileList.value[0]
+  addFile({ fileName, fileUrl }).then(res => {
+    if (res.code === 200) {
+      proxy.$modal.msgSuccess(`上传成功！`);
+      handleQuery();
+      open.value = false;
+      reset();
+    }
+  })
 }
 /** 删除按钮操作 */
 function handleDelete(row) {
@@ -283,7 +256,7 @@ function handleDelete(row) {
       getList();
       proxy.$modal.msgSuccess("删除成功");
     })
-    .catch(() => {});
+    .catch(() => { });
 }
 /** 导出按钮操作 */
 function handleExport() {
@@ -302,9 +275,13 @@ function handleRefreshCache() {
     useDictStore().cleanDict();
   });
 }
-function updateFileFid ( e,obj,val) {
-  console.log(e,obj,val);
+function updateFileFid(e, obj, val) {
+  console.log(e, obj, val);
 };
+const onchange = (val) => {
+  console.log('onchange -- val === ', val)
+  fileList.value = val;
+}
 getList();
 </script>
 <style lang="scss">

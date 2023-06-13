@@ -63,20 +63,18 @@
   </div>
 </template>
   
-  <script setup name="subjectiveFour">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
+<script setup name="subjectiveFour">
 
+const emit = defineEmits(['update']);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data:{
+    type:Object,
+    default:()=>({})
+  }
 });
 const convergeOptions = ref([
   {
@@ -98,6 +96,9 @@ const euphoropsiaOptions = ref([
     label: "左",
   },
 ]);
+watch(()=>props.data,(val)=>{
+  patientInfo.value = val;
+})
 const form = ref({
   id: "",
   type: "",
@@ -117,22 +118,6 @@ const patientInfo = ref({
   positionTwo: "",
   dominant: "",
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-      };
-    }
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
@@ -150,26 +135,11 @@ function submitForm() {
     positionTwo: patientInfo.value.positionTwo,
     dominant: patientInfo.value.dominant,
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({subjectiveFour:sq});
+  emit('update',contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
-getData();
+
 </script>
   
 <style>

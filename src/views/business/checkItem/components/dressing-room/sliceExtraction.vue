@@ -25,13 +25,6 @@
 </template>
     
 <script setup name="sliceExtraction">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
 
 const props = defineProps({
   id: {
@@ -78,22 +71,6 @@ const patientInfo = ref({
   positionTwo: "",
   dominant: "",
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-      };
-    }
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
@@ -130,7 +107,6 @@ function submitForm() {
     });
   }
 }
-getData();
 </script>
     
   <style>

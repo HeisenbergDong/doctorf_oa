@@ -3,7 +3,7 @@
     <el-card class="update-log" shadow="never">
       <template v-slot:header>
         <div class="clearfix">
-          <span class="font14">{{ "检影(待定)" }}</span>
+          <span class="font14">{{ "检影(待定2)" }}</span>
           <i icon="el-icon-circle-plus-outline"></i>
         </div>
       </template>
@@ -18,7 +18,7 @@
             <el-row>
               <el-form-item label="选项">
                 <el-select
-                  v-model="patientInfo.slecetTag"
+                  v-model="patientInfo.slecetTagRoom"
                   multiple
                   collapse-tags
                   placeholder="请选择"
@@ -37,13 +37,13 @@
               <el-col :span="12">
                 <el-form-item label="R">
                   <el-input
-                    v-model="patientInfo.oneR"
+                    v-model="patientInfo.oneRoomR"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="X">
                   <el-input
-                    v-model="patientInfo.oneRX"
+                    v-model="patientInfo.oneRoomRX"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
@@ -51,13 +51,13 @@
               <el-col :span="12">
                 <el-form-item label="L">
                   <el-input
-                    v-model="patientInfo.oneL"
+                    v-model="patientInfo.oneRoomL"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="X">
                   <el-input
-                    v-model="patientInfo.oneLX"
+                    v-model="patientInfo.oneRoomLX"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
@@ -67,13 +67,13 @@
               <el-col :span="12">
                 <el-form-item label="R">
                   <el-input
-                    v-model="patientInfo.twoR"
+                    v-model="patientInfo.twoRoomR"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="X">
                   <el-input
-                    v-model="patientInfo.twoRX"
+                    v-model="patientInfo.twoRoomRX"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
@@ -81,13 +81,13 @@
               <el-col :span="12">
                 <el-form-item label="L">
                   <el-input
-                    v-model="patientInfo.twoL"
+                    v-model="patientInfo.twoRoomL"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="X">
                   <el-input
-                    v-model="patientInfo.twoLX"
+                    v-model="patientInfo.twoRoomLX"
                     placeholder="请输入"
                   ></el-input>
                 </el-form-item>
@@ -106,14 +106,8 @@
 </template>
   
 <script setup name="skiascopyRoom">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
 
+const emit = defineEmits(['update']);
 const props = defineProps({
   id: {
     type: String,
@@ -134,79 +128,46 @@ const form = ref({
 });
 
 const patientInfo = ref({
-  slecetTag: "",
-  oneR: "",
-  oneRX: "",
-  oneL: "",
-  oneLX: "",
-  twoR: "",
-  twoRx: "",
-  twoL: "",
-  twoLx: "",
+  slecetTagRoom: "",
+  oneRoomR: "",
+  oneRoomRX: "",
+  oneRoomL: "",
+  oneRoomLX: "",
+  twoRoomR: "",
+  twoRoomRx: "",
+  twoRoomL: "",
+  twoRoomLx: "",
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
-    slecetTag: "",
-    oneR: "",
-    oneRX: "",
-    oneL: "",
-    oneLX: "",
-    twoR: "",
-    twoRx: "",
-    twoL: "",
-    twoLx: "",
+    slecetTagRoom: "",
+    oneRoomR: "",
+    oneRoomRX: "",
+    oneRoomL: "",
+    oneRoomLX: "",
+    twoRoomR: "",
+    twoRoomRx: "",
+    twoRoomL: "",
+    twoRoomLx: "",
   };
 }
 /** 提交按钮 */
 function submitForm() {
   let sq = {
-    slecetTag: patientInfo.value.slecetTag,
-    oneR: patientInfo.value.oneR,
-    oneRX: patientInfo.value.oneRX,
-    oneL: patientInfo.value.oneL,
-    oneLX: patientInfo.value.oneLX,
-    twoR: patientInfo.value.twoR,
-    twoRx: patientInfo.value.twoRx,
-    twoL: patientInfo.value.twoL,
-    twoLx: patientInfo.value.twoLx,
+    slecetTagRoom: patientInfo.value.slecetTagRoom,
+    oneRoomR: patientInfo.value.oneRoomR,
+    oneRoomRX: patientInfo.value.oneRoomRX,
+    oneRoomL: patientInfo.value.oneRoomL,
+    oneRoomLX: patientInfo.value.oneRoomLX,
+    twoRoomR: patientInfo.value.twoRoomR,
+    twoRoomRx: patientInfo.value.twoRoomRx,
+    twoRoomL: patientInfo.value.twoRoomL,
+    twoRoomLx: patientInfo.value.twoRoomLx,
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({skiascopyRoom:sq});
+  emit('update',contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
 const options = ref([
   {
@@ -226,7 +187,6 @@ const options = ref([
     value: "散瞳",
   },
 ]);
-getData();
 </script>
   
   <style>

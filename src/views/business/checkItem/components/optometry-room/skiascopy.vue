@@ -3,7 +3,7 @@
     <el-card class="update-log" shadow="never">
       <template v-slot:header>
         <div class="clearfix">
-          <span class="font14">{{ "检影(待定)" }}</span>
+          <span class="font14">{{ "检影(待定1)" }}</span>
           <i icon="el-icon-circle-plus-outline"></i>
         </div>
       </template>
@@ -106,19 +106,17 @@
 </template>
   
 <script setup name="skiascopy">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
 
+const emit = defineEmits(['update']);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data:{
+    type:Object,
+    default:()=>({})
+  }
 });
 const form = ref({
   id: "",
@@ -144,24 +142,6 @@ const patientInfo = ref({
   twoL: "",
   twoLx: "",
 });
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
@@ -189,24 +169,9 @@ function submitForm() {
     twoL: patientInfo.value.twoL,
     twoLx: patientInfo.value.twoLx,
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({skiascopy:sq});
+  emit('update',contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
 const options = ref([
   {
@@ -226,7 +191,6 @@ const options = ref([
     value: "散瞳",
   },
 ]);
-getData();
 </script>
   
   <style>

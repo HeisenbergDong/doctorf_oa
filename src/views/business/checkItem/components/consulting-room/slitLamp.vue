@@ -1116,20 +1116,21 @@
 </template>
 
 <script setup name="slitLamp">
-import {
-  listForm,
-  getForm,
-  delForm,
-  addForm,
-  updateForm,
-} from "@/api/system/form";
 
+const emit = defineEmits(['update']);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
+  data:{
+    type:Object,
+    default:()=>({})
+  }
 });
+watch(()=>props.data,(val)=>{
+  patientInfo.value = val;
+})
 const form = ref({
   id: "",
   type: "",
@@ -1219,53 +1220,6 @@ const ocularSurfaceTextL = ref("");
 const ocularSurfaceTextR = ref("");
 const matchingStateTextL = ref("");
 const matchingStateTextR = ref("");
-
-const isInfo = ref();
-/** 获取表单详情 */
-function getData() {
-  resetQuery();
-  const Id = props.id;
-  getForm(Id).then((response) => {
-    isInfo.value = response.data || null;
-    if (isInfo.value) {
-      const dataJson = JSON.parse(isInfo.value);
-      patientInfo.value = {
-        ...dataJson.value,
-        scardamyxisL: dataJson.value.scardamyxisL.split(),
-        scardamyxisR: dataJson.value.scardamyxisR.split(),
-        apparatusLacrimalisL: dataJson.value.apparatusLacrimalisL.split(),
-        apparatusLacrimalisR: dataJson.value.apparatusLacrimalisR.split(),
-        eyemoveL: dataJson.value.eyemoveL.split(),
-        eyemoveR: dataJson.value.eyemoveR.split(),
-        eyelidL: dataJson.value.eyelidL.split(),
-        eyelidR: dataJson.value.eyelidR.split(),
-        palpebralConjunctivaL: dataJson.value.palpebralConjunctivaL.split(),
-        palpebralConjunctivaR: dataJson.value.palpebralConjunctivaR.split(),
-        corneaL: dataJson.value.corneaL.split(),
-        corneaR: dataJson.value.corneaR.split(),
-        atriaL: dataJson.value.atriaL.split(),
-        atriaR: dataJson.value.atriaR.split(),
-        irisL: dataJson.value.irisL.split(),
-        irisR: dataJson.value.irisR.split(),
-        pupilL: dataJson.value.pupilL.split(),
-        pupilR: dataJson.value.pupilR.split(),
-        crystallineLensL: dataJson.value.crystallineLensL.split(),
-        crystallineLensR: dataJson.value.crystallineLensR.split(),
-        cleanlinessL: dataJson.value.cleanlinessL.split(),
-        scratchL: dataJson.value.scratchL.split(),
-        cleanlinessR: dataJson.value.cleanlinessR.split(),
-        scratchR: dataJson.value.scratchR.split(),
-        ocularSurfaceL: dataJson.value.ocularSurfaceL.split(),
-        ocularSurfaceR: dataJson.value.ocularSurfaceR.split(),
-        matchingStateL: dataJson.value.matchingStateL.split(),
-        matchingStateR: dataJson.value.matchingStateR.split(),
-      };
-    }
-    // form.value = response.data;
-    // open.value = true;
-    console.log("getForm", response, isInfo.value);
-  });
-}
 /** 重置按钮操作 */
 function resetQuery() {
   patientInfo.value = {
@@ -1367,24 +1321,9 @@ function submitForm() {
     skiascopyTwoRR: patientInfo.value.skiascopyTwoRR,
     skiascopyTwoXR: patientInfo.value.skiascopyTwoXR,
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
+  const contant = JSON.stringify({slitLamp:sq});
+  emit('update',contant);
   console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
 }
 const eyelidOptions = ref([
   {
@@ -1441,7 +1380,6 @@ const cornealStainingOptions = ref([
   },
 ]);
 
-getData();
 </script>
 
 <style>

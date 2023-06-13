@@ -70,8 +70,8 @@
                     ></el-date-picker>
                   </el-form-item>
                 </div>
-                <div>
-                  <el-form-item>
+                <div class="tool_right">
+                  <el-form-item class="w100">
                     <el-button @click="resetQuery">重置</el-button>
                     <el-button type="primary" @click="handleQuery"
                       >查询</el-button
@@ -85,7 +85,7 @@
         <el-col class="card-box">
           <el-card class="" shadow="never">
             <el-row :gutter="10" class="mb8">
-              <el-col :span="1.5">
+              <!-- <el-col :span="1.5">
                 <el-button
                   type="danger"
                   plain
@@ -94,7 +94,7 @@
                   v-hasPermi="['dataManagement:dataQuery:remove']"
                   >刷新缓存</el-button
                 >
-              </el-col>
+              </el-col> -->
               <right-toolbar
                 v-model:showSearch="showSearch"
                 @queryTable="getList"
@@ -113,11 +113,12 @@
             <el-table
               v-if="activeName === 'first'"
               :data="typeList"
-              @selection-change="handleSelectionChange"
             >
-              <el-table-column type="selection" width="55" align="center" />
+            <!-- @selection-change="handleSelectionChange" -->
+            
+              <!-- <el-table-column type="selection" width="55" align="center" /> -->
               <el-table-column label="医生" align="center" prop="doc" />
-              <el-table-column
+              <!-- <el-table-column
                 label="日接待患者"
                 align="center"
                 prop="dayNum"
@@ -126,17 +127,17 @@
                 label="月接待患者"
                 align="center"
                 prop="monthNum"
-              />
+              /> -->
               <el-table-column label="接待患者总数" align="center" prop="sum" />
             </el-table>
             <el-table
               v-else
-              :data="typeList"
+              :data="patientList"
               @selection-change="handleSelectionChange"
             >
-              <el-table-column type="selection" width="55" align="center" />
-              <el-table-column label="姓名" align="center" prop="name" />
-              <el-table-column
+              <!-- <el-table-column type="selection" width="55" align="center" /> -->
+              <el-table-column label="姓名" align="center" prop="patientName" />
+              <!-- <el-table-column
                 label="性别"
                 align="center"
                 prop="gender"
@@ -148,25 +149,17 @@
                 prop="age"
                 :show-overflow-tooltip="true"
               >
-                <!-- <template #default="scope">
-                <router-link
-                  :to="'/system/dict-data/index/' + scope.row.dictId"
-                  class="link-type"
-                >
-                  <span>{{ scope.row.dictType }}</span>
-                </router-link>
-              </template> -->
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column
                 label="电话号码"
                 align="center"
-                prop="phone"
-                :show-overflow-tooltip="true"
+                prop="patientPhone"
+                width="120"
               />
               <el-table-column
                 label="问诊时间"
                 align="center"
-                prop="orderTime"
+                prop="visitTime"
                 width="180"
               >
                 <!-- <template #default="scope">
@@ -176,7 +169,7 @@
               <el-table-column
                 label="主治医生"
                 align="center"
-                prop="doctor"
+                prop="docName"
                 width="180"
               >
                 <!-- <template #default="scope">
@@ -193,7 +186,7 @@
               <el-table-column
                 label="创建时间"
                 align="center"
-                prop="creatAt"
+                prop="createTime"
                 width="180"
               >
                 <!-- <template #default="scope">
@@ -225,6 +218,7 @@ const { proxy } = getCurrentInstance();
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
 
 const typeList = ref([]);
+const patientList = ref([]);
 const open = ref(false);
 // const loading = ref(true);
 const showSearch = ref(true);
@@ -269,8 +263,18 @@ const { queryParams, form, rules } = toRefs(data);
 function getList() {
   // loading.value = true;
   listStatistics(proxy.addDateRange(queryParams.value)).then((response) => {
-    typeList.value = response.rows;
-    total.value = response.total;
+    console.log(response.data);
+    typeList.value = response.data.map(el=>{
+      return {
+        ...el,
+        sum:el.visitList.length,
+        doc:el.nickName
+      }
+    });
+    total.value = response.data.length;
+    patientList.value = response.data.reduce((pre,nex)=>{
+      return [...pre,...nex.visitList];
+    },[]);
     // loading.value = false;
   });
   // typeList.value = new Array(25).fill("").map((el, idx) => ({
@@ -390,5 +394,9 @@ getList();
 <style lang="scss">
 .form_card .el-card__body {
   padding: 15px 20px 0px 20px !important;
+}
+.tool_right{
+  width:200px;
+  flex-shrink: 0;
 }
 </style>

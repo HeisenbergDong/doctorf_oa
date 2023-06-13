@@ -40,7 +40,7 @@
 
 <script setup>
 import { getToken } from "@/utils/auth";
-
+import {onMounted} from "vue";
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 数量限制
@@ -80,6 +80,7 @@ const showTip = computed(
 watch(() => props.modelValue, val => {
   if (val) {
     let temp = 1;
+    console.log(val,'watch --- val===');
     // 首先将值转为数组
     const list = Array.isArray(val) ? val : props.modelValue.split(',');
     // 然后将数组转为对象数组
@@ -134,7 +135,7 @@ function handleUploadError(err) {
 // 上传成功回调
 function handleUploadSuccess(res, file) {
   if (res.code === 200) {
-    uploadList.value.push({ name: res.fileName, url: res.fileName });
+    uploadList.value.push({ name: res.originalFilename, url: res.url });
     uploadedSuccessfully();
   } else {
     number.value--;
@@ -154,10 +155,11 @@ function handleDelete(index) {
 // 上传结束处理
 function uploadedSuccessfully() {
   if (number.value > 0 && uploadList.value.length === number.value) {
-    fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
+    fileList.value = [...fileList.value.filter(f => f.url !== undefined),...uploadList.value];//.concat(uploadList.value);
     uploadList.value = [];
     number.value = 0;
     emit("update:modelValue", listToString(fileList.value));
+    emit("uploadChange", fileList.value);
     proxy.$modal.closeLoading();
   }
 }
@@ -167,7 +169,7 @@ function getFileName(name) {
   if (name.lastIndexOf("/") > -1) {
     return name.slice(name.lastIndexOf("/") + 1);
   } else {
-    return "";
+    return name;
   }
 }
 
@@ -181,6 +183,10 @@ function listToString(list, separator) {
     }
   }
   return strs != '' ? strs.substr(0, strs.length - 1) : '';
+}
+
+const resetFileList = ()=>{
+  fileList.value = [];
 }
 </script>
 
