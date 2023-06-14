@@ -131,21 +131,23 @@
 </template>
   
 <script setup name="fundusTestRoom">
-
-const emit = defineEmits(['update']);
+const emit = defineEmits(["update"]);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
-  data:{
-    type:Object,
-    default:()=>({})
-  }
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 });
-watch(()=>props.data,(val)=>{
-  patientInfo.value = val;
-})
+watch(
+  () => props.data,
+  (val) => {
+    patientInfo.value = val;
+  }
+);
 const vitreumTextRoomL = ref("");
 const vitreumTextRoomR = ref("");
 const retinaTextRoomL = ref("");
@@ -186,8 +188,9 @@ function submitForm() {
     retinaRoomL: patientInfo.value.retinaRoomL.toString(),
     retinaRoomR: patientInfo.value.retinaRoomR.toString(),
   };
-  const contant = JSON.stringify({fundusTestRoom:sq});
-  emit('update',contant);
+  const isFile = false;
+  const contant = JSON.stringify({ fundusTestRoom: sq });
+  emit("update", isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
 }
 </script>

@@ -14,29 +14,15 @@
               </div>
             </template>
             <div class="body">
-              <el-form
-                :inline="true"
-                label-position="right"
-                label-width="80px"
-                :model="patientInfo"
-              >
+              <el-form :inline="true" label-position="right" label-width="80px" :model="patientInfo">
                 <el-form-item label="姓名" class="font14">
-                  <el-input
-                    v-model="patientInfo.patientName"
-                    placeholder="请输入"
-                  ></el-input>
+                  <el-input v-model="patientInfo.patientName" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号">
-                  <el-input
-                    v-model="patientInfo.patientPhone"
-                    placeholder="请输入"
-                  ></el-input>
+                  <el-input v-model="patientInfo.patientPhone" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="身份证号">
-                  <el-input
-                    v-model="patientInfo.patientIdCard"
-                    placeholder="请输入"
-                  ></el-input>
+                  <el-input v-model="patientInfo.patientIdCard" placeholder="请输入"></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="是否首次">
                   <el-radio-group v-model="patientInfo.isFirstVisit">
@@ -48,8 +34,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col>
-          <!-- v-if="id && docForm.docId" -->
+        <el-col v-if="id">
           <el-col class="card-box">
             <el-card class="font18 fontW600" shadow="never">
               特殊检查室
@@ -59,25 +44,13 @@
             <SightTest :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
-            <SubjectiveFour
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <SubjectiveFour :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
-            <ComputerRefraction
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <ComputerRefraction :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
-            <CorneaTopography
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <CorneaTopography :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
             <BiometricInstrument :id="id" />
@@ -98,28 +71,16 @@
             <IOP :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
-            <UpComputerRefraction
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <UpComputerRefraction :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
-            <UpCorneaTopography
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <UpCorneaTopography :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
             <el-card class="font18 fontW600" shadow="never"> 验光室 </el-card>
           </el-col>
           <el-col class="card-box">
-            <SightTestRoom
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <SightTestRoom :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
             <Skiascopy :id="id" :data="formData" @update="updateFormAction" />
@@ -128,11 +89,7 @@
             <VisualFunctionTest :id="id" />
           </el-col>
           <el-col class="card-box">
-            <SubjectiveFourRoom
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <SubjectiveFourRoom :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
             <SubjectiveRefraction :id="id" />
@@ -158,25 +115,13 @@
             <SlitLamp :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
-            <handlingSuggestion
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <handlingSuggestion :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
-            <FundusTestRoom
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <FundusTestRoom :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
-            <skiascopyRoom
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <skiascopyRoom :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
             <el-card class="font18 fontW600" shadow="never"> 摘戴室 </el-card>
@@ -194,11 +139,7 @@
             <el-card class="font18 fontW600" shadow="never"> 咨询室 </el-card>
           </el-col>
           <el-col class="card-box">
-            <WrittenConsent
-              :id="id"
-              :data="formData"
-              @update="updateFormAction"
-            />
+            <WrittenConsent :id="id" :data="formData" @update="updateFormAction" />
           </el-col>
           <el-col class="card-box">
             <el-card class="font18 fontW600" shadow="never"> 其他单据 </el-card>
@@ -228,18 +169,10 @@
                     {{ `${item.label}挂号排序${item.id}` }}
                   </div>
                   <div>
-                    <el-button
-                      v-if="index === 0"
-                      @click="choosePatient(item)"
-                      style="height: 28px"
-                      type="text"
-                      >选择</el-button
-                    >
+                    <el-button @click="choosePatient(item)" style="height: 28px" type="text">选择</el-button>
                   </div>
                 </div>
-                <el-divider
-                  v-if="index !== patientList.length - 1"
-                ></el-divider>
+                <el-divider v-if="index !== patientList.length - 1"></el-divider>
               </div>
             </div>
           </el-card>
@@ -257,17 +190,11 @@
             <div class="body">
               <el-form label-position="right" :model="patientInfo">
                 <el-form-item label="医生" class="font14">
-                  <el-cascader
-                    :props="waitProps"
-                    v-model="docData"
-                    @change="onDocChange"
-                  ></el-cascader>
+                  <el-cascader :props="waitProps" v-model="docData" @change="onDocChange"></el-cascader>
                 </el-form-item>
               </el-form>
               <el-row class="card-btn">
-                <el-button @click="(docData = []), (docForm = {})"
-                  >重置</el-button
-                >
+                <el-button @click="(docData = []), (docForm = {})">重置</el-button>
                 <el-button type="primary" @click="gotoAssign">指派</el-button>
               </el-row>
             </div>
@@ -314,6 +241,7 @@ import Documents from "./components/offer-document/documents.vue";
 import { listPatient, getPatient } from "@/api/system/patient";
 import { addWait, listWait } from "@/api/system/wait";
 import moment from "moment";
+import useUserStore from "@/store/modules/user";
 
 import { listUser, deptTreeSelect } from "@/api/system/user";
 import {
@@ -323,6 +251,19 @@ import {
   addForm,
   updateForm,
 } from "@/api/system/form";
+
+import {
+  addFormFile,
+  updateFormFile,
+  delFormFile,
+} from "@/api/system/formFile";
+import { callWait } from "../../../api/system/wait";
+import useSettingsStore from '@/store/modules/settings';
+
+const settingsStore = useSettingsStore();
+
+const userStore = useUserStore();
+
 const id = ref("");
 const formData = ref(null);
 const docData = ref([]);
@@ -340,17 +281,23 @@ const patientInfo = ref({
 
 const patientList = ref([]);
 
-listWait({
-  pageNum: 1,
-  pageSize: 999,
-}).then((res) => {
-  console.log("patientList === ", res);
-  patientList.value = res.rows.map((el) => ({
-    ...el,
-    label: el.patientName,
-    value: el.patientId,
-  }));
-});
+const getWaitList = () => {
+  listWait({
+    pageNum: 1,
+    pageSize: 999,
+    patientStatus: '0',
+    receptionDocId: userStore.userId
+  }).then((res) => {
+    console.log("patientList === ", res);
+    patientList.value = res.rows.map((el) => ({
+      ...el,
+      label: el.patientName,
+      value: el.patientId,
+    }));
+  });
+}
+
+getWaitList();
 
 function typeOnChange(value) {
   if (!value !== value) {
@@ -364,7 +311,9 @@ console.log("patientList", patientList.value.lenght);
 const { proxy } = getCurrentInstance();
 
 // const version = ref("3.8.5");
-
+watch(() => settingsStore.dispatchState, () => {
+  getWaitList();
+})
 function gotoAssign() {
   if (docData.value.length === 0) {
     proxy.$modal.msgError("未选择科室及医生！");
@@ -387,43 +336,48 @@ const choosePatient = (item) => {
   patientInfo.value = item;
   docData.value = [];
   docForm.value = {};
+  callWait(item);
   getForm(item.id).then((res) => {
     console.log("getForm", res);
   });
 };
 const updateFormAction = async (e, val) => {
   const res = await getForm(id.value);
-  console.log("updateFormAction  =--- ", res);
-
-  console.log("e :>> ", e, val);
-  const { regNo, patientId, patientName, patientPhone, patientIdCard } =
+  console.log("updateFormAction  =--- ", res, e, patientInfo.value);
+  const { regNo, patientId, patientName, assignDocId: docId, patientPhone, room, patientIdCard } =
     patientInfo.value;
-
-  if (res) {
+  if (e) {
+    // 文件上传
+    // addFormFile({
+    // })
+  }
+  if (res?.formContent) {
     updateForm({
+      id: id.value,
       regNo,
       patientId,
       patientName,
       patientPhone,
       patientIdCard,
-      docId: docForm.value.docId,
-      room: docForm.value.room,
-      formContent: res.formContent.push(e === false ? val : "") ,
+      docId,
+      room,
+      formContent: res.formContent.push(e === false ? val : ""),
       fileUrl: res.fileUrl.push(e === true ? val : ""),
       type: "form",
       formTime: moment().format("YYYY-MM-DD HH:mm:ss"),
     }).then((res1) => {
-      console.log("addForm --- ", res1);
+      console.log("updateForm --- ", res1);
     });
   } else {
     addForm({
+      id: id.value,
       regNo,
       patientId,
       patientName,
       patientPhone,
       patientIdCard,
-      docId: docForm.value.docId,
-      room: docForm.value.room,
+      docId,
+      room,
       formContent: e === false ? val : "",
       fileUrl: e === true ? val : "",
       type: "form",
@@ -517,7 +471,11 @@ const waitProps = {
     margin: 0;
   }
 
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "open sans",
+  "Helvetica Neue",
+  Helvetica,
+  Arial,
+  sans-serif;
   font-size: 13px;
   color: #676a6c;
   overflow-x: hidden;

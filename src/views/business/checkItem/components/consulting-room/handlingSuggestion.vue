@@ -105,13 +105,14 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     artificialTears: patientInfo.value.artificialTears.toString(),
     num: patientInfo.value.num,
     opinion: patientInfo.value.opinion.toString(),
   };
   const contant = JSON.stringify({ handlingSuggestion: sq });
-  emit("update", contant);
+  emit("update", isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
 }
 </script>

@@ -82,6 +82,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     convergence: patientInfo.value.convergence,
     positionOne: patientInfo.value.positionOne,
@@ -89,8 +90,7 @@ function submitForm() {
     dominant: patientInfo.value.dominant,
   };
   const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
-  
+  emit("update", isFile, contant);
 }
 </script>
     

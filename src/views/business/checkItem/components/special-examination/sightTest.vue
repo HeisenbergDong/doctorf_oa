@@ -214,6 +214,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     distantNakedL: patientInfo.value.distantNakedL,
     distantFrameL: patientInfo.value.distantFrameL,
@@ -230,7 +231,6 @@ function submitForm() {
     lensScratch: patientInfo.value.lensScratch.toString(),
     eyeglassFrame: patientInfo.value.eyeglassFrame.toString(),
   };
-  const isFile = false;
   const contant = JSON.stringify({ sightTest: sq });
   emit("update", isFile, contant);
   console.log("object :>> ", contant);

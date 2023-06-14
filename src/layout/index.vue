@@ -1,19 +1,8 @@
 <template>
-  <div
-    :class="classObj"
-    class="app-wrapper"
-    :style="{ '--current-color': theme }"
-  >
-    <div
-      v-if="device === 'mobile' && sidebar.opened"
-      class="drawer-bg"
-      @click="handleClickOutside"
-    />
+  <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme }">
+    <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar v-if="!sidebar.hide" class="sidebar-container" />
-    <div
-      :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }"
-      class="main-container"
-    >
+    <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
         <navbar @setLayout="setLayout" />
         <tags-view v-if="needTagsView" />
@@ -32,8 +21,9 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
 import useAppStore from '@/store/modules/app'
-import useSettingsStore from '@/store/modules/settings'
-import { onMounted } from 'vue'
+import { onMounted } from 'vue';
+import Speech from "speak-tts";
+import useSettingsStore from '@/store/modules/settings';
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
@@ -83,17 +73,43 @@ const initWebsocket = () => {
   }
   stompClient.connect(headers, {}, function (frame) {
     stompClient.subscribe('/topic/call', function (message) {
+
+      const temp = JSON.parse(message.body);
+      speech.value
+        .speak({ text: `请${temp.id}号患者到${temp.room}就诊` })
+        .then(() => {
+          console.log("读取成功");
+        });
+      console.log('----- ', message, '-----')
       console.info(message.body)
       console.info(JSON.parse(message.body))
     })
-    // stompClient.subscribe("/topic/dispatch", function (message) {
-    //   console.warn(message.body);
-    //   console.warn(JSON.parse(message.body));
-    // });
+    stompClient.subscribe("/topic/dispatch", function (message) {
+      settingsStore.changeDispatchState();
+      // console.log('----- ',,'-----')
+      // speech.value
+      //   .speak({ text: `请${waitForm.value.id}号患者到${waitForm.value.room}就诊` })
+      //   .then(() => {
+      //     console.log("读取成功");
+      //   });
+      console.warn(message.body);
+      console.warn(JSON.parse(message.body));
+    });
   })
 }
+const speech = ref(null);
+function speechInit() {
+  speech.value = new Speech();
+  speech.value.setLanguage("zh-CN");
+  speech.value.init().then(() => {
+    console.log("语音播报初始化完成...");
+  });
+}
+onMounted(() => {
 
-onMounted(initWebsocket)
+  initWebsocket();
+  speechInit();
+})
 </script>
 
 <style lang="scss" scoped>

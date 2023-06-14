@@ -95,15 +95,15 @@
               <el-table-column label="患者姓名" width="120" fixed="left" align="center" prop="patientName" />
               <el-table-column label="患者电话" width="120" align="center" prop="patientPhone"
                 :show-overflow-tooltip="true" />
-              <el-table-column label="患者排队状态" width="120" align="center" prop="patientStatus"
+              <el-table-column label="患者排队状态" width="120" align="center" prop="patientStatusTxt"
                 :show-overflow-tooltip="true">
               </el-table-column>
               <el-table-column label="进入队列时间" align="center" prop="waitTime" width="220" :show-overflow-tooltip="true" />
               <el-table-column label="诊室" align="center" width="120" prop="room">
               </el-table-column>
               <el-table-column label="调整队列的医生姓名" width="120" align="center" prop="adjustDocName" />
-              <el-table-column label="接待医生姓名" width="120" align="center" prop="adjustDocName" />
-              <el-table-column label="指派医生姓名" width="120" align="center" prop="adjustDocName" />
+              <el-table-column label="接待医生姓名" width="120" align="center" prop="receptionDocName" />
+              <el-table-column label="指派医生姓名" width="120" align="center" prop="assignDocName" />
               <el-table-column label="指派医生遗嘱" width="220" align="center" prop="assignContent" />
               <el-table-column label="备注" width="220" align="center" prop="remark" :show-overflow-tooltip="true" />
               <el-table-column label="操作" align="center" fixed="right" width="220" class-name="small-padding fixed-width">
@@ -244,7 +244,7 @@ const data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 999,
     patientId: null,
     patientName: null,
     patientPhone: null,
@@ -309,8 +309,17 @@ const { queryParams, form, rules, waitForm } = toRefs(data);
 /** 查询列表 */
 function getList() {
   loading.value = true;
+  const temp = {
+    0:'排队中',
+    1:'进行中',
+    2:'已完成',
+  }
   listWait(proxy.addDateRange(queryParams.value)).then((response) => {
-    typeList.value = response.rows;
+    typeList.value = response.rows.map(el=>({
+      ...el,
+      patientStatusTxt:temp[el.patientStatus]
+      // 0-排队中 1-进行中 2-已完成
+    }));
     total.value = response.total;
     loading.value = false;
     console.log("listWait :>> ", typeList.value);
@@ -398,11 +407,11 @@ function waitSubmitForm() {
     waitOpen.value = false;
     getList();
   });
-  speech.value
-    .speak({ text: `请${waitForm.value.id}号患者到${waitForm.value.room}就诊` })
-    .then(() => {
-      console.log("读取成功");
-    });
+  // speech.value
+  //   .speak({ text: `请${waitForm.value.id}号患者到${waitForm.value.room}就诊` })
+  //   .then(() => {
+  //     console.log("读取成功");
+  //   });
 }
 /** 指派取消按钮 */
 function waitCancel() {

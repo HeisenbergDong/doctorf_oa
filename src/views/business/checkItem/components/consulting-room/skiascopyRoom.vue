@@ -154,6 +154,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     slecetTagRoom: patientInfo.value.slecetTagRoom,
     oneRoomR: patientInfo.value.oneRoomR,
@@ -166,7 +167,7 @@ function submitForm() {
     twoRoomLx: patientInfo.value.twoRoomLx,
   };
   const contant = JSON.stringify({skiascopyRoom:sq});
-  emit('update',contant);
+  emit('update', isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
 }
 const options = ref([

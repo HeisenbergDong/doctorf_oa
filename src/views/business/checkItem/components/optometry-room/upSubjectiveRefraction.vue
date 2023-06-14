@@ -25,7 +25,6 @@
 </template>
     
 <script setup name="upSubjectiveRefraction">
-
 const props = defineProps({
   id: {
     type: String,
@@ -82,15 +81,15 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     convergence: patientInfo.value.convergence,
     positionOne: patientInfo.value.positionOne,
     positionTwo: patientInfo.value.positionTwo,
     dominant: patientInfo.value.dominant,
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
-  
+  const contant = JSON.stringify({ upSubjectiveRefraction: sq });
+  emit("update", isFile, contant);
 }
 </script>
     

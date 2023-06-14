@@ -10,6 +10,7 @@ const useUserStore = defineStore(
       name: '',
       avatar: '',
       roles: [],
+      usrId:'',
       permissions: []
     }),
     actions: {
@@ -42,6 +43,7 @@ const useUserStore = defineStore(
             } else {
               this.roles = ['ROLE_DEFAULT']
             }
+            this.usrId = user.userId;
             this.name = user.userName
             this.avatar = avatar;
             resolve(res)

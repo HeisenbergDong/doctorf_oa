@@ -145,6 +145,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     labelPosition: patientInfo.value.labelPosition,
     fingerMethodL: patientInfo.value.fingerMethodL,
@@ -153,7 +154,7 @@ function submitForm() {
     IcareR: patientInfo.value.IcareR,
   };
   const contant = JSON.stringify({ IOP: sq });
-  emit("update", contant);
+  emit("update", isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
 }
 const IopOptions = ref([

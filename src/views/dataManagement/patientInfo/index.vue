@@ -451,7 +451,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    "system/patient/export",
+    "doc/patient/export",
     {
       ...queryParams.value,
     },

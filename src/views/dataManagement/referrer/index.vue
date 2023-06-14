@@ -664,7 +664,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    "system/point/export",
+    "doc/point/export",
     {
       ...queryParams.value,
     },

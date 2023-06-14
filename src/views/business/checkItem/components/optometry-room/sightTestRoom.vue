@@ -216,6 +216,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     distantNakedOptometryL: patientInfo.value.distantNakedOptometryL,
     distantFrameOptometryL: patientInfo.value.distantFrameOptometryL,
@@ -233,7 +234,7 @@ function submitForm() {
     eyeglassFrameOptometry: patientInfo.value.eyeglassFrameOptometry.toString(),
   };
   const contant = JSON.stringify({ sightTestRoom: sq });
-  emit("update", contant);
+  emit("update", isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
 }
 </script>

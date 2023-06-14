@@ -1273,6 +1273,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     scardamyxisL: patientInfo.value.scardamyxisL.toString(),
     scardamyxisR: patientInfo.value.scardamyxisR.toString(),
@@ -1322,7 +1323,7 @@ function submitForm() {
     skiascopyTwoXR: patientInfo.value.skiascopyTwoXR,
   };
   const contant = JSON.stringify({slitLamp:sq});
-  emit('update',contant);
+  emit('update', isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
 }
 const eyelidOptions = ref([

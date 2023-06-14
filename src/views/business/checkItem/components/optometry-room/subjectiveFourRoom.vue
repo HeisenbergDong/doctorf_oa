@@ -129,6 +129,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     convergenceOptometry: patientInfo.value.convergenceOptometry,
     positionOneOptometry: patientInfo.value.positionOneOptometry,
@@ -136,7 +137,7 @@ function submitForm() {
     dominantOptometry: patientInfo.value.dominantOptometry,
   };
   const contant = JSON.stringify({subjectiveFourRoom:sq});
-  emit('update',contant);
+  emit('update', isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
   
 }

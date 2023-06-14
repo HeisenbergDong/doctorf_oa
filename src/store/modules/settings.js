@@ -10,6 +10,7 @@ const useSettingsStore = defineStore(
   {
     state: () => ({
       title: '',
+      dispatchState:false,
       theme: storageSetting.theme || '#409EFF',
       sideTheme: storageSetting.sideTheme || sideTheme,
       showSettings: showSettings,
@@ -20,6 +21,9 @@ const useSettingsStore = defineStore(
       dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle
     }),
     actions: {
+      changeDispatchState(){
+        this.dispatchState = !this.dispatchState;
+      },
       // 修改布局设置
       changeSetting(data) {
         const { key, value } = data

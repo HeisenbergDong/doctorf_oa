@@ -17,10 +17,19 @@ export function getWait(id) {
   })
 }
 
-// 新增排队
+// 指派排队
 export function addWait(data) {
   return request({
     url: '/doc/wait/dispatch',
+    method: 'post',
+    data: data
+  })
+}
+
+// 叫号
+export function callWait(data) {
+  return request({
+    url: '/doc/wait/call',
     method: 'post',
     data: data
   })

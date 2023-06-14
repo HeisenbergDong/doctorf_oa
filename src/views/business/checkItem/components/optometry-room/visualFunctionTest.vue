@@ -25,7 +25,6 @@
 </template>
     
 <script setup name="visualFunctionTest">
-
 const props = defineProps({
   id: {
     type: String,
@@ -59,6 +58,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     distantNakedL: patientInfo.value.distantNakedL,
     distantFrameL: patientInfo.value.distantFrameL,
@@ -75,10 +75,8 @@ function submitForm() {
     lensScratch: patientInfo.value.lensScratch.toString(),
     eyeglassFrame: patientInfo.value.eyeglassFrame.toString(),
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
-  console.log("object :>> ", sq, contant, form.value);
-  
+  const contant = JSON.stringify({ visualFunctionTest: sq });
+  emit("update", isFile, contant);
 }
 </script>
     

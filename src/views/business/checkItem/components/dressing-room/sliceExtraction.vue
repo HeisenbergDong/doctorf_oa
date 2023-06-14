@@ -82,30 +82,15 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     convergence: patientInfo.value.convergence,
     positionOne: patientInfo.value.positionOne,
     positionTwo: patientInfo.value.positionTwo,
     dominant: patientInfo.value.dominant,
   };
-  const contant = JSON.stringify(sq);
-  //   const obj = JSON.parse(contant);
-  console.log("object :>> ", sq, contant, form.value);
-  if (isInfo.value === null) {
-    form.value.formContent = contant;
-    updateForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("修改成功");
-      open.value = false;
-      getList();
-    });
-  } else {
-    form.value.formContent = contant;
-    addForm(form.value).then((response) => {
-      proxy.$modal.msgSuccess("新增成功");
-      open.value = false;
-      getList();
-    });
-  }
+  const contant = JSON.stringify({ sliceExtraction: sq });
+  emit("update", isFile, contant);
 }
 </script>
     

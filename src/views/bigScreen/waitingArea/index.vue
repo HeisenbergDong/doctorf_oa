@@ -50,6 +50,9 @@
 <script setup name="Index">
 import moment from "moment";
 import { listWait } from "@/api/system/wait";
+import useSettingsStore from '@/store/modules/settings';
+
+const settingsStore = useSettingsStore();
 const nowTime = ref("");
 const nowDate = ref("");
 const dataList = ref([]);
@@ -85,7 +88,9 @@ onMounted(() => {
     getNowTime();
   }, 1000);
 });
-
+watch(() => settingsStore.dispatchState, () => {
+  getList();
+})
 function getNowDate() {
   const week = moment().day();
   let data = "";

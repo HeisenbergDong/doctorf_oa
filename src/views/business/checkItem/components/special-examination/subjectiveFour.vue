@@ -64,17 +64,16 @@
 </template>
   
 <script setup name="subjectiveFour">
-
-const emit = defineEmits(['update']);
+const emit = defineEmits(["update"]);
 const props = defineProps({
   id: {
     type: String,
     default: "",
   },
-  data:{
-    type:Object,
-    default:()=>({})
-  }
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 const convergeOptions = ref([
   {
@@ -96,9 +95,12 @@ const euphoropsiaOptions = ref([
     label: "左",
   },
 ]);
-watch(()=>props.data,(val)=>{
-  patientInfo.value = val;
-})
+watch(
+  () => props.data,
+  (val) => {
+    patientInfo.value = val;
+  }
+);
 const form = ref({
   id: "",
   type: "",
@@ -129,17 +131,18 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     convergence: patientInfo.value.convergence,
     positionOne: patientInfo.value.positionOne,
     positionTwo: patientInfo.value.positionTwo,
     dominant: patientInfo.value.dominant,
   };
-  const contant = JSON.stringify({subjectiveFour:sq});
-  emit('update',contant);
+  console.log("sq === ", sq);
+  const contant = JSON.stringify({ subjectiveFour: sq });
+  emit("update", isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
 }
-
 </script>
   
 <style>

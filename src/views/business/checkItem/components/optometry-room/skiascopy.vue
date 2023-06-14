@@ -158,6 +158,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     slecetTag: patientInfo.value.slecetTag,
     oneR: patientInfo.value.oneR,
@@ -170,7 +171,7 @@ function submitForm() {
     twoLx: patientInfo.value.twoLx,
   };
   const contant = JSON.stringify({skiascopy:sq});
-  emit('update',contant);
+  emit('update', isFile, contant);
   console.log("object :>> ", sq, contant, form.value);
 }
 const options = ref([

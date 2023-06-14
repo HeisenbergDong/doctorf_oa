@@ -636,7 +636,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    "system/reservation/export",
+    "doc/remind/export",
     {
       ...queryParams.value,
     },

@@ -72,7 +72,7 @@
                   plain
                   icon="Plus"
                   @click="handleAdd"
-                  v-hasPermi="['system:dict:add']"
+                  v-hasPermi="['system:appointment:add']"
                   >新增</el-button
                 >
               </el-col>
@@ -83,7 +83,7 @@
                 icon="Edit"
                 :disabled="single"
                 @click="handleUpdate"
-                v-hasPermi="['system:dict:edit']"
+                v-hasPermi="['system:appointment:edit']"
                 >修改</el-button
               >
             </el-col> -->
@@ -94,7 +94,7 @@
                   icon="Delete"
                   :disabled="multiple"
                   @click="handleDelete"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['system:appointment:remove']"
                   >取消</el-button
                 >
               </el-col>
@@ -104,7 +104,7 @@
                   plain
                   icon="Download"
                   @click="handleExport"
-                  v-hasPermi="['system:dict:export']"
+                  v-hasPermi="['system:appointment:export']"
                   >导出</el-button
                 >
               </el-col>
@@ -114,7 +114,7 @@
                   plain
                   icon="Refresh"
                   @click="handleRefreshCache"
-                  v-hasPermi="['system:dict:remove']"
+                  v-hasPermi="['system:appointment:remove']"
                   >刷新缓存</el-button
                 >
               </el-col> -->
@@ -193,7 +193,7 @@
                     type="primary"
                     icon="Edit"
                     @click="handleUpdate(scope.row)"
-                    v-hasPermi="['system:dict:edit']"
+                    v-hasPermi="['system:appointment:edit']"
                     >修改
                   </el-button>
                   <el-button
@@ -201,7 +201,7 @@
                     type="primary"
                     icon="Delete"
                     @click="handleDelete(scope.row)"
-                    v-hasPermi="['system:dict:remove']"
+                    v-hasPermi="['system:appointment:remove']"
                     >取消</el-button
                   >
                 </template>
@@ -630,7 +630,7 @@ function handleDelete(row) {
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download(
-    "system/reservation/export",
+    "doc/reservation/export",
     {
       ...queryParams.value,
     },

@@ -33,10 +33,7 @@
                   />
                 </el-col>
                 <el-col :span="8">
-                  <el-select
-                    v-model="selectOne"
-                    placeholder="请选择"
-                  >
+                  <el-select v-model="selectOne" placeholder="请选择">
                     <el-option
                       v-for="item in optionOne"
                       :key="item.value"
@@ -47,10 +44,7 @@
                   </el-select>
                 </el-col>
                 <el-col :span="8">
-                  <el-select
-                    v-model="selectTwo"
-                    placeholder="请选择"
-                  >
+                  <el-select v-model="selectTwo" placeholder="请选择">
                     <el-option
                       v-for="item in optionTwo"
                       :key="item.value"
@@ -149,7 +143,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="cancelDialog">取 消</el-button>
-          <el-button type="primary" v-print="print" @click="submitForm"
+          <el-button type="primary" v-print="'#printBox'" @click="submitForm"
             >打 印</el-button
           >
         </div>
@@ -243,17 +237,16 @@ function cancel() {
 
 /** 新增按钮操作 */
 function submitForm() {
-  form.value.regNo = `${inputRegNo.value}${selectOne.value}${selectTwo.value}`
+  open.value = true;
+  form.value.regNo = `${inputRegNo.value}${selectOne.value}${selectTwo.value}`;
   console.log("form.value :>> ", form.value);
   proxy.$refs["dataRef"].validate((valid) => {
     addReg(form.value)
       .then((response) => {
         proxy.$modal.msgSuccess("登记成功");
         title.value = "打印";
-        open.value = true;
       })
-      .catch((response) => {
-      });
+      .catch((response) => {});
   });
 }
 function cancelDialog() {

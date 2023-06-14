@@ -180,6 +180,7 @@ function resetQuery() {
 }
 /** 提交按钮 */
 function submitForm() {
+  const isFile = false;
   let sq = {
     vitreumL: patientInfo.value.vitreumL.toString(),
     vitreumR: patientInfo.value.vitreumR.toString(),
@@ -187,8 +188,7 @@ function submitForm() {
     retinaR: patientInfo.value.retinaR.toString(),
   };
   const contant = JSON.stringify({fundusTest:sq});
-  emit('update',contant);
-  console.log("object :>> ", sq, contant, form.value);
+  emit("update", isFile, contant);
 }
 </script>
   
