@@ -2,7 +2,7 @@
  * @Author: upeartaker 123@123.com
  * @Date: 2023-06-18 11:58:53
  * @LastEditors: upeartaker 123@123.com
- * @LastEditTime: 2023-06-20 19:30:31
+ * @LastEditTime: 2023-06-20 20:12:41
  * @FilePath: \doctorf_oa\src\views\business\checkItem\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -58,105 +58,105 @@
                         </span>
                       </template>
                       <!-- 视力检查 -->
-                      <div class="tab-item" v-if="activeTab === 'visual_check'">
+                      <div class="tab-item" v-if="activeTab === 'visual_check' || activeTab === '视力检查'">
                         <VisualInspect :id="id" :data="formData" @update="updateFormAction"></VisualInspect>
                       </div>
                       <!-- 问诊单 -->
-                      <!-- <div class="tab-item" v-if="activeTab === 'ask_form'">
+                      <!-- <div class="tab-item" v-if="activeTab === 'ask_form' || activeTab === '问诊单'">
                         <VisualInspect :id="id" :data="formData" @update="updateFormAction"></VisualInspect>
                       </div> -->
                       <!-- 主观前四项 -->
-                      <div class="tab-item" v-if="activeTab === 'fourth'">
+                      <div class="tab-item" v-if="activeTab === 'fourth' || activeTab === '主观前四项'">
                         <SubjectiveFour :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 电脑验光 -->
-                      <div class="tab-item" v-if="activeTab === 'optometry'">
+                      <div class="tab-item" v-if="activeTab === 'optometry' || activeTab === '电脑验光'">
                         <ComputerRefraction :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 角膜地形图 -->
-                      <div class="tab-item" v-if="activeTab === 'corneal_map'">
+                      <div class="tab-item" v-if="activeTab === 'corneal_map' || activeTab === '角膜地形图'">
                         <CorneaTopography :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 生物测量仪 -->
-                      <div class="tab-item" v-if="activeTab === 'organism_test'">
+                      <div class="tab-item" v-if="activeTab === 'organism_test' || activeTab === '生物测量仪'">
                         <BiometricInstrument :id="id" />
                       </div>
                       <!-- 内皮细胞检查 -->
-                      <div class="tab-item" v-if="activeTab === 'cell_check'">
+                      <div class="tab-item" v-if="activeTab === 'cell_check' || activeTab === '内皮细胞检查'">
                         <Endothelial :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- MRT检查 -->
-                      <div class="tab-item" v-if="activeTab === 'mrt_check'">
+                      <div class="tab-item" v-if="activeTab === 'mrt_check' || activeTab === 'MRT检查'">
                         <MRT :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 干眼检查 -->
-                      <div class="tab-item" v-if="activeTab === 'dry_eye'">
+                      <div class="tab-item" v-if="activeTab === 'dry_eye' || activeTab === '干眼检查'">
                         <DryEyeTest :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 眼底检查 -->
-                      <div class="tab-item" v-if="activeTab === 'ground_eye'">
+                      <div class="tab-item" v-if="activeTab === 'ground_eye' || activeTab === '眼底检查'">
                         <FundusTest :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 眼压 -->
-                      <div class="tab-item" v-if="activeTab === 'pressure_eye'">
+                      <div class="tab-item" v-if="activeTab === 'pressure_eye' || activeTab === '眼压'">
                         <IOP :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 三项视功能检查 -->
-                      <div class="tab-item" v-if="activeTab === 'three_check'"></div>
+                      <div class="tab-item" v-if="activeTab === 'three_check' || activeTab === '三项视功能检查'"></div>
                       <!-- 角膜接触镜片上电脑验光 -->
-                      <div class="tab-item" v-if="activeTab === 'touch_corneal'">
+                      <div class="tab-item" v-if="activeTab === 'touch_corneal' || activeTab === '角膜接触镜片上电脑验光'">
                         <UpComputerRefraction :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                         <!-- 角膜接触镜片上角膜地形图 -->
-                        <div class="tab-item" v-if="activeTab === 'corneal_graph'">
+                        <div class="tab-item" v-if="activeTab === 'corneal_graph' || activeTab === '角膜接触镜片上角膜地形图'">
                           <UpCorneaTopography :id="id" :data="formData" @update="updateFormAction" />
                         </div>
                       <!-- 检影 -->
-                      <div class="tab-item" v-if="activeTab === 'picture_check'">
+                      <div class="tab-item" v-if="activeTab === 'picture_check' || activeTab === '检影'">
                         <Skiascopy :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 视功能检查 -->
-                      <div class="tab-item" v-if="activeTab === 'vision_check'">
+                      <div class="tab-item" v-if="activeTab === 'vision_check' || activeTab === '视功能检查'">
                         <SightTestRoom :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 主观验光 -->
-                      <div class="tab-item" v-if="activeTab === 'optometry_subjectivity'">
+                      <div class="tab-item" v-if="activeTab === 'optometry_subjectivity' || activeTab === '主观验光'">
                         <SubjectiveRefraction :id="id" :data="formData" @update="updateFormAction"></SubjectiveRefraction>
                       </div>
                       <!-- 试戴 -->
-                      <div class="tab-item" v-if="activeTab === 'try_wear'">
+                      <div class="tab-item" v-if="activeTab === 'try_wear' || activeTab === '试戴'">
                         <TryOn :id="id" />
                       </div>
                       <!-- 角膜接触镜片上检影 -->
-                      <div class="tab-item" v-if="activeTab === 'photoscopy_corneal'">
+                      <div class="tab-item" v-if="activeTab === 'photoscopy_corneal' || activeTab === '角膜接触镜片上检影'">
                         <UpSubjectiveRefraction :id="id" />
                       </div>
                       <!-- 取镜 -->
-                      <div class="tab-item" v-if="activeTab === 'take_mirror'">
+                      <div class="tab-item" v-if="activeTab === 'take_mirror' || activeTab === '取镜'">
                         <Glasses :id="id" />
                       </div>
                       <!-- 裂隙灯检查 -->
-                      <div class="tab-item" v-if="activeTab === 'slit_check'">
+                      <div class="tab-item" v-if="activeTab === 'slit_check' || activeTab === '裂隙灯检查'">
                         <SlitLamp :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 处理意见 -->
-                      <div class="tab-item" v-if="activeTab === 'handling_opinions'">
+                      <div class="tab-item" v-if="activeTab === 'handling_opinions' || activeTab === '处理意见'">
                         <handlingSuggestion :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 取片 -->
-                      <div class="tab-item" v-if="activeTab === 'take_picture'">
+                      <div class="tab-item" v-if="activeTab === 'take_picture' || activeTab === '取片'">
                         <SliceExtraction :id="id" />
                       </div>
                       <!-- 视功能训练 -->
-                      <div class="tab-item" v-if="activeTab === 'vision_train'">
+                      <div class="tab-item" v-if="activeTab === 'vision_train' || activeTab === '视功能训练'">
                         <Train :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 知情同意书签字 -->
-                      <div class="tab-item" v-if="activeTab === 'Informed_bookmark'">
+                      <div class="tab-item" v-if="activeTab === 'Informed_bookmark' || activeTab === '知情同意书签字'">
                         <WrittenConsent :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                       <!-- 其他单据 -->
-                      <div class="tab-item" v-if="activeTab === 'other'">
+                      <div class="tab-item" v-if="activeTab === 'other' || activeTab === '其他单据'">
                         <Documents :id="id" :data="formData" @update="updateFormAction" />
                       </div>
                     </el-tab-pane>
