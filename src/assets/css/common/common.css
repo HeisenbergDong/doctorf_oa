@@ -117,7 +117,9 @@
 .w100i {
   width: 100% !important;
 }
-
+.w80i {
+  width: 80px !important;
+}
 .w180i {
   width: 180px !important;
 }

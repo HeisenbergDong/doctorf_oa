@@ -155,6 +155,7 @@
 <script setup name="Index">
 import { addReg } from "@/api/system/reg";
 import { listPatient } from "@/api/system/patient";
+import moment from "moment";
 const data = reactive({
   form: {},
   queryParams: {
@@ -239,6 +240,7 @@ function cancel() {
 function submitForm() {
   open.value = true;
   form.value.regNo = `${inputRegNo.value}${selectOne.value}${selectTwo.value}`;
+  form.value.createTime = moment(form.value.createTime).format("YYYY-MM-DD HH:mm:ss"),
   console.log("form.value :>> ", form.value);
   proxy.$refs["dataRef"].validate((valid) => {
     addReg(form.value)

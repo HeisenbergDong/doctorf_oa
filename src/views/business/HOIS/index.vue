@@ -3,7 +3,7 @@
     <!-- 指派 -->
     <div class="app-container">
       <el-row>
-        <el-col class="card-box">
+        <!-- <el-col class="card-box">
           <el-card class="form_card" shadow="never">
             <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
               <div class="flex-row">
@@ -37,7 +37,7 @@
               </div>
             </el-form>
           </el-card>
-        </el-col>
+        </el-col> -->
         <el-col class="card-box">
           <el-card class="" shadow="never">
             <el-row :gutter="10" class="mb8">
@@ -98,7 +98,7 @@
               <el-table-column label="患者排队状态" width="120" align="center" prop="patientStatusTxt"
                 :show-overflow-tooltip="true">
               </el-table-column>
-              <el-table-column label="进入队列时间" align="center" prop="waitTime" width="220" :show-overflow-tooltip="true" />
+              <!-- <el-table-column label="进入队列时间" align="center" prop="waitTime" width="220" :show-overflow-tooltip="true" /> -->
               <el-table-column label="诊室" align="center" width="120" prop="room">
               </el-table-column>
               <el-table-column label="调整队列的医生姓名" width="120" align="center" prop="adjustDocName" />
@@ -224,6 +224,7 @@ import {
   listUser,
   deptTreeSelect,
 } from "@/api/system/user";
+import moment from 'moment';
 
 const { proxy } = getCurrentInstance();
 // const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
@@ -249,8 +250,8 @@ const data = reactive({
     patientName: null,
     patientPhone: null,
     patientStatus: null,
-    waitTime: null,
-    room: null,
+    waitTime: moment(new Date()).format("YYYY-MM-DD"),
+    room: '分诊室',
     adjustTime: null,
     adjustDocId: null,
     adjustDocName: null,

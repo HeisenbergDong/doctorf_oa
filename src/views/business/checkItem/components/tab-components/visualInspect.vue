@@ -20,29 +20,29 @@
         <div class="item-table">
           <div class="table-row">
             <div class="row-label">裸眼：</div>
-            <el-input v-model="patientInfo.distantNakedOptometryR" placeholder="" clearable />
+            <el-input v-model="patientInfo.distantNakedL" placeholder="" clearable />
           </div>
           <div class="table-row">
             <div class="row-label">框架：</div>
-            <el-input v-model="patientInfo.distantFrameOptometryR" placeholder="" clearable />
+            <el-input v-model="patientInfo.distantFrame" placeholder="" clearable />
           </div>
           <div class="table-row">
             <div class="row-label">片上：</div>
-            <el-input v-model="patientInfo.distantOnOptometryR" placeholder="" clearable />
+            <el-input v-model="patientInfo.distantOnL" placeholder="" clearable />
           </div>
         </div>
         <div class="item-table">
           <div class="table-row">
             <div class="row-label">裸眼：</div>
-            <el-input v-model="patientInfo.distantNakedOptometryL" placeholder="" clearable />
+            <el-input v-model="patientInfo.distantNakedR" placeholder="" clearable />
           </div>
           <div class="table-row">
             <div class="row-label">框架：</div>
-            <el-input v-model="patientInfo.distantFrameOptometryL" placeholder="" clearable />
+            <el-input v-model="patientInfo.distantFrameR" placeholder="" clearable />
           </div>
           <div class="table-row">
             <div class="row-label">片上：</div>
-            <el-input v-model="patientInfo.distantOnOptometryL" placeholder="" clearable />
+            <el-input v-model="patientInfo.distantOnR" placeholder="" clearable />
           </div>
         </div>
       </div>
@@ -53,29 +53,29 @@
         <div class="item-table">
           <div class="table-row">
             <div class="row-label">裸眼：</div>
-            <el-input v-model="patientInfo.nearNakedOptometryR" placeholder="" clearable />
+            <el-input v-model="patientInfo.nearNakedL" placeholder="" clearable />
           </div>
           <div class="table-row">
             <div class="row-label">框架：</div>
-            <el-input v-model="patientInfo.nearFrameOptometryR" placeholder="" clearable />
+            <el-input v-model="patientInfo.nearFrameL" placeholder="" clearable />
           </div>
           <div class="table-row">
             <div class="row-label">片上：</div>
-            <el-input v-model="patientInfo.nearOnOptometryR" placeholder="" clearable />
+            <el-input v-model="patientInfo.nearOnL" placeholder="" clearable />
           </div>
         </div>
         <div class="item-table">
           <div class="table-row">
             <div class="row-label">裸眼：</div>
-            <el-input v-model="patientInfo.nearNakedOptometryL" placeholder="" clearable />
+            <el-input v-model="patientInfo.nearNakedR" placeholder="" clearable />
           </div>
           <div class="table-row">
             <div class="row-label">框架：</div>
-            <el-input v-model="patientInfo.nearFrameOptometryL" placeholder="" clearable />
+            <el-input v-model="patientInfo.nearFrameR" placeholder="" clearable />
           </div>
           <div class="table-row">
             <div class="row-label">片上：</div>
-            <el-input v-model="patientInfo.nearOnOptometryL" placeholder="" clearable />
+            <el-input v-model="patientInfo.nearOnR" placeholder="" clearable />
           </div>
         </div>
       </div>
@@ -118,98 +118,98 @@
     </div>
   </div>
 </template>
+  
+<script setup name="visualInspect">
+  const emit = defineEmits(["update"]);
+  const props = defineProps({
+    id: {
+      type: String,
+      default: "",
+    },
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  });
+  watch(
+    () => props.data,
+    (val) => {
+      patientInfo.value = val;
+    }
+  );
+  const form = ref({
+    id: "",
+    type: "",
+    patientId: props.id,
+    patientName: "",
+    patientPhone: "",
+    patientIdCard: "",
+    docId: "",
+    docName: "",
+    formTime: "",
+    formContent: "",
+  });
 
-<script setup name="sightTestRoom">
-const emit = defineEmits(["update"]);
-const props = defineProps({
-  id: {
-    type: String,
-    default: "",
-  },
-  data: {
-    type: Object,
-    default: () => ({}),
-  },
-});
-watch(
-  () => props.data,
-  (val) => {
-    patientInfo.value = val;
+  const patientInfo = ref({
+    distantNakedL: "",
+    distantFrameL: "",
+    distantOnL: "",
+    distantNakedR: "",
+    distantFrameR: "",
+    distantOnR: "",
+    nearNakedL: "",
+    nearFrameL: "",
+    nearOnL: "",
+    nearNakedR: "",
+    nearFrameR: "",
+    nearOnR: "",
+    lensScratch: [],
+    eyeglassFrame: [],
+  });
+  /** 重置按钮操作 */
+  function resetQuery() {
+    patientInfo.value = {
+      distantNakedL: "",
+      distantFrameL: "",
+      distantOnL: "",
+      distantNakedR: "",
+      distantFrameR: "",
+      distantOnR: "",
+      nearNakedL: "",
+      nearFrameL: "",
+      nearOnL: "",
+      nearNakedR: "",
+      nearFrameR: "",
+      nearOnR: "",
+      lensScratch: [],
+      eyeglassFrame: [],
+    };
   }
-);
-const form = ref({
-  id: "",
-  type: "",
-  patientId: props.id,
-  patientName: "",
-  patientPhone: "",
-  patientIdCard: "",
-  docId: "",
-  docName: "",
-  formTime: "",
-  formContent: "",
-});
-
-const patientInfo = ref({
-  distantNakedOptometryL: "",
-  distantFrameOptometryL: "",
-  distantOnOptometryL: "",
-  distantNakedOptometryR: "",
-  distantFrameOptometryR: "",
-  distantOnOptometryR: "",
-  nearNakedOptometryL: "",
-  nearFrameOptometryL: "",
-  nearOnOptometryL: "",
-  nearNakedOptometryR: "",
-  nearFrameOptometryR: "",
-  nearOnOptometryR: "",
-  lensScratchOptometry: [],
-  eyeglassFrameOptometry: [],
-});
-/** 重置按钮操作 */
-function resetQuery() {
-  patientInfo.value = {
-    distantNakedOptometryL: "",
-    distantFrameOptometryL: "",
-    distantOnOptometryL: "",
-    distantNakedOptometryR: "",
-    distantFrameOptometryR: "",
-    distantOnOptometryR: "",
-    nearNakedOptometryL: "",
-    nearFrameOptometryL: "",
-    nearOnOptometryL: "",
-    nearNakedOptometryR: "",
-    nearFrameOptometryR: "",
-    nearOnOptometryR: "",
-    lensScratchOptometry: [],
-    eyeglassFrameOptometry: [],
-  };
-}
-/** 提交按钮 */
-function submitForm() {
-  const isFile = false;
-  let sq = {
-    distantNakedOptometryL: patientInfo.value.distantNakedOptometryL,
-    distantFrameOptometryL: patientInfo.value.distantFrameOptometryL,
-    distantOnOptometryL: patientInfo.value.distantOnOptometryL,
-    distantNakedOptometryR: patientInfo.value.distantNakedOptometryR,
-    distantFrameOptometryR: patientInfo.value.distantFrameOptometryR,
-    distantOnOptometryR: patientInfo.value.distantOnOptometryR,
-    nearNakedOptometryL: patientInfo.value.nearNakedOptometryL,
-    nearFrameOptometryL: patientInfo.value.nearFrameOptometryL,
-    nearOnOptometryL: patientInfo.value.nearOnOptometryL,
-    nearNakedOptometryR: patientInfo.value.nearNakedOptometryR,
-    nearFrameOptometryR: patientInfo.value.nearFrameOptometryR,
-    nearOnOptometryR: patientInfo.value.nearOnOptometryR,
-    lensScratchOptometry: patientInfo.value.lensScratchOptometry.toString(),
-    eyeglassFrameOptometry: patientInfo.value.eyeglassFrameOptometry.toString(),
-  };
-  const contant = JSON.stringify({ sightTestRoom: sq });
-  emit("update", isFile, contant);
-  console.log("object :>> ", sq, contant, form.value);
-}
+  /** 提交按钮 */
+  function submitForm() {
+    const isFile = false;
+    let sq = {
+      distantNakedL: patientInfo.value.distantNakedL,
+      distantFrameL: patientInfo.value.distantFrameL,
+      distantOnL: patientInfo.value.distantOnL,
+      distantNakedR: patientInfo.value.distantNakedR,
+      distantFrameR: patientInfo.value.distantFrameR,
+      distantOnR: patientInfo.value.distantOnR,
+      nearNakedL: patientInfo.value.nearNakedL,
+      nearFrameL: patientInfo.value.nearFrameL,
+      nearOnL: patientInfo.value.nearOnL,
+      nearNakedR: patientInfo.value.nearNakedR,
+      nearFrameR: patientInfo.value.nearFrameR,
+      nearOnR: patientInfo.value.nearOnR,
+      lensScratch: patientInfo.value.lensScratch.toString(),
+      eyeglassFrame: patientInfo.value.eyeglassFrame.toString(),
+    };
+    const contant = JSON.stringify({ sightTest: sq });
+    emit("update", isFile, contant);
+    console.log("object :>> ", contant);
+  }
 </script>
-
+  
 <style scoped>
 .visual-inspect {
 }
@@ -233,6 +233,7 @@ function submitForm() {
 .table-title-body {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 20%;
   min-width: 150px;
   padding: 10px;

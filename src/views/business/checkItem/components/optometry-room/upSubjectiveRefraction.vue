@@ -1,11 +1,7 @@
+<!-- 角膜接触镜片上主观验光 -->
 <template>
   <div>
     <el-card class="update-log" shadow="never">
-      <template v-slot:header>
-        <div class="clearfix">
-          <span class="font14">{{ "角膜接触镜片上主观验光" }}</span>
-        </div>
-      </template>
       <div class="body">
         <el-form
           :inline="true"

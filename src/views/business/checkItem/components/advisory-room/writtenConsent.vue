@@ -1,11 +1,7 @@
+<!-- 知情同意书签字 -->
 <template>
   <div>
     <el-card class="update-log" shadow="never">
-      <template v-slot:header>
-        <div class="clearfix">
-          <span class="font14">{{ "知情同意书签字" }}</span>
-        </div>
-      </template>
       <div class="body">
         <el-form
           :inline="true"

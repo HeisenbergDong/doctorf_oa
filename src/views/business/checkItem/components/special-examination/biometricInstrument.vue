@@ -1,10 +1,11 @@
+<!-- 生物测量仪 -->
 <template>
   <div>
     <el-card class="update-log" shadow="never">
       <template v-slot:header>
         <div class="clearfix">
           <span class="font14">{{
-            "生物测量仪（量差、量差图标、周期（量差&周期需要公式计算的） 系统需要帮忙计算左右眼眼轴变化，（填写本次数值后，后面有历史检查记录，下面有差值显示框，选择哪个带出哪个））"
+            "提示：（量差、量差图标、周期（量差&周期需要公式计算的） 系统需要帮忙计算左右眼眼轴变化，（填写本次数值后，后面有历史检查记录，下面有差值显示框，选择哪个带出哪个））"
           }}</span>
         </div>
       </template>

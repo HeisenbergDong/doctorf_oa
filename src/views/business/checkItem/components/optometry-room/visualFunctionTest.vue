@@ -1,3 +1,4 @@
+<!-- 视功能检查 -->
 <template>
   <div>
     <el-card class="update-log" shadow="never">

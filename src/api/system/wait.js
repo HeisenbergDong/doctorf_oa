@@ -1,9 +1,18 @@
 import request from '@/utils/request'
 
-// 查询排队列表
+// 查询分诊室排队列表
 export function listWait(query) {
   return request({
     url: '/doc/wait/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 其他诊室排队列表
+export function consultingWaitListApi(query) {
+  return request({
+    url: '/doc/wait/dispatch/list',
     method: 'get',
     params: query
   })

@@ -1,12 +1,7 @@
+<!-- 检影 -->
 <template>
   <div>
     <el-card class="update-log" shadow="never">
-      <template v-slot:header>
-        <div class="clearfix">
-          <span class="font14">{{ "检影(待定1)" }}</span>
-          <i icon="el-icon-circle-plus-outline"></i>
-        </div>
-      </template>
       <div class="body">
         <el-form
           :inline="true"

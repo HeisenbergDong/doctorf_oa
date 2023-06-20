@@ -1,98 +1,97 @@
+<!-- 眼压 -->
 <template>
   <div>
-    <el-card class="update-log" shadow="never">
-      <template v-slot:header>
-        <div class="clearfix">
-          <span class="font14">{{ "眼压" }}</span>
+    <div class="item-body">
+      <div class="item-row">
+        <div class="table-title-body">
+          <span class="item-table-text">眼 压</span>
         </div>
-      </template>
-      <div class="body">
-        <el-form
-          label-position="right"
-          label-width="110px"
-          :model="patientInfo"
-        >
-          <el-row class="mb16">
-            <el-radio-group
-              v-model="patientInfo.labelPosition"
-              size=""
-              @change="typeOnChange"
-            >
-              <el-radio-button :label="'0'">指测法</el-radio-button>
-              <el-radio-button :label="'1'">Icare</el-radio-button>
-            </el-radio-group>
-          </el-row>
-          <el-row>
-            <el-row class="flex-row w100i">
-              <el-col :span="12">
-                <div class="ml42 mb16 font14 fontW600">
-                  {{ "眼压L：" }}
-                </div>
-                <el-form-item label="眼压" class="font14">
-                  <el-select
-                    v-if="patientInfo.labelPosition"
-                    v-model="patientInfo.fingerMethodL"
-                    placeholder="请选择"
-                  >
-                    <el-option
-                      v-for="item in IopOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    >
-                    </el-option>
-                  </el-select>
-                  <div v-else>
-                    <el-input
-                      v-model="patientInfo.IcareL"
-                      class="mr24 w180i"
-                      placeholder="请输入"
-                    ></el-input>
-                    <div style="position: absolute; top: 0; left: 185px">
-                      (mmhg)
-                    </div>
-                  </div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <div class="ml42 mb16 font14 fontW600">
-                  {{ "眼压R：" }}
-                </div>
-                <el-form-item label="眼压" class="font14">
-                  <el-select
-                    v-if="patientInfo.labelPosition"
-                    v-model="patientInfo.fingerMethodR"
-                    placeholder="请选择"
-                  >
-                    <el-option
-                      v-for="item in IopOptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value"
-                    >
-                    </el-option>
-                  </el-select>
-                  <div v-else>
-                    <el-input
-                      v-model="patientInfo.IcareR"
-                      class="mr24 w180i"
-                      placeholder="请输入"
-                    ></el-input>
-                    <div style="position: absolute; top: 0; left: 185px">
-                      (mmhg)
-                    </div>
-                  </div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-row>
-          <el-row class="card-btn">
-            <el-button @click="resetQuery">重置</el-button>
-            <el-button type="primary" @click="submitForm">提交</el-button>
-          </el-row>
-        </el-form>
+        <div class="item-table">
+          <div class="row-label">R</div>
+        </div>
+        <div class="item-table">
+          <div class="row-label">L</div>
+        </div>
       </div>
-    </el-card>
+      <div class="item-row">
+        <div class="table-title-body">
+          <span class="item-table-text">检查方式</span>
+        </div>
+        <div class="item-table">
+          <div class="table-row">
+            <el-select
+              v-model="patientInfo.labelPosition"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in labelPositionOpt"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+      </div>
+      <div class="item-row item-mr">
+        <div class="table-title-body">
+          <span class="item-table-text">{{patientInfo.labelPosition === '0' ? '指测法' : 'Icare'}}</span>
+        </div>
+        <div class="item-table">
+          <div class="table-row">
+            <el-select
+              v-model="patientInfo.fingerMethodR"
+              placeholder="请选择"
+              v-if="patientInfo.labelPosition === '0'"
+            >
+              <el-option
+                v-for="item in IopOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+            <template v-else>
+              <el-input
+                v-model="patientInfo.IcareR"
+                class="mr24 w180i"
+                placeholder="请输入"
+              ></el-input>mmHg
+            </template>
+          </div>
+        </div>
+        <div class="item-table">
+          <div class="table-row">
+            <el-select
+              v-model="patientInfo.fingerMethodL"
+              placeholder="请选择"
+              v-if="patientInfo.labelPosition === '0'"
+            >
+              <el-option
+                v-for="item in IopOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+            <template v-else>
+              <el-input
+                v-model="patientInfo.IcareL"
+                class="mr24 w180i"
+                placeholder="请输入"
+              ></el-input>mmHg
+            </template>
+          </div>
+        </div>
+      </div>
+      <el-row class="card-btn">
+        <el-button @click="resetQuery">重置</el-button>
+        <el-button type="primary" @click="submitForm">提交</el-button>
+      </el-row>
+    </div>
   </div>
 </template>
   
@@ -187,7 +186,105 @@ const IopOptions = ref([
     label: "Tn+3",
   },
 ]);
+const labelPositionOpt = [
+  {
+    value: '0',
+    label: "指测法",
+  },
+  {
+    value: '1',
+    label: "Icare",
+  }
+]
 </script>
   
-  <style>
+<style lang="scss" scoped>
+:deep(.el-form-item--default) {
+  margin: 0px !important;
+}
+:deep(.el-form-item) {
+  margin: 0px !important;
+}
+.item-title {
+  height: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.item-body {
+  padding-top: 10px;
+}
+.item-row {
+  display: flex;
+}
+.table-title-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  min-width: 150px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #E5E5E5;
+  
+}
+.item-table-text {
+    font-size: 14px;
+    font-weight: 600px !important;
+  }
+.item-table {
+  flex-grow: 1;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #E5E5E5;
+}
+.table-row {
+  display: flex;
+  padding: 2px;
+  align-items: center;
+}
+.row-label {
+  width: 60px;
+}
+.item-table-title {
+  font-size: 14px;
+  font-weight: 600px !important;
+}
+  
+.time-body {
+  padding-top: 15px;
+}
+.time-item {
+  position: relative;
+  min-height: 50px;
+}
+.time-icon-text {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  right: 21px;
+  border-radius: 8px;
+  top: 3px;
+}
+.item-mr {
+  margin-bottom: 15px;
+}
+.check-body {
+  padding-left: 10px;
+  position: relative;
+}
+.check-line {
+  position: absolute;
+  height: 50px;
+  border-left: 2px solid;
+  top: 7px;
+  left: 2px;
+}
+:deep(.el-form-item__label) {
+  width: 100px;
+  justify-content: flex-start;
+}
+:deep(.el-checkbox-group) {
+  display: flex;
+  flex-direction: column;
+}
 </style>

@@ -1,11 +1,7 @@
+<!-- 角膜接触镜片上角膜地形图 -->
 <template>
   <div>
     <el-card class="update-log" shadow="never">
-      <template v-slot:header>
-        <div class="clearfix">
-          <span class="font14">{{ "角膜接触镜片上角膜地形图" }}</span>
-        </div>
-      </template>
       <div class="body">
         <el-form
           :inline="true"

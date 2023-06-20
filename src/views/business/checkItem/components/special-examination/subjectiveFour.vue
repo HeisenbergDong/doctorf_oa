@@ -1,20 +1,15 @@
+<!-- 主观前四项 -->
 <template>
   <div>
     <el-card class="update-log" shadow="never">
-      <template v-slot:header>
-        <div class="clearfix">
-          <span class="font14">{{ "主观前四项" }}</span>
-        </div>
-      </template>
       <div class="body">
         <el-row>
           <el-form
-            :inline="true"
             label-position="right"
             label-width="80px"
             :model="patientInfo"
           >
-            <el-form-item label="辐辏" class="font14">
+            <el-form-item label="辐辏：" class="font14">
               <el-select v-model="patientInfo.convergence" placeholder="请选择">
                 <el-option
                   v-for="item in convergeOptions"
@@ -25,7 +20,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="眼位">
+            <el-form-item label="眼位：">
               <el-input
                 v-model="patientInfo.positionOne"
                 placeholder="请输入"
@@ -41,7 +36,14 @@
               ></el-input>
               <div style="position: absolute; top: 0; right: -38px">/6cm;</div>
             </el-form-item>
-            <el-form-item label="主导眼">
+            <el-form-item label="瞳距：" class="font14">
+              <el-input
+                v-model="patientInfo.positionOne"
+                placeholder="请输入"
+                class="mr24 w180i"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="主导眼：">
               <el-select v-model="patientInfo.dominant" placeholder="请选择">
                 <el-option
                   v-for="item in euphoropsiaOptions"
