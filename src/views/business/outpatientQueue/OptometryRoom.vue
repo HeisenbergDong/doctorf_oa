@@ -1,8 +1,8 @@
 <!--
  * @Author: upeartaker 123@123.com
  * @Date: 2023-06-19 09:03:37
- * @LastEditors: upeartaker 123@123.com
- * @LastEditTime: 2023-06-19 10:38:19
+ * @LastEditors: yudong yudong@dlaero.com
+ * @LastEditTime: 2023-06-21 10:28:10
  * @FilePath: \doctorf_oa\src\views\business\outpatientQueue\ClinicRoom.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,10 +32,6 @@
 						</el-table-column>
 						<el-table-column label="诊室" align="center" width="120" prop="room">
 						</el-table-column>
-						<el-table-column label="调整队列的医生姓名" width="180" align="center" prop="adjustDocName" />
-						<el-table-column label="接待医生姓名" width="120" align="center" prop="receptionDocName" />
-						<el-table-column label="指派医生姓名" width="120" align="center" prop="assignDocName" />
-						<el-table-column label="指派医生遗嘱" width="220" align="center" prop="assignContent" />
 						<el-table-column label="备注" width="220" align="center" prop="remark" :show-overflow-tooltip="true" />
 					</el-table>
 				</el-card>
@@ -50,6 +46,8 @@
   import { onMounted } from "vue";
   import Speech from "speak-tts";
   import moment from 'moment';
+  import useSettingsStore from '@/store/modules/settings';
+  const settingsStore = useSettingsStore();
   
   const { proxy } = getCurrentInstance();
   
@@ -120,6 +118,9 @@
     });
   }
   getList();
+  watch(() => settingsStore.dispatchState, () => {
+    getList();
+  })
 </script>
 <style lang="scss">
 .form_card .el-card__body {

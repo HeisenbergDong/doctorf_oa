@@ -101,27 +101,19 @@
               <!-- <el-table-column label="进入队列时间" align="center" prop="waitTime" width="220" :show-overflow-tooltip="true" /> -->
               <el-table-column label="诊室" align="center" width="120" prop="room">
               </el-table-column>
-              <el-table-column label="调整队列的医生姓名" width="120" align="center" prop="adjustDocName" />
-              <el-table-column label="接待医生姓名" width="120" align="center" prop="receptionDocName" />
-              <el-table-column label="指派医生姓名" width="120" align="center" prop="assignDocName" />
-              <el-table-column label="指派医生遗嘱" width="220" align="center" prop="assignContent" />
               <el-table-column label="备注" width="220" align="center" prop="remark" :show-overflow-tooltip="true" />
               <el-table-column label="操作" align="center" fixed="right" width="220" class-name="small-padding fixed-width">
                 <template #default="scope">
                   <el-button link type="primary" icon="Edit" @click="handleAssign(scope.row)"
                     v-hasPermi="['business:HOIS:edit']">指派
                   </el-button>
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                    v-hasPermi="['business:HOIS:edit']">修改</el-button>
-                  <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                    v-hasPermi="['business:HOIS:remove']">取消</el-button>
                 </template>
               </el-table-column>
             </el-table>
           </el-card>
         </el-col>
       </el-row>
-      <el-row>
+      <!-- <el-row>
         <el-col :span="12" class="card-box">
           <el-card class="" shadow="never">
             <template v-slot:header>
@@ -164,7 +156,7 @@
             <div class="body">4</div>
           </el-card>
         </el-col>
-      </el-row>
+      </el-row> -->
       <!-- <pagination
          v-show="total > 0"
          :total="total"
@@ -216,6 +208,7 @@ import {
   delWait,
   addWait,
   updateWait,
+  consultingWaitListApi
 } from "@/api/system/wait";
 import { onMounted } from "vue";
 // import { onUnmounted } from "vue";
@@ -315,14 +308,14 @@ function getList() {
     1:'进行中',
     2:'已完成',
   }
-  listWait(proxy.addDateRange(queryParams.value)).then((response) => {
-    typeList.value = response.rows.map(el=>({
+  consultingWaitListApi(proxy.addDateRange(queryParams.value)).then((response) => {
+    loading.value = false;
+    typeList.value = response.data.map(el=>({
       ...el,
       patientStatusTxt:temp[el.patientStatus]
       // 0-排队中 1-进行中 2-已完成
     }));
     total.value = response.total;
-    loading.value = false;
     console.log("listWait :>> ", typeList.value);
   });
 }
@@ -492,6 +485,7 @@ function getDeptTree() {
 }
 getList();
 const waitProps = {
+  checkStrictly: true,
   lazy: true,
   lazyLoad(node, resolve) {
     const { level } = node;

@@ -1,8 +1,8 @@
 <!--
  * @Author: upeartaker 123@123.com
  * @Date: 2023-06-19 09:03:37
- * @LastEditors: upeartaker 123@123.com
- * @LastEditTime: 2023-06-19 10:38:19
+ * @LastEditors: yudong yudong@dlaero.com
+ * @LastEditTime: 2023-06-21 10:21:20
  * @FilePath: \doctorf_oa\src\views\business\outpatientQueue\ClinicRoom.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -50,6 +50,8 @@
   import { onMounted } from "vue";
   import Speech from "speak-tts";
   import moment from 'moment';
+  import useSettingsStore from '@/store/modules/settings';
+  const settingsStore = useSettingsStore();
   
   const { proxy } = getCurrentInstance();
   
@@ -69,6 +71,10 @@
       parentId: null,
     }
   });
+
+  watch(() => settingsStore.dispatchState, () => {
+    getList();
+  })
   
   // 语音播报
   const speech = ref(null);

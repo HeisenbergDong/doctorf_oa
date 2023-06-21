@@ -1,8 +1,8 @@
 <!--
  * @Author: upeartaker 123@123.com
  * @Date: 2023-06-18 11:58:53
- * @LastEditors: upeartaker 123@123.com
- * @LastEditTime: 2023-06-20 20:12:41
+ * @LastEditors: yudong yudong@dlaero.com
+ * @LastEditTime: 2023-06-21 10:04:15
  * @FilePath: \doctorf_oa\src\views\business\checkItem\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,9 +12,9 @@
     <div class="app-container home flex-row">
       <el-col :span="18">
         <el-col class="card-box">
-          <el-card class="font18 fontW600" shadow="always"> 患者信息 </el-card>
+          <el-card class="font18 fontW600" shadow="always"> 就诊信息 </el-card>
         </el-col>
-        <el-col v-if="id">
+        <el-col>
           <div class="card-box">
             <el-card shadow="always" class="">
               <el-row>
@@ -48,7 +48,7 @@
                   >
                     <el-tab-pane
                       v-for="item in tabArr"
-                      :key="item.name"
+                      :key="item.key"
                       :label="item.title"
                       :name="item.name"
                     >
@@ -178,6 +178,7 @@
             <template v-slot:header>
               <div class="clearfix">
                 <span class="font14">{{ "患者列表" }}</span>
+                <span class="patient-name">患者姓名：{{ patientData.pidpatientName }} 状态： {{ patientData.patientStatus === '1' ? '进行中' : '已完成' }}</span>
               </div>
             </template>
             <div class="body" style="max-height: 300px; overflow-y: over">
@@ -196,18 +197,15 @@
           </el-card>
         </el-col>
         <el-col class="card-box">
-          <el-card class="font18 fontW600" shadow="always"> 指派 </el-card>
-        </el-col>
-        <el-col class="card-box">
           <el-card class="update-log" shadow="always">
             <template v-slot:header>
               <div class="clearfix">
-                <span class="font14">{{ "指派医生" }}</span>
+                <span class="font14">指派</span>
               </div>
             </template>
             <div class="body">
               <el-form label-position="right" :model="patientInfo">
-                <el-form-item label="医生" class="font14">
+                <el-form-item label="" class="font14">
                   <el-cascader :props="waitProps" v-model="docData" @change="onDocChange"></el-cascader>
                 </el-form-item>
               </el-form>
@@ -276,6 +274,7 @@ import {
   addFormFile,
   updateFormFile,
   delFormFile,
+  getPatientInfo
 } from "@/api/system/formFile";
 import { callWait } from "../../../api/system/wait";
 import useSettingsStore from '@/store/modules/settings';
@@ -309,6 +308,7 @@ const timeLineArr = ref([]);
 const depInfo =  ref({});
 const checkList =  ref([]);
 const checkMap = ref({}); // 检查项映射关系
+const patientData = ref({}); // 患者信息
 
 function initSelect() {
   getDicts('f_form').then(res => {
@@ -341,8 +341,17 @@ const initSettingList = (data) => {
       activeTab.value = res.rows[0].formType
       res.rows.forEach(element => {
         checkList.value.push(element.room)
-        tabArr.value.push({title: element.formType, name: element.formType})
+        tabArr.value.push({title: element.formType, name: element.formType, key: element.id})
       });
+    }
+  })
+}
+
+// 获取患者信息
+const getPatientInfoFun  = (data) => {
+  getPatientInfo(data.id).then(res => {
+    if (res & res.code === 200) {
+      patientData.value = res.data
     }
   })
 }
@@ -357,7 +366,9 @@ const getWaitList = () => {
     pageNum: 1,
     pageSize: 999,
     patientStatus: '0',
-    receptionDocId: userStore.userId
+    receptionDocId: userStore.userId,
+    room: userStore.deptInfo.deptName,
+    waitTime: moment().format("YYYY-MM-DD"),
   }).then((res) => {
     console.log("patientList === ", res);
     patientList.value = res.rows.map((el) => ({
@@ -366,7 +377,7 @@ const getWaitList = () => {
       value: el.patientId,
     }));
     if (patientList.value.length) {
-      initPatientData(patientList.value[0]);
+      initForm(patientList.value[0]);
       initVisitList(patientList.value[0]);
     }
   });
@@ -385,6 +396,7 @@ function typeOnChange(value) {
 watch(() => settingsStore.dispatchState, () => {
   getWaitList();
 })
+
 function gotoAssign() {
   if (docData.value.length === 0) {
     proxy.$modal.msgError("未选择科室及医生！");
@@ -398,6 +410,18 @@ function gotoAssign() {
     docForm.value.docId = docData.value[3];
     docForm.value.room = docData.value[2];
     proxy.$modal.msgSuccess("指派成功");
+  });
+}
+
+const initForm = (item) => {
+  id.value = item.id;
+  patientInfo.value = item;
+  docData.value = [];
+  docForm.value = {};
+  listForm({patientld: item.patientId}).then((res) => {
+    if (res && res.code === 200) {
+      
+    }
   });
 }
 
@@ -422,10 +446,8 @@ const choosePatient = (item) => {
   docForm.value = {};
   callWait(item).then((resp => {
     getWaitList();
+    getPatientInfoFun(item);
   }));
-  // getForm(item.id).then((res) => {
-  //   console.log("getForm", res);
-  // });
 };
 const updateFormAction = async (e, val) => {
   const res = await getForm(id.value);
@@ -446,13 +468,14 @@ const updateFormAction = async (e, val) => {
       patientPhone,
       patientIdCard,
       docId,
+      docName: activeTab.value,
       room,
       formContent: res.formContent.push(e === false ? val : ""),
       fileUrl: res.fileUrl.push(e === true ? val : ""),
       type: "form",
       formTime: moment().format("YYYY-MM-DD HH:mm:ss"),
     }).then((res1) => {
-      console.log("updateForm --- ", res1);
+      proxy.$modal.msgSuccess("更新成功");
     });
   } else {
     addForm({
@@ -464,12 +487,13 @@ const updateFormAction = async (e, val) => {
       patientIdCard,
       docId,
       room,
+      docName: activeTab.value,
       formContent: e === false ? val : "",
       fileUrl: e === true ? val : "",
       type: "form",
       formTime: moment().format("YYYY-MM-DD HH:mm:ss"),
     }).then((res1) => {
-      console.log("addForm --- ", res1);
+      proxy.$modal.msgSuccess("提交成功");
     });
   }
 };
@@ -496,6 +520,7 @@ function getDeptTree() {
   });
 }
 const waitProps = {
+  checkStrictly: true,
   lazy: true,
   lazyLoad(node, resolve) {
     const { level } = node;
@@ -685,5 +710,8 @@ const waitProps = {
   right: 21px;
   border-radius: 8px;
   top: 3px;
+}
+.patient-name {
+  
 }
 </style>
